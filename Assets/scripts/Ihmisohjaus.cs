@@ -2,9 +2,9 @@
 using System.Collections;
 
 public class Ihmisohjaus : MonoBehaviour 
-	{
+{
 
-	public float speed;
+	public float rot_speed_mod;
 	//private Rigidbody rb;
 	private Rigidbody lwr;
 	private Rigidbody rwr;
@@ -15,31 +15,30 @@ public class Ihmisohjaus : MonoBehaviour
 	private Quaternion krot;
 	private Rigidbody nr;
 	private Transform nt;
+	
+	public WheelRotator left_wheel, right_wheel;
 
 	// Use this for initialization
 	void Start () 
-		{
-		//rb = GetComponent<Rigidbody>();	
-		lwr = this.transform.Find ("VRengas").GetComponent<Rigidbody>();
-		lwt = this.transform.Find ("VRengas").GetComponent<Transform>();
-		rwr = this.transform.Find ("ORengas").GetComponent<Rigidbody>();
-		rwt = this.transform.Find ("ORengas").GetComponent<Transform>();
+	{
+		//rb = GetComponent<Rigidbody>();
 		//kr = this.transform.Find ("Kaula").GetComponent<Rigidbody>();
 		//kt = this.transform.Find ("Kaula").GetComponent<Transform>();
 		//krot = kt.rotation;
 		//nr = this.transform.Find ("Niska").GetComponent<Rigidbody>();
 		//nt = this.transform.Find ("Niska").GetComponent<Transform>();
-		}
+	}
 	
 	// Update is called once per frame
 	void FixedUpdate ()
-		{
+	{
 		//float moveHorizontal = Input.GetAxis ("Horizontal");
 		//float moveVertical = Input.GetAxis ("Vertical");
 		float moveLeft = Input.GetAxis ("LeftWheel");
-		lwr.AddTorque(-lwt.up * speed * moveLeft);
+		left_wheel.Rotate(rot_speed_mod * -moveLeft);
+		//lwr.AddTorque(-lwt.up * speed * moveLeft);
 		float moveRight = Input.GetAxis ("RightWheel");
-		rwr.AddTorque(-rwt.up * speed * moveRight);
+		right_wheel.Rotate(rot_speed_mod * -moveRight);
 		//float RotNeck = Input.GetAxis ("Mouse X");
 		//kr.AddTorque(kt.up * speed * RotNeck);
 		//float LookUp = Input.GetAxis ("Mouse Y");
@@ -58,6 +57,6 @@ public class Ihmisohjaus : MonoBehaviour
 
 
 
-		}
 	}
+}
 
