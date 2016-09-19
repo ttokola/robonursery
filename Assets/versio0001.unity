@@ -642,7 +642,7 @@ HingeJoint:
   m_Anchor: {x: 0, y: 0, z: 0}
   m_Axis: {x: 0, y: 1, z: 0}
   m_AutoConfigureConnectedAnchor: 1
-  m_ConnectedAnchor: {x: 0.0000007412439, y: -0.7600006, z: 0.0000007947285}
+  m_ConnectedAnchor: {x: 0, y: -0.7600004, z: 0.0000007947285}
   m_UseSpring: 0
   m_Spring:
     spring: 0
@@ -1134,10 +1134,10 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 401289365}
-  m_LocalRotation: {x: -0, y: 0.24616155, z: -0, w: 0.96922886}
-  m_LocalPosition: {x: -3.4050622, y: 0.33, z: 2.7699285}
-  m_LocalScale: {x: 0.40205818, y: 0.40205818, z: 0.40205818}
-  m_LocalEulerAnglesHint: {x: 0, y: 28.456001, z: 0}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0.5, z: 0}
+  m_LocalScale: {x: 0.5, y: 0.5, z: 0.5}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_Children:
   - {fileID: 906539626}
   - {fileID: 259125277}
@@ -1300,7 +1300,7 @@ HingeJoint:
   m_Anchor: {x: 0, y: -0, z: 0.5}
   m_Axis: {x: 0, y: 1, z: 0}
   m_AutoConfigureConnectedAnchor: 1
-  m_ConnectedAnchor: {x: 0, y: 0.74119633, z: 0}
+  m_ConnectedAnchor: {x: 0, y: 0.74119633, z: -0.00000008648347}
   m_UseSpring: 1
   m_Spring:
     spring: 2500
@@ -5681,7 +5681,6 @@ GameObject:
   - 23: {fileID: 1504980732}
   - 54: {fileID: 1504980730}
   - 59: {fileID: 1504980731}
-  - 114: {fileID: 1504980736}
   m_Layer: 0
   m_Name: RunkoSUTB
   m_TagString: Untagged
@@ -5714,7 +5713,7 @@ HingeJoint:
   m_Anchor: {x: 0, y: 0, z: 0.16}
   m_Axis: {x: 0, y: 1, z: 0}
   m_AutoConfigureConnectedAnchor: 1
-  m_ConnectedAnchor: {x: 0, y: -0.000000014901161, z: -0.68777716}
+  m_ConnectedAnchor: {x: 0, y: -0.000000044703484, z: -0.6877772}
   m_UseSpring: 1
   m_Spring:
     spring: 1000
@@ -5798,17 +5797,6 @@ Transform:
   - {fileID: 60280724}
   m_Father: {fileID: 401289366}
   m_RootOrder: 3
---- !u!114 &1504980736
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1504980729}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7d302f0acd16e0549a4ba241e059f34a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &1522342484
 GameObject:
   m_ObjectHideFlags: 0
@@ -6884,7 +6872,7 @@ HingeJoint:
   m_Anchor: {x: 0, y: 0, z: 0}
   m_Axis: {x: 0, y: 1, z: 0}
   m_AutoConfigureConnectedAnchor: 1
-  m_ConnectedAnchor: {x: 0.0000009883253, y: 0.76000136, z: -0.0000007947285}
+  m_ConnectedAnchor: {x: 0, y: 0.7600014, z: -0.0000007947285}
   m_UseSpring: 0
   m_Spring:
     spring: 0
