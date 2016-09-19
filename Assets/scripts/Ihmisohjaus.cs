@@ -1,24 +1,58 @@
 ﻿using UnityEngine;
 using System.Collections;
 
+[System.Serializable]
+public class Battery
+{
+	public float level, max;
+	public Material mat;
+	public Transform tr;
+
+	public void Deplete(float amount)
+	{
+		level -= amount*Time.deltaTime;
+		// Change battery indicator color
+		float r, g;
+		if (normLevel > 0.5) {
+			r = 1 - Mathf.InverseLerp (0.5f, 1.0f, normLevel);
+		} else {
+			r = 1;
+		}
+		if (normLevel < 0.5) {
+			g = Mathf.InverseLerp (0.0f, 0.5f, normLevel);
+		} else {
+			g = 1;
+		}
+		mat.SetColor ("_EmissionColor", new Color (r, g, 0.0f, 1.0f));
+
+	}
+	
+	public float normLevel
+	// Return battery level normalized to 0..1
+	{
+		get { return level/max; }
+		set { level = max * value; }
+	}
+}
+
 public class Ihmisohjaus : MonoBehaviour 
 {
-
-	public float rot_speed_mod;
 	//private Rigidbody rb;
-	private Rigidbody lwr;
-	private Rigidbody rwr;
-	private Transform lwt;
-	private Transform rwt;
-	private Rigidbody kr;
-	private Transform kt;
-	private Quaternion krot;
-	private Rigidbody nr;
-	private Transform nt;
+	//private Rigidbody lwr;
+	//private Rigidbody rwr;
+	//private Transform lwt;
+	//private Transform rwt;
+	//private Rigidbody kr;
+	//private Transform kt;
+	//private Quaternion krot;
+	//private Rigidbody nr;
+	//private Transform nt;
 	
 	public WheelRotator left_wheel, right_wheel;
+	public float rot_speed_mod;	
+	
+	public Battery battery;
 
-	// Use this for initialization
 	void Start () 
 	{
 		//rb = GetComponent<Rigidbody>();
@@ -27,6 +61,7 @@ public class Ihmisohjaus : MonoBehaviour
 		//krot = kt.rotation;
 		//nr = this.transform.Find ("Niska").GetComponent<Rigidbody>();
 		//nt = this.transform.Find ("Niska").GetComponent<Transform>();
+		battery.level = Mathf.Clamp(0.0f, battery.max, battery.level);
 	}
 	
 	// Update is called once per frame
@@ -34,11 +69,8 @@ public class Ihmisohjaus : MonoBehaviour
 	{
 		//float moveHorizontal = Input.GetAxis ("Horizontal");
 		//float moveVertical = Input.GetAxis ("Vertical");
-		float moveLeft = Input.GetAxis ("LeftWheel");
-		left_wheel.Rotate(rot_speed_mod * -moveLeft);
-		//lwr.AddTorque(-lwt.up * speed * moveLeft);
-		float moveRight = Input.GetAxis ("RightWheel");
-		right_wheel.Rotate(rot_speed_mod * -moveRight);
+		RotateWheel("left", -Input.GetAxis ("LeftWheel"));
+		RotateWheel("right", -Input.GetAxis ("RightWheel"));
 		//float RotNeck = Input.GetAxis ("Mouse X");
 		//kr.AddTorque(kt.up * speed * RotNeck);
 		//float LookUp = Input.GetAxis ("Mouse Y");
@@ -54,9 +86,29 @@ public class Ihmisohjaus : MonoBehaviour
 		//Finally rotate the object accordingly
 		//kr.MoveRotation(rotateThroat * krot);
 		//nr.MoveRotation(nr.rotation * rotateNeck);
+	}
+	
+	void RotateWheel(string wheel, float torque)
+	{
+		if (battery.normLevel <= 0) {
+			return;
+		}
+		torque = rot_speed_mod * torque;
+		if (torque != 0) {
+			battery.Deplete(1);
+		}
+		if (wheel == "left") {
+			left_wheel.Rotate(torque);
+		} else {
+			right_wheel.Rotate(torque);
+		}
 
-
-
+	}
+	
+	void Update ()
+	{
+		//Debug.Log(battery.level);
+		//Debug.Log(battery.normLevel);
 	}
 }
 
