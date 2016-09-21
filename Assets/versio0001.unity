@@ -1146,7 +1146,7 @@ Transform:
   - {fileID: 1413750204}
   - {fileID: 451275240}
   m_Father: {fileID: 0}
-  m_RootOrder: 12
+  m_RootOrder: 11
 --- !u!114 &401289367
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1162,10 +1162,10 @@ MonoBehaviour:
   right_wheel: {fileID: 259125283}
   rot_speed_mod: 20
   battery:
+    level: 250
+    max: 50
     mat: {fileID: 2100000, guid: a4d64f7270174a74d9d735c4d9e8a3bc, type: 2}
     tr: {fileID: 60280724}
-    level: 100
-    max: 50
 --- !u!1 &430340657
 GameObject:
   m_ObjectHideFlags: 0
@@ -3110,7 +3110,7 @@ Transform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 11
+  m_RootOrder: 10
 --- !u!1 &898639337
 GameObject:
   m_ObjectHideFlags: 0
@@ -5111,6 +5111,7 @@ GameObject:
   - 33: {fileID: 1390852163}
   - 64: {fileID: 1390852162}
   - 23: {fileID: 1390852161}
+  - 114: {fileID: 1390852165}
   m_Layer: 0
   m_Name: Lattia
   m_TagString: Untagged
@@ -5179,6 +5180,18 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
+--- !u!114 &1390852165
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1390852160}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c52d7767f94bc6d47895872fd58d2e09, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  coordtext: {fileID: 1000011320674938, guid: ab4f0a47b18b47245a8e54037ad8972e, type: 2}
 --- !u!1 &1404044734
 GameObject:
   m_ObjectHideFlags: 0
@@ -5930,68 +5943,6 @@ MeshFilter:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1522342484}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
---- !u!1 &1522450619
-GameObject:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  serializedVersion: 4
-  m_Component:
-  - 4: {fileID: 1522450622}
-  - 114: {fileID: 1522450621}
-  - 114: {fileID: 1522450620}
-  m_Layer: 0
-  m_Name: EventSystem
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &1522450620
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1522450619}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 1077351063, guid: f5f67c52d1564df4a8936ccd202a3bd8, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_HorizontalAxis: Horizontal
-  m_VerticalAxis: Vertical
-  m_SubmitButton: Submit
-  m_CancelButton: Cancel
-  m_InputActionsPerSecond: 10
-  m_RepeatDelay: 0.5
-  m_ForceModuleActive: 0
---- !u!114 &1522450621
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1522450619}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: -619905303, guid: f5f67c52d1564df4a8936ccd202a3bd8, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_FirstSelected: {fileID: 0}
-  m_sendNavigationEvents: 1
-  m_DragThreshold: 5
---- !u!4 &1522450622
-Transform:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1522450619}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_RootOrder: 10
 --- !u!1 &1599131880
 GameObject:
   m_ObjectHideFlags: 0
