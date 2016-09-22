@@ -2,6 +2,13 @@
 using System.Collections;
 
 [System.Serializable]
+public class XZ
+{
+	public int x;
+	public int z;
+}
+
+[System.Serializable]
 public class Battery
 {
 	public float level, max;
@@ -48,10 +55,15 @@ public class Ihmisohjaus : MonoBehaviour
 	//private Rigidbody nr;
 	//private Transform nt;
 	
+	private float tLastMove;
+	
+	public Transform body;
+	
 	public WheelRotator left_wheel, right_wheel;
 	public float rot_speed_mod;	
 	
 	public Battery battery;
+	public XZ goTo;
 
 	void Start () 
 	{
@@ -62,6 +74,7 @@ public class Ihmisohjaus : MonoBehaviour
 		//nr = this.transform.Find ("Niska").GetComponent<Rigidbody>();
 		//nt = this.transform.Find ("Niska").GetComponent<Transform>();
 		battery.level = Mathf.Clamp(0.0f, battery.max, battery.level);
+		tLastMove = 0;
 	}
 	
 	// Update is called once per frame
@@ -69,8 +82,21 @@ public class Ihmisohjaus : MonoBehaviour
 	{
 		//float moveHorizontal = Input.GetAxis ("Horizontal");
 		//float moveVertical = Input.GetAxis ("Vertical");
-		RotateWheel("left", -Input.GetAxis ("LeftWheel"));
-		RotateWheel("right", -Input.GetAxis ("RightWheel"));
+		if (Input.GetAxis("Vertical") != 0 || Input.GetAxis("Horizontal") != 0) {
+			tLastMove = Time.time;
+			Forward(-Input.GetAxis("Vertical"));
+			Turn(-Input.GetAxis("Horizontal"));
+		}
+		/*if ((Time.time - tLastMove) > 1) {
+			Vector3 dir = (new Vector3 (goTo.x, 0, goTo.z) - body.position).normalized;
+			Quaternion lr = Quaternion.LookRotation(dir);
+			Debug.Log(lr.eulerAngles);
+		}*/
+		/*if (Input.GetAxis ("Horizontal") != 0 || Input.GetAxis("Vertical") != 0) {
+			RotateWheel("left", -Input.GetAxis ("LeftWheel"));
+			RotateWheel("right", -Input.GetAxis ("RightWheel"));
+		} else {
+		}*/
 		//float RotNeck = Input.GetAxis ("Mouse X");
 		//kr.AddTorque(kt.up * speed * RotNeck);
 		//float LookUp = Input.GetAxis ("Mouse Y");
@@ -105,10 +131,30 @@ public class Ihmisohjaus : MonoBehaviour
 
 	}
 	
+	void Turn(float force)
+	{
+		RotateWheel("left", force);
+		RotateWheel("right", -force);
+	}
+	
+	void Forward(float force)
+	{
+		RotateWheel("left", force);
+		RotateWheel("right", force);
+	}
+	
 	void Update ()
 	{
-		//Debug.Log(battery.level);
-		//Debug.Log(battery.normLevel);
+		//Debug.Log(body.right);
+		//Debug.Log(Vector3.Distance(body.position, new Vector3(xz.x, 0, xz.z)));
+		//Debug.Log(Vector3.Angle(
+		//	new Vector3(goTo.x, 0, goTo.z),
+		//	new Vector3(body.right.x, 0, body.right.z)
+		//));
+		//Debug.Log(body.right);
+		//Debug.Log(body.transform.rotation.eulerAngles);
+		//Debug.Log(new Vector3(body.position.x, 0, body.position.z));
+		//Debug.Log(new Vector3(goTo.x, 0, goTo.z));
 	}
 }
 
