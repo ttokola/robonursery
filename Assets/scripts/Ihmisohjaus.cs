@@ -20,14 +20,17 @@ public class Battery
 		level -= amount*Time.deltaTime;
 		// Change battery indicator color
 		float r, g;
-		if (normLevel > 0.5) {
+		if (normLevel > 0.5)
+		{
 			r = 1 - Mathf.InverseLerp (0.5f, 1.0f, normLevel);
 		} else {
 			r = 1;
 		}
-		if (normLevel < 0.5) {
+		if (normLevel < 0.5)
+		{
 			g = Mathf.InverseLerp (0.0f, 0.5f, normLevel);
-		} else {
+		} else
+		{
 			g = 1;
 		}
 		mat.SetColor ("_EmissionColor", new Color (r, g, 0.0f, 1.0f));
@@ -44,16 +47,6 @@ public class Battery
 
 public class Ihmisohjaus : MonoBehaviour 
 {
-	//private Rigidbody rb;
-	//private Rigidbody lwr;
-	//private Rigidbody rwr;
-	//private Transform lwt;
-	//private Transform rwt;
-	//private Rigidbody kr;
-	//private Transform kt;
-	//private Quaternion krot;
-	//private Rigidbody nr;
-	//private Transform nt;
 	
 	private float tLastMove;
 	
@@ -67,12 +60,6 @@ public class Ihmisohjaus : MonoBehaviour
 
 	void Start () 
 	{
-		//rb = GetComponent<Rigidbody>();
-		//kr = this.transform.Find ("Kaula").GetComponent<Rigidbody>();
-		//kt = this.transform.Find ("Kaula").GetComponent<Transform>();
-		//krot = kt.rotation;
-		//nr = this.transform.Find ("Niska").GetComponent<Rigidbody>();
-		//nt = this.transform.Find ("Niska").GetComponent<Transform>();
 		battery.level = Mathf.Clamp(0.0f, battery.max, battery.level);
 		tLastMove = 0;
 	}
@@ -80,81 +67,68 @@ public class Ihmisohjaus : MonoBehaviour
 	// Update is called once per frame
 	void FixedUpdate ()
 	{
-		//float moveHorizontal = Input.GetAxis ("Horizontal");
-		//float moveVertical = Input.GetAxis ("Vertical");
-		if (Input.GetAxis("Vertical") != 0 || Input.GetAxis("Horizontal") != 0) {
+		float tAutomaticAfter = 5;
+		if (Input.GetAxis("Vertical") != 0 || Input.GetAxis("Horizontal") != 0)
+		{
 			tLastMove = Time.time;
-			Forward(-Input.GetAxis("Vertical"));
+			Drive(-Input.GetAxis("Vertical"));
 			Turn(-Input.GetAxis("Horizontal"));
 		}
-		/*if ((Time.time - tLastMove) > 1) {
-			Vector3 dir = (new Vector3 (goTo.x, 0, goTo.z) - body.position).normalized;
-			Quaternion lr = Quaternion.LookRotation(dir);
-			Debug.Log(lr.eulerAngles);
-		}*/
-		/*if (Input.GetAxis ("Horizontal") != 0 || Input.GetAxis("Vertical") != 0) {
-			RotateWheel("left", -Input.GetAxis ("LeftWheel"));
-			RotateWheel("right", -Input.GetAxis ("RightWheel"));
-		} else {
-		}*/
-		//float RotNeck = Input.GetAxis ("Mouse X");
-		//kr.AddTorque(kt.up * speed * RotNeck);
-		//float LookUp = Input.GetAxis ("Mouse Y");
-		//Quaternion deltaRot = Quaternion.Euler(LookUp * nt.right * Time.deltaTime);
-		//nr.MoveRotation(nr.rotation * deltaRot);
-		//nr.AddTorque(nt.up * speed * LookUp);
-		//Vector3 movement = new Vector3 (moveHorizontal, 0.0f, 0.0f);
-		//rb.AddForce (movement * speed);
-
-		//Calculate rotation
-		//Quaternion rotateThroat = Quaternion.AngleAxis(RotNeck*100, kt.up);
-		//Quaternion rotateNeck = Quaternion.AngleAxis(LookUp*speed, nt.up);
-		//Finally rotate the object accordingly
-		//kr.MoveRotation(rotateThroat * krot);
-		//nr.MoveRotation(nr.rotation * rotateNeck);
+		if (Time.time > tLastMove + tAutomaticAfter)
+		{
+			TurnTo(new Vector3(goTo.x, 0, goTo.z));
+		}
 	}
 	
 	void RotateWheel(string wheel, float torque)
 	{
-		if (battery.normLevel <= 0) {
+		if (battery.normLevel <= 0)
+		{
 			return;
 		}
 		torque = rot_speed_mod * torque;
-		if (torque != 0) {
+		if (torque != 0)
+		{
 			battery.Deplete(1);
 		}
-		if (wheel == "left") {
+		if (wheel == "left")
+		{
 			left_wheel.Rotate(torque);
-		} else {
+		} else
+		{
 			right_wheel.Rotate(torque);
 		}
 
 	}
 	
 	void Turn(float force)
+	// Turn left (negative force) or right (positive force)
 	{
 		RotateWheel("left", force);
 		RotateWheel("right", -force);
 	}
 	
-	void Forward(float force)
+	void Drive(float force)
+	// Drive forwards (positive force) or backwards (negative force)
 	{
 		RotateWheel("left", force);
 		RotateWheel("right", force);
 	}
 	
+	void TurnTo(Vector3 to)
+	// Turn towards a coordinate
+	{
+		float threshold = 5;
+		float angle = Utils.Vec3FullAngle(body.right, new Vector3(to.x, 0, to.z));
+		if (Mathf.Abs(angle) > threshold)
+		{
+			Turn(-Mathf.Sign(angle));
+		}
+	}
+	
 	void Update ()
 	{
-		//Debug.Log(body.right);
-		//Debug.Log(Vector3.Distance(body.position, new Vector3(xz.x, 0, xz.z)));
-		//Debug.Log(Vector3.Angle(
-		//	new Vector3(goTo.x, 0, goTo.z),
-		//	new Vector3(body.right.x, 0, body.right.z)
-		//));
-		//Debug.Log(body.right);
-		//Debug.Log(body.transform.rotation.eulerAngles);
-		//Debug.Log(new Vector3(body.position.x, 0, body.position.z));
-		//Debug.Log(new Vector3(goTo.x, 0, goTo.z));
+		//Debug.Log(Utils.Vec3FullAngle(body.right, new Vector3(goTo.x, 0, goTo.z)));
 	}
 }
 

@@ -1158,7 +1158,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ae937b8a3350ecb42aea802bbce1bad2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  body: {fileID: 0}
+  body: {fileID: 1504980735}
   left_wheel: {fileID: 2009779201}
   right_wheel: {fileID: 259125283}
   rot_speed_mod: 20
@@ -1168,8 +1168,8 @@ MonoBehaviour:
     mat: {fileID: 2100000, guid: a4d64f7270174a74d9d735c4d9e8a3bc, type: 2}
     tr: {fileID: 60280724}
   goTo:
-    x: 0
-    z: 0
+    x: 1
+    z: 1
 --- !u!1 &430340657
 GameObject:
   m_ObjectHideFlags: 0
