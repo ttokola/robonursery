@@ -1163,13 +1163,11 @@ MonoBehaviour:
   right_wheel: {fileID: 259125283}
   rot_speed_mod: 20
   battery:
-    level: 250
-    max: 50
+    level: 500
+    max: 500
     mat: {fileID: 2100000, guid: a4d64f7270174a74d9d735c4d9e8a3bc, type: 2}
     tr: {fileID: 60280724}
-  goTo:
-    x: 1
-    z: 1
+  goTo: {x: -5, y: 0, z: 5}
 --- !u!1 &430340657
 GameObject:
   m_ObjectHideFlags: 0
