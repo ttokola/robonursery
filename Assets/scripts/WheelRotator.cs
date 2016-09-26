@@ -14,6 +14,6 @@ public class WheelRotator : MonoBehaviour
 	
 	public void Rotate (float torque)
 	{
-		rb.AddTorque(tf.up * torque);
+		rb.AddTorque(-(tf.up * torque));
 	}
 }

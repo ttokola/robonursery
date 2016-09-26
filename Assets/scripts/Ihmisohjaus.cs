@@ -2,13 +2,6 @@
 using System.Collections;
 
 [System.Serializable]
-public class XZ
-{
-	public int x;
-	public int z;
-}
-
-[System.Serializable]
 public class Battery
 {
 	public float level, max;
@@ -23,13 +16,16 @@ public class Battery
 		if (normLevel > 0.5)
 		{
 			r = 1 - Mathf.InverseLerp (0.5f, 1.0f, normLevel);
-		} else {
+		}
+		else
+		{
 			r = 1;
 		}
 		if (normLevel < 0.5)
 		{
 			g = Mathf.InverseLerp (0.0f, 0.5f, normLevel);
-		} else
+		}
+		else
 		{
 			g = 1;
 		}
@@ -56,7 +52,7 @@ public class Ihmisohjaus : MonoBehaviour
 	public float rot_speed_mod;	
 	
 	public Battery battery;
-	public XZ goTo;
+	public Vector3 goTo; // For testing movement, replace with something more intelligent
 
 	void Start () 
 	{
@@ -67,20 +63,21 @@ public class Ihmisohjaus : MonoBehaviour
 	// Update is called once per frame
 	void FixedUpdate ()
 	{
-		float tAutomaticAfter = 5;
+		float tAutomaticAfter = 1;
 		if (Input.GetAxis("Vertical") != 0 || Input.GetAxis("Horizontal") != 0)
 		{
 			tLastMove = Time.time;
-			Drive(-Input.GetAxis("Vertical"));
-			Turn(-Input.GetAxis("Horizontal"));
+			Drive(Input.GetAxis("Vertical"));
+			Turn(Input.GetAxis("Horizontal"));
 		}
 		if (Time.time > tLastMove + tAutomaticAfter)
 		{
-			TurnTo(new Vector3(goTo.x, 0, goTo.z));
+			DriveTo(new Vector3(goTo.x, 0, goTo.z));
 		}
 	}
 	
 	void RotateWheel(string wheel, float torque)
+	// Ultimately, probably all moving components should consume battery straight in the baseclass
 	{
 		if (battery.normLevel <= 0)
 		{
@@ -94,7 +91,8 @@ public class Ihmisohjaus : MonoBehaviour
 		if (wheel == "left")
 		{
 			left_wheel.Rotate(torque);
-		} else
+		}
+		else
 		{
 			right_wheel.Rotate(torque);
 		}
@@ -109,26 +107,68 @@ public class Ihmisohjaus : MonoBehaviour
 	}
 	
 	void Drive(float force)
-	// Drive forwards (positive force) or backwards (negative force)
+	// Drive backwards (negative force) or forwards (positive force)
 	{
 		RotateWheel("left", force);
 		RotateWheel("right", force);
 	}
 	
-	void TurnTo(Vector3 to)
+	int TurnTo(Vector3 target)
 	// Turn towards a coordinate
+	// Return 1 if angle to target is below threshold, -1 otherwise
 	{
-		float threshold = 5;
-		float angle = Utils.Vec3FullAngle(body.right, new Vector3(to.x, 0, to.z));
-		if (Mathf.Abs(angle) > threshold)
+		float angleThreshold = 5;
+		float angle = Utils.AngleTo(body.position, body.right, target);
+		if (Mathf.Abs(angle) > angleThreshold)
 		{
-			Turn(-Mathf.Sign(angle));
+			float direction = Mathf.Sign(angle);
+			Turn(1 * direction);
+			return -1;
+		}
+		else
+		{
+			return 1;
+		}
+	}
+	
+	int DriveTo(Vector3 target)
+	// Drive near a position
+	// Return 1 if distance to target is below threshold, -1 otherwise
+	{
+		float distanceThreshold = 0.5f;
+		if (TurnTo(target) == -1) {
+			return -1;
+		}
+		float dist = Vector3.Distance(
+			new Vector3(body.position.x, 0, body.position.z),
+			new Vector3(target.x, 0, target.z)
+		);
+		if (dist > distanceThreshold)
+		{
+			//Debug.Log("autof");
+			//Debug.Log(dist);
+			Drive(1);
+			return -1;
+		}
+		else if (dist < -distanceThreshold)
+		{
+			Debug.Log("autob");
+			Debug.Log(dist);
+			Drive(-1);
+			return -1;
+		}
+		else
+		{
+			//Debug.Log("suc");
+			//Debug.Log(dist);
+			return 1;
 		}
 	}
 	
 	void Update ()
 	{
 		//Debug.Log(Utils.Vec3FullAngle(body.right, new Vector3(goTo.x, 0, goTo.z)));
+		Debug.Log(Utils.AngleTo(body.position, body.right, goTo));
 	}
 }
 
