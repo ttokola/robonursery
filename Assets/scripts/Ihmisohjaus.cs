@@ -16,18 +16,12 @@ public class Battery
 		if (normLevel > 0.5)
 		{
 			r = 1 - Mathf.InverseLerp (0.5f, 1.0f, normLevel);
+			g = 1;
 		}
 		else
-		{
-			r = 1;
-		}
-		if (normLevel < 0.5)
 		{
 			g = Mathf.InverseLerp (0.0f, 0.5f, normLevel);
-		}
-		else
-		{
-			g = 1;
+			r = 1;
 		}
 		mat.SetColor ("_EmissionColor", new Color (r, g, 0.0f, 1.0f));
 
@@ -53,6 +47,7 @@ public class Ihmisohjaus : MonoBehaviour
 	
 	public Battery battery;
 	public Vector3 goTo; // For testing movement, replace with something more intelligent
+	public Transform dest;
 
 	void Start () 
 	{
@@ -72,7 +67,7 @@ public class Ihmisohjaus : MonoBehaviour
 		}
 		if (Time.time > tLastMove + tAutomaticAfter)
 		{
-			DriveTo(new Vector3(goTo.x, 0, goTo.z));
+			DriveTo(dest);
 		}
 	}
 	
@@ -130,6 +125,12 @@ public class Ihmisohjaus : MonoBehaviour
 			return 1;
 		}
 	}
+	int TurnTo(Transform target)
+	// Turn towards a transform
+	// Return 1 if angle to target is below threshold, -1 otherwise
+	{
+		return TurnTo(target.position);
+	}
 	
 	int DriveTo(Vector3 target)
 	// Drive near a position
@@ -145,30 +146,31 @@ public class Ihmisohjaus : MonoBehaviour
 		);
 		if (dist > distanceThreshold)
 		{
-			//Debug.Log("autof");
-			//Debug.Log(dist);
 			Drive(1);
 			return -1;
 		}
 		else if (dist < -distanceThreshold)
 		{
-			Debug.Log("autob");
-			Debug.Log(dist);
 			Drive(-1);
 			return -1;
 		}
 		else
 		{
-			//Debug.Log("suc");
-			//Debug.Log(dist);
 			return 1;
 		}
+	}
+	
+	int DriveTo(Transform target)
+	// Drive near the position of a transform
+	// Return 1 if distance to target is below threshold, -1 otherwise
+	{
+		return DriveTo(target.position);
 	}
 	
 	void Update ()
 	{
 		//Debug.Log(Utils.Vec3FullAngle(body.right, new Vector3(goTo.x, 0, goTo.z)));
-		Debug.Log(Utils.AngleTo(body.position, body.right, goTo));
+		//Debug.Log(Utils.AngleTo(body.position, body.right, goTo));
 	}
 }
 
