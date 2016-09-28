@@ -6,7 +6,7 @@ public class WheelRotator : MonoBehaviour
 	private Rigidbody rb;
 	private Transform tf;
 	
-	private bool debug = true;
+	public bool debug = true;
 	
 	void Start ()
 	{

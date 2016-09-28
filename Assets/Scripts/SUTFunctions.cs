@@ -1,114 +1,59 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-[System.Serializable]
-public class Battery
+public class SUTFunctions : MonoBehaviour
 {
-	public float level, max;
-	public Material mat;
-	public Transform tr;
-
-	public void Deplete(float amount)
-	{
-		level -= amount*Time.deltaTime;
-		// Change battery indicator color
-		float r, g;
-		if (normLevel > 0.5)
-		{
-			r = 1 - Mathf.InverseLerp (0.5f, 1.0f, normLevel);
-			g = 1;
-		}
-		else
-		{
-			g = Mathf.InverseLerp (0.0f, 0.5f, normLevel);
-			r = 1;
-		}
-		mat.SetColor ("_EmissionColor", new Color (r, g, 0.0f, 1.0f));
-
-	}
-	
-	public float normLevel
-	// Return battery level normalized to 0..1
-	{
-		get { return level/max; }
-		set { level = max * value; }
-	}
-}
-
-public class Ihmisohjaus : MonoBehaviour 
-{
-	
-	private float tLastMove;
-	
 	public Transform body;
 	
-	public WheelRotator left_wheel, right_wheel;
-	public float rot_speed_mod;	
-	
 	public Battery battery;
-	public Vector3 goTo; // For testing movement, replace with something more intelligent
-	public Transform dest;
+	public WheelRotator left_wheel, right_wheel;
+	
+	private float torqueMod;
 
 	void Start () 
 	{
 		battery.level = Mathf.Clamp(0.0f, battery.max, battery.level);
-		tLastMove = 0;
+		torqueMod = 15;
 	}
 	
-	// Update is called once per frame
-	void FixedUpdate ()
-	{
-		float tAutomaticAfter = 1;
-		if (Input.GetAxis("Vertical") != 0 || Input.GetAxis("Horizontal") != 0)
-		{
-			tLastMove = Time.time;
-			Drive(Input.GetAxis("Vertical"));
-			Turn(Input.GetAxis("Horizontal"));
-		}
-		if (Time.time > tLastMove + tAutomaticAfter)
-		{
-			DriveTo(dest);
-		}
-	}
-	
-	void RotateWheel(string wheel, float torque)
+	public void RotateWheel(string wheel, float torque)
 	// Ultimately, probably all moving components should consume battery straight in the baseclass
 	{
 		if (battery.normLevel <= 0)
 		{
 			return;
 		}
-		torque = rot_speed_mod * torque;
 		if (torque != 0)
 		{
 			battery.Deplete(1);
 		}
 		if (wheel == "left")
 		{
-			left_wheel.Rotate(torque);
+			left_wheel.Rotate(torque * torqueMod);
 		}
 		else
 		{
-			right_wheel.Rotate(torque);
+			right_wheel.Rotate(torque * torqueMod);
 		}
 
 	}
 	
-	void Turn(float force)
+	public void Turn(float force)
 	// Turn left (negative force) or right (positive force)
 	{
-		RotateWheel("left", force);
-		RotateWheel("right", -force);
+		float mod = 1.5f; // Seems torque needs to be increased for turning, might need finetuning
+		RotateWheel("left", force * mod);
+		RotateWheel("right", -force * mod);
 	}
 	
-	void Drive(float force)
+	public void Drive(float force)
 	// Drive backwards (negative force) or forwards (positive force)
 	{
 		RotateWheel("left", force);
 		RotateWheel("right", force);
 	}
 	
-	int TurnTo(Vector3 target)
+	public int TurnTo(Vector3 target)
 	// Turn towards a coordinate
 	// Return 1 if angle to target is below threshold, -1 otherwise
 	{
@@ -125,42 +70,42 @@ public class Ihmisohjaus : MonoBehaviour
 			return 1;
 		}
 	}
-	int TurnTo(Transform target)
+	public int TurnTo(Transform target)
 	// Turn towards a transform
 	// Return 1 if angle to target is below threshold, -1 otherwise
 	{
 		return TurnTo(target.position);
 	}
 	
-	int DriveTo(Vector3 target)
+	public int DriveTo(Vector3 target)
 	// Drive near a position
 	// Return 1 if distance to target is below threshold, -1 otherwise
 	{
 		float distanceThreshold = 0.5f;
-		if (TurnTo(target) == -1) {
-			return -1;
-		}
 		float dist = Vector3.Distance(
 			new Vector3(body.position.x, 0, body.position.z),
 			new Vector3(target.x, 0, target.z)
 		);
+		
+		if (Mathf.Abs(dist) < distanceThreshold) {
+			return 0;
+		}
+		if (TurnTo(target) == -1) {
+			return -1;
+		}
 		if (dist > distanceThreshold)
 		{
 			Drive(1);
 			return -1;
 		}
-		else if (dist < -distanceThreshold)
+		else
 		{
 			Drive(-1);
 			return -1;
 		}
-		else
-		{
-			return 1;
-		}
 	}
 	
-	int DriveTo(Transform target)
+	public int DriveTo(Transform target)
 	// Drive near the position of a transform
 	// Return 1 if distance to target is below threshold, -1 otherwise
 	{
@@ -171,6 +116,7 @@ public class Ihmisohjaus : MonoBehaviour
 	{
 		//Debug.Log(Utils.Vec3FullAngle(body.right, new Vector3(goTo.x, 0, goTo.z)));
 		//Debug.Log(Utils.AngleTo(body.position, body.right, goTo));
+		//Debug.Log(battery.normLevel);
 	}
 }
 
