@@ -1,37 +1,15 @@
 fileFormatVersion: 2
-guid: c9ab983815f4e2a469bc3bd36ca1237a
-timeCreated: 1474904948
+guid: 43141ddeb83534d4da2657fd7d32b6a3
+timeCreated: 1475083591
 licenseType: Free
 ModelImporter:
   serializedVersion: 19
   fileIDToRecycleName:
     100000: //RootNode
-    100002: Floor
-    100004: LoadingDockElevator
-    100006: LoadingDockElevator_001
-    100008: Walls
-    100010: Yard
     400000: //RootNode
-    400002: Floor
-    400004: LoadingDockElevator
-    400006: LoadingDockElevator_001
-    400008: Walls
-    400010: Yard
-    2300000: Floor
-    2300002: LoadingDockElevator
-    2300004: LoadingDockElevator_001
-    2300006: Walls
-    2300008: Yard
-    3300000: Floor
-    3300002: LoadingDockElevator
-    3300004: LoadingDockElevator_001
-    3300006: Walls
-    3300008: Yard
-    4300000: LoadingDockElevator_001
-    4300002: LoadingDockElevator
-    4300004: Walls
-    4300006: Floor
-    4300008: Yard
+    2300000: //RootNode
+    3300000: //RootNode
+    4300000: Floor
     7400000: Default Take
     9500000: //RootNode
   materials:
@@ -77,7 +55,7 @@ ModelImporter:
     normalSmoothAngle: 60
     normalImportMode: 0
     tangentImportMode: 3
-  importAnimation: 1
+  importAnimation: 0
   copyAvatar: 0
   humanDescription:
     human: []
