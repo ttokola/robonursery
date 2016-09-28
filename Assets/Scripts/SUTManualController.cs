@@ -7,9 +7,6 @@ public class SUTManualController : MonoBehaviour
 	public bool enable;
 	public SUTFunctions controls;
 	
-	void Start ()
-	{
-	}
 	void FixedUpdate ()
 	{
 		if (! enable) {

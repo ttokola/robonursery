@@ -1,17 +1,40 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-[System.Serializable]
-public class Battery
+public class Battery : MonoBehaviour
 {
-	public float level, max;
+	public float max;
 	public Material mat;
-	public Transform tr;
 
-	public void Deplete(float amount)
+	[SerializeField]
+	private float _level;	
+	public float level
 	{
-		level -= amount*Time.deltaTime;
-		// Change battery indicator color
+		get
+		{
+			return _level;
+		}
+		set
+		{
+			_level = Mathf.Max(0, Mathf.Min(max, value));
+		}
+	}
+	
+	public float normLevel
+	// Return battery level normalized to 0..1
+	{
+		get
+		{
+			return level/max;
+		}
+		set
+		{
+			level = max * value;
+		}
+	}
+
+	void Update ()
+	{	
 		float r, g;
 		if (normLevel > 0.5)
 		{
@@ -24,13 +47,17 @@ public class Battery
 			r = 1;
 		}
 		mat.SetColor ("_EmissionColor", new Color (r, g, 0.0f, 1.0f));
-
+	}
+		
+	public void Deplete(float amount)
+	{
+		level -= amount * Time.deltaTime;
 	}
 	
-	public float normLevel
-	// Return battery level normalized to 0..1
+	public void charge(float amount)
 	{
-		get { return level/max; }
-		set { level = max * value; }
+		level += amount * Time.deltaTime;
 	}
+	
+
 }

@@ -12,7 +12,6 @@ public class SUTFunctions : MonoBehaviour
 
 	void Start () 
 	{
-		battery.level = Mathf.Clamp(0.0f, battery.max, battery.level);
 		torqueMod = 15;
 	}
 	
