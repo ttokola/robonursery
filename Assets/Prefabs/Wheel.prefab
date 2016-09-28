@@ -26,7 +26,7 @@ GameObject:
   - 64: {fileID: 64000013132459764}
   - 114: {fileID: 114000010079149588}
   m_Layer: 0
-  m_Name: ORengas
+  m_Name: Wheel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
