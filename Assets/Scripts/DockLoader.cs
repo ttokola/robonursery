@@ -8,6 +8,6 @@ public class DockLoader : MonoBehaviour {
 	void OnTriggerStay (Collider other)
 	{
 		bat = other.transform.root.gameObject.GetComponent<Battery> ();
-		bat.level += Time.deltaTime * 5;
+        bat.Charge(10);
 	}
 }

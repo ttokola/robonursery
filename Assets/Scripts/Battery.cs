@@ -54,7 +54,7 @@ public class Battery : MonoBehaviour
 		level -= amount * Time.deltaTime;
 	}
 	
-	public void charge(float amount)
+	public void Charge(float amount)
 	{
 		level += amount * Time.deltaTime;
 	}

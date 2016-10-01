@@ -4,9 +4,8 @@ using System.Collections;
 public class SUTFunctions : MonoBehaviour
 {
     public Rigidbody body;
-	
 	public Battery battery;
-	public WheelRotator left_wheel, right_wheel;
+	public WheelRotator leftWheel, rightWheel;
     public float slowingDistance;
     
     private float angleThreshold;
@@ -33,11 +32,11 @@ public class SUTFunctions : MonoBehaviour
 		}
 		if (wheel == "left")
 		{
-			left_wheel.Rotate(torque * torqueMod);
+			leftWheel.Rotate(torque * torqueMod);
 		}
 		else
 		{
-			right_wheel.Rotate(torque * torqueMod);
+			rightWheel.Rotate(torque * torqueMod);
 		}
 
 	}

@@ -5,12 +5,10 @@ using System.Collections;
 
 public class SUTReflexes : MonoBehaviour 
 {
-	public bool debug = false;
-	
-	private bool loading = false;
-	private float torqueMod = 15;
-	
+	public bool debug = false;	
 	public SUTFunctions controls;
+    
+    private bool loading = false;
 	private Battery bat;
 	private SUTManualController manControl;
 	private SUTQueue queue;

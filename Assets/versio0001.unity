@@ -80,15 +80,15 @@ NavMeshSettings:
   m_ObjectHideFlags: 0
   m_BuildSettings:
     serializedVersion: 2
-    agentRadius: 0.5
+    agentRadius: 1.2
     agentHeight: 2
     agentSlope: 25
-    agentClimb: 0.1
+    agentClimb: 0.2
     ledgeDropHeight: 0
     maxJumpAcrossDistance: 0
     accuratePlacement: 0
     minRegionArea: 2
-    cellSize: 0.16666667
+    cellSize: 0.4
     manualCellSize: 0
   m_NavMeshData: {fileID: 23800000, guid: 38c88ec8565f873499bdd114ef91dc7f, type: 2}
 --- !u!1001 &17756471
@@ -1298,9 +1298,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   body: {fileID: 1504980730}
   battery: {fileID: 401289370}
-  left_wheel: {fileID: 2009779201}
-  right_wheel: {fileID: 259125283}
-  slowingDistance: 2
+  leftWheel: {fileID: 2009779201}
+  rightWheel: {fileID: 259125283}
+  slowingDistance: 1.5
 --- !u!114 &401289369
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1325,9 +1325,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 737120d487264204bb78b445274872e5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  max: 150
+  max: 200
   mat: {fileID: 2100000, guid: a4d64f7270174a74d9d735c4d9e8a3bc, type: 2}
-  _level: 50
+  _level: 200
 --- !u!114 &401289371
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1340,11 +1340,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   debug: 1
+  agent: {fileID: 1504980736}
+  controls: {fileID: 401289368}
   locations:
   - {x: -4, y: 0, z: -4}
   - {x: 2, y: 0, z: -4}
-  - {x: 0, y: 0, z: 5}
-  controls: {fileID: 401289368}
+  - {x: -16, y: 0, z: 3}
+  waypoint: {fileID: 777679768}
 --- !u!1 &430340657
 GameObject:
   m_ObjectHideFlags: 0
@@ -2843,6 +2845,72 @@ MeshFilter:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 746083764}
   m_Mesh: {fileID: 10207, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!1 &777679768
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 4
+  m_Component:
+  - 4: {fileID: 777679772}
+  - 33: {fileID: 777679771}
+  - 23: {fileID: 777679769}
+  m_Layer: 0
+  m_Name: Waypoint
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!23 &777679769
+MeshRenderer:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 777679768}
+  m_Enabled: 1
+  m_CastShadows: 1
+  m_ReceiveShadows: 1
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_Materials:
+  - {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
+  m_SubsetIndices: 
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_PreserveUVs: 1
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_SelectedWireframeHidden: 0
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_SortingLayerID: 0
+  m_SortingOrder: 0
+--- !u!33 &777679771
+MeshFilter:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 777679768}
+  m_Mesh: {fileID: 10208, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!4 &777679772
+Transform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 777679768}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -5.02, y: 1.69, z: 2.4070368}
+  m_LocalScale: {x: 0.5, y: 1, z: 0.5}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 14
 --- !u!1 &814352993
 GameObject:
   m_ObjectHideFlags: 0
@@ -4267,7 +4335,7 @@ Transform:
   - {fileID: 1012783902}
   - {fileID: 1046037795}
   m_Father: {fileID: 0}
-  m_RootOrder: 16
+  m_RootOrder: 17
 --- !u!1001 &1046037794
 Prefab:
   m_ObjectHideFlags: 0
@@ -6281,7 +6349,7 @@ NavMeshAgent:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1504980729}
-  m_Enabled: 0
+  m_Enabled: 1
   m_Radius: 0.50000006
   m_Speed: 0
   m_Acceleration: 0
@@ -6905,7 +6973,7 @@ Transform:
   m_LocalEulerAnglesHint: {x: 35, y: 135, z: 0}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 14
+  m_RootOrder: 15
 --- !u!1 &1677054066
 GameObject:
   m_ObjectHideFlags: 0
@@ -7980,7 +8048,7 @@ Transform:
   - {fileID: 1954517751}
   - {fileID: 2093234583}
   m_Father: {fileID: 0}
-  m_RootOrder: 15
+  m_RootOrder: 16
 --- !u!1 &2093234582
 GameObject:
   m_ObjectHideFlags: 0
