@@ -1296,10 +1296,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ee03d5dd0352f9d43bbb7a807699dd99, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  body: {fileID: 1504980735}
+  body: {fileID: 1504980730}
   battery: {fileID: 401289370}
   left_wheel: {fileID: 2009779201}
   right_wheel: {fileID: 259125283}
+  slowingDistance: 2
 --- !u!114 &401289369
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6280,7 +6281,7 @@ NavMeshAgent:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1504980729}
-  m_Enabled: 1
+  m_Enabled: 0
   m_Radius: 0.50000006
   m_Speed: 0
   m_Acceleration: 0
