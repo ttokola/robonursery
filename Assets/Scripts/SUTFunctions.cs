@@ -3,16 +3,21 @@ using System.Collections;
 
 public class SUTFunctions : MonoBehaviour
 {
-	public Transform body;
+    public Rigidbody body;
 	
 	public Battery battery;
 	public WheelRotator left_wheel, right_wheel;
-	
+    public float slowingDistance;
+    
+    private float angleThreshold;
 	private float torqueMod;
+    private float distanceThreshold;
 
 	void Start () 
 	{
 		torqueMod = 15;
+        angleThreshold = 5;
+        distanceThreshold = 0.5f;
 	}
 	
 	public void RotateWheel(string wheel, float torque)
@@ -56,8 +61,7 @@ public class SUTFunctions : MonoBehaviour
 	// Turn towards a coordinate
 	// Return 1 if angle to target is below threshold, -1 otherwise
 	{
-		float angleThreshold = 5;
-		float angle = Utils.AngleTo(body.position, body.right, target);
+		float angle = Utils.AngleTo(body.position, body.transform.right, target);
 		if (Mathf.Abs(angle) > angleThreshold)
 		{
 			float direction = Mathf.Sign(angle);
@@ -80,14 +84,16 @@ public class SUTFunctions : MonoBehaviour
 	// Drive near a position
 	// Return 1 if distance to target is below threshold, -1 otherwise
 	{
-		float distanceThreshold = 0.5f;
 		float dist = Vector3.Distance(
 			new Vector3(body.position.x, 0, body.position.z),
 			new Vector3(target.x, 0, target.z)
 		);
 		
 		if (Mathf.Abs(dist) < distanceThreshold) {
-			return 0;
+			return 1;
+		}
+        if (Mathf.Abs(dist) < slowingDistance * body.velocity.magnitude) {
+			return -1;
 		}
 		if (TurnTo(target) == -1) {
 			return -1;

@@ -82,15 +82,15 @@ NavMeshSettings:
     serializedVersion: 2
     agentRadius: 0.5
     agentHeight: 2
-    agentSlope: 45
-    agentClimb: 0.4
+    agentSlope: 25
+    agentClimb: 0.1
     ledgeDropHeight: 0
     maxJumpAcrossDistance: 0
     accuratePlacement: 0
     minRegionArea: 2
     cellSize: 0.16666667
     manualCellSize: 0
-  m_NavMeshData: {fileID: 0}
+  m_NavMeshData: {fileID: 23800000, guid: 38c88ec8565f873499bdd114ef91dc7f, type: 2}
 --- !u!1001 &17756471
 Prefab:
   m_ObjectHideFlags: 0
@@ -137,6 +137,10 @@ Prefab:
     - target: {fileID: 100000, guid: b46dc2f3ad23564459aeb9b749c695ef, type: 3}
       propertyPath: m_TagString
       value: DockR
+      objectReference: {fileID: 0}
+    - target: {fileID: 100000, guid: b46dc2f3ad23564459aeb9b749c695ef, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 8
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 9500000, guid: b46dc2f3ad23564459aeb9b749c695ef, type: 3}
@@ -4025,6 +4029,10 @@ Prefab:
       propertyPath: m_RootOrder
       value: 3
       objectReference: {fileID: 0}
+    - target: {fileID: 100000, guid: 33de6bfeccc13c343ae0ddd022b29953, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 8
+      objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 9500000, guid: 33de6bfeccc13c343ae0ddd022b29953, type: 3}
   m_ParentPrefab: {fileID: 100100000, guid: 33de6bfeccc13c343ae0ddd022b29953, type: 3}
@@ -4297,6 +4305,10 @@ Prefab:
     - target: {fileID: 400000, guid: 326308e03ab6a9e4a8d88f17dd8e93bd, type: 3}
       propertyPath: m_RootOrder
       value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 100000, guid: 326308e03ab6a9e4a8d88f17dd8e93bd, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 8
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 9500000, guid: 326308e03ab6a9e4a8d88f17dd8e93bd, type: 3}
@@ -4819,6 +4831,10 @@ Prefab:
     - target: {fileID: 2300000, guid: 43141ddeb83534d4da2657fd7d32b6a3, type: 3}
       propertyPath: m_Enabled
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 100000, guid: 43141ddeb83534d4da2657fd7d32b6a3, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 8
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 9500000, guid: 43141ddeb83534d4da2657fd7d32b6a3, type: 3}
@@ -6141,6 +6157,7 @@ GameObject:
   - 23: {fileID: 1504980732}
   - 54: {fileID: 1504980730}
   - 59: {fileID: 1504980731}
+  - 195: {fileID: 1504980736}
   m_Layer: 0
   m_Name: RunkoSUTB
   m_TagString: Untagged
@@ -6257,6 +6274,26 @@ Transform:
   - {fileID: 60280724}
   m_Father: {fileID: 401289366}
   m_RootOrder: 3
+--- !u!195 &1504980736
+NavMeshAgent:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1504980729}
+  m_Enabled: 1
+  m_Radius: 0.50000006
+  m_Speed: 0
+  m_Acceleration: 0
+  avoidancePriority: 50
+  m_AngularSpeed: 0
+  m_StoppingDistance: 0
+  m_AutoTraverseOffMeshLink: 1
+  m_AutoBraking: 0
+  m_AutoRepath: 1
+  m_Height: 1
+  m_BaseOffset: 0.5
+  m_WalkableMask: 4294967295
+  m_ObstacleAvoidanceType: 4
 --- !u!1 &1522342484
 GameObject:
   m_ObjectHideFlags: 0
@@ -7118,6 +7155,10 @@ Prefab:
     - target: {fileID: 100000, guid: b46dc2f3ad23564459aeb9b749c695ef, type: 3}
       propertyPath: m_Name
       value: LoadingDockElevatorL
+      objectReference: {fileID: 0}
+    - target: {fileID: 100000, guid: b46dc2f3ad23564459aeb9b749c695ef, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 8
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 9500000, guid: b46dc2f3ad23564459aeb9b749c695ef, type: 3}

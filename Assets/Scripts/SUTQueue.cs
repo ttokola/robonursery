@@ -24,7 +24,7 @@ public class SUTQueue : MonoBehaviour {
 			return;
 		}
 		next = queue.Peek();
-		if (controls.DriveTo(next) == 0)
+		if (controls.DriveTo(next) == 1)
 		{
 			if (debug) { Debug.Log(string.Format("Arrived at {0}", next)); }
 			queue.Dequeue();
