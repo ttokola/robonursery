@@ -6,17 +6,21 @@ public class SUTQueue : MonoBehaviour {
 
 	public bool debug = false;
     public NavMeshAgent agent;
+    public Transform body;
     public SUTFunctions controls;	
 	public Vector3[] locations;
     public GameObject waypoint;
+    public bool hasDestination = false;
     
+    private SUTReflexes reflexes;
+    private bool hasPath = false;
 	private Queue<Vector3> queue;
 	private Vector3 next;
-    private bool hasDestination = false;
     private int waypointNumber;
 	
 	void Start ()
 	{
+        reflexes = GetComponent<SUTReflexes> ();
 		queue = new Queue<Vector3>(locations);
         agent.updatePosition = false;
         agent.updateRotation = false;
@@ -28,27 +32,54 @@ public class SUTQueue : MonoBehaviour {
 		{
 			return;
 		}
-        if (!hasDestination)
+        
+        if (!hasPath || !hasDestination)
         {
-            agent.destination = queue.Peek();
-            hasDestination = true;
-            waypointNumber = 1;
+            if (!hasDestination)
+            {
+                agent.Warp(body.position);
+                hasDestination = true;
+                waypointNumber = 1;            
+                if (reflexes.loading)
+                {
+                    agent.destination = reflexes.destination;
+                }
+                else
+                {
+                    agent.destination = queue.Peek();
+                }   
+            }
+            if (agent.pathPending)
+            // Need to wait for path calculation
+            {
+                hasPath = false;
+                return;
+            }
+            hasPath = true;
+            next = agent.path.corners[waypointNumber];
+            waypoint.transform.position = next;            
         }
-        if (agent.pathPending)
-        {
-            return;
-        }
-		next = agent.path.corners[waypointNumber];
-        waypoint.transform.position = next;
+        
 		if (controls.DriveTo(next) == 1)
 		{
-            waypointNumber++;
-            if (agent.path.corners.Length - waypointNumber == 0)
+            if (agent.path.corners.Length - waypointNumber == 1)
+            // Current waypoint is the last one
             {
-                if (debug) { Debug.Log(string.Format("Arrived at {0}", queue.Peek())); }
-                queue.Dequeue();
-                hasDestination = false;                
+                if (reflexes.loading)
+                {
+                    return;
+                }
+                else
+                {
+                    if (debug) { Debug.Log(string.Format("Arrived at {0}", queue.Peek())); }
+                    queue.Dequeue();                    
+                }
+                hasDestination = false;
+                return;
             }
+            waypointNumber++;
+            next = agent.path.corners[waypointNumber];
+            waypoint.transform.position = next;      
 		}
 	}
 }

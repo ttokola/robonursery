@@ -14,8 +14,8 @@ public class SUTFunctions : MonoBehaviour
 
 	void Start () 
 	{
-		torqueMod = 15;
-        angleThreshold = 5;
+		torqueMod = 14;
+        angleThreshold = 3;
         distanceThreshold = 0.5f;
 	}
 	

@@ -6,9 +6,9 @@ using System.Collections;
 public class SUTReflexes : MonoBehaviour 
 {
 	public bool debug = false;	
-	public SUTFunctions controls;
+    public bool loading = false;
+    public Vector3 destination;
     
-    private bool loading = false;
 	private Battery bat;
 	private SUTManualController manControl;
 	private SUTQueue queue;
@@ -25,24 +25,23 @@ public class SUTReflexes : MonoBehaviour
 		if (bat.level < 30 && ! loading)
 		{
 			if (debug) { Debug.Log("Critical battery level, autoloading"); }
+            destination = GameObject.Find("LoadingDockElevatorR").transform.position;
 			loading = true;
+            queue.hasDestination = false;
 		}
 		if (loading)
 		{
 			// Halt current actions
 			manControl.enabled = false;
-			queue.enabled = false;
-			
-			controls.DriveTo(GameObject.Find("LoadingDockElevatorR").transform);
 			if (bat.normLevel >= 1.0f)
 			{
 				loading = false;
+                queue.hasDestination = false;
 			}
 		}
 		else
 		{
 			manControl.enabled = true;
-			queue.enabled = true;
 		}
 	}
 }
