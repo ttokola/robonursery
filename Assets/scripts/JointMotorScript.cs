@@ -70,7 +70,7 @@ public class JointMotorScript : MonoBehaviour {
             float delta_angle_per_sec = (angle_t0 - angle_t1) / Time.deltaTime;
             velocity = delta_angle_per_sec + old_target;
 
-            Debug.Log(delta_angle_per_sec);
+            //Debug.Log(delta_angle_per_sec);
 
             if(velocity > max_velocity)
             {

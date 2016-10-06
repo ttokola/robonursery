@@ -719,7 +719,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &247823559
 Transform:
   m_ObjectHideFlags: 0
@@ -2668,7 +2668,7 @@ MonoBehaviour:
   axisname: ArmAxis0
   max_force: 100
   max_velocity: 300
-  damping: 1
+  damping: 0
 --- !u!59 &663614436
 HingeJoint:
   m_ObjectHideFlags: 0
@@ -2852,7 +2852,7 @@ MonoBehaviour:
   axisname: ArmAxis0
   max_force: 100
   max_velocity: 300
-  damping: 1
+  damping: 0
 --- !u!59 &702517221
 HingeJoint:
   m_ObjectHideFlags: 0
@@ -4190,7 +4190,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &941580456
 Transform:
   m_ObjectHideFlags: 0
@@ -7555,7 +7555,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!81 &1675260781
 AudioListener:
   m_ObjectHideFlags: 0
