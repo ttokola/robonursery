@@ -1,0 +1,25 @@
+﻿using UnityEngine;
+using System.Collections;
+
+using LilBotNamespace;
+
+namespace LilBotNamespace
+{
+    
+public class ManualController : MonoBehaviour 
+{
+	public float torqueMod = 1;
+	public bool enable;
+	public Controls controls;
+	
+	void FixedUpdate ()
+	{
+		if (! enable) {
+			return;
+		}
+		controls.Drive(Input.GetAxis("Vertical") * torqueMod);
+		controls.Turn(Input.GetAxis("Horizontal") * torqueMod);
+	}
+}
+
+} // End namespace
