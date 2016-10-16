@@ -18,7 +18,7 @@ public class Reflexes : MonoBehaviour
 	private ManualController manControl;
 	private BotQueue queue;
 
-	void Start ()
+	/*void Start ()
 	{
 		bat = GetComponent<Battery> ();
 		manControl = GetComponent<ManualController> ();
@@ -48,7 +48,7 @@ public class Reflexes : MonoBehaviour
 		{
 			manControl.enabled = true;
 		}
-	}
+	}*/
 }
 
 } // End namespace

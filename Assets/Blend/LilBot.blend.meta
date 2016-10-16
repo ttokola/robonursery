@@ -35,6 +35,11 @@ ModelImporter:
     100054: LWheelMesh
     100056: RWheelHitbox
     100058: RWheelMesh
+    100060: LForeArm
+    100062: LHand
+    100064: LMiddleJoint
+    100066: LUpperArm
+    100068: LUpperJoint
     400000: Axle
     400002: Body
     400004: Eyes
@@ -65,6 +70,11 @@ ModelImporter:
     400054: LWheelMesh
     400056: RWheelHitbox
     400058: RWheelMesh
+    400060: LForeArm
+    400062: LHand
+    400064: LMiddleJoint
+    400066: LUpperArm
+    400068: LUpperJoint
     2300000: Axle
     2300002: Body
     2300004: Eyes
@@ -90,6 +100,11 @@ ModelImporter:
     2300044: LWheelMesh
     2300046: RWheelHitbox
     2300048: RWheelMesh
+    2300050: LForeArm
+    2300052: LHand
+    2300054: LMiddleJoint
+    2300056: LUpperArm
+    2300058: LUpperJoint
     3300000: Axle
     3300002: Body
     3300004: Eyes
@@ -115,6 +130,11 @@ ModelImporter:
     3300044: LWheelMesh
     3300046: RWheelHitbox
     3300048: RWheelMesh
+    3300050: LForeArm
+    3300052: LHand
+    3300054: LMiddleJoint
+    3300056: LUpperArm
+    3300058: LUpperJoint
     4300000: Body
     4300002: Axle
     4300004: Neck
@@ -140,6 +160,11 @@ ModelImporter:
     4300044: LWheelMesh
     4300046: RWheelHitbox
     4300048: RWheelMesh
+    4300050: LUpperArm
+    4300052: LUpperJoint
+    4300054: LForeArm
+    4300056: LHand
+    4300058: LMiddleJoint
     7400000: Default Take
     9500000: //RootNode
   materials:

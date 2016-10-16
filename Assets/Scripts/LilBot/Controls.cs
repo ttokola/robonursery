@@ -1,4 +1,6 @@
-﻿using UnityEngine;
+﻿// Low-level controls which control individual motors in the robot
+
+using UnityEngine;
 using System.Collections;
 
 using LilBotNamespace;
@@ -11,6 +13,7 @@ public class Controls : MonoBehaviour
     public Rigidbody body;
 	public Battery battery;
 	public WheelRotator leftWheel, rightWheel;
+    public BallJoint[] ballJoints;
     public float slowingDistance;
     
     private float angleThreshold;
@@ -23,6 +26,24 @@ public class Controls : MonoBehaviour
         angleThreshold = 3;
         distanceThreshold = 0.5f;
 	}
+    
+    /*public int SetJointAngle(string jointName, Vector3 angle)
+    {
+        foreach (BallJoint bj in ballJoints)
+        {
+            if (bj.name == jointName)
+            {
+                int s = bj.SetAngle(angle);
+                if (s != 0)
+                {
+                    battery.Deplete(0.1f);
+                }
+                return s;
+            }
+        }
+        return -1;
+    }*/
+        
 	
 	public void RotateWheel(string wheel, float torque)
 	// Ultimately, probably all moving components should consume battery straight in the baseclass

@@ -51,6 +51,10 @@ ModelImporter:
     100086: LWheelMesh
     100088: RWheelHitbox
     100090: RWheelMesh
+    100092: LForeArm
+    100094: LHand
+    100096: LMiddleJoint
+    100098: LUpperJoint
     400000: Floor
     400002: LoadingDockElevator
     400004: //RootNode
@@ -97,6 +101,10 @@ ModelImporter:
     400086: LWheelMesh
     400088: RWheelHitbox
     400090: RWheelMesh
+    400092: LForeArm
+    400094: LHand
+    400096: LMiddleJoint
+    400098: LUpperJoint
     2300000: Floor
     2300002: LoadingDockElevator
     2300004: README_IN_NODE_EDITOR
@@ -136,6 +144,10 @@ ModelImporter:
     2300072: LWheelMesh
     2300074: RWheelHitbox
     2300076: RWheelMesh
+    2300078: LForeArm
+    2300080: LHand
+    2300082: LMiddleJoint
+    2300084: LUpperJoint
     3300000: Floor
     3300002: LoadingDockElevator
     3300004: README_IN_NODE_EDITOR
@@ -175,6 +187,10 @@ ModelImporter:
     3300072: LWheelMesh
     3300074: RWheelHitbox
     3300076: RWheelMesh
+    3300078: LForeArm
+    3300080: LHand
+    3300082: LMiddleJoint
+    3300084: LUpperJoint
     4300000: README_IN_NODE_EDITOR
     4300002: LoadingDockElevator
     4300004: Walls
@@ -214,6 +230,10 @@ ModelImporter:
     4300072: LWheelMesh
     4300074: RWheelHitbox
     4300076: RWheelMesh
+    4300078: LUpperJoint
+    4300080: LForeArm
+    4300082: LHand
+    4300084: LMiddleJoint
     7400000: Default Take
     9500000: //RootNode
   materials:
