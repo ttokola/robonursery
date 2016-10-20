@@ -10,7 +10,7 @@ public class CoordGen : MonoBehaviour {
 	void Start ()
 	{
 		rend = GetComponent<Renderer> ();
-		Debug.Log (rend.bounds.extents);
+		//Debug.Log (rend.bounds.extents);
 		int zmin = (int) (rend.bounds.center.z - rend.bounds.extents.z);
 		int xmin = (int) (rend.bounds.center.x - rend.bounds.extents.x);
 		int zmax = (int) (rend.bounds.extents.z + rend.bounds.center.z);

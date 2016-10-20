@@ -529,7 +529,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c52d7767f94bc6d47895872fd58d2e09, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  coordtext: {fileID: 1000011320674938, guid: ab4f0a47b18b47245a8e54037ad8972e, type: 2}
+  coordtext: {fileID: 0}
 --- !u!1 &216310280 stripped
 GameObject:
   m_PrefabParentObject: {fileID: 100000, guid: b46dc2f3ad23564459aeb9b749c695ef, type: 3}
@@ -4639,6 +4639,10 @@ Prefab:
       propertyPath: m_LocalRotation.w
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 400066, guid: 0896129da2188a1428f65ee2da3ac6ac, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 9500000, guid: 0896129da2188a1428f65ee2da3ac6ac, type: 3}
   m_ParentPrefab: {fileID: 100100000, guid: 0896129da2188a1428f65ee2da3ac6ac, type: 3}
@@ -6382,6 +6386,7 @@ GameObject:
   - 114: {fileID: 1458937878}
   - 114: {fileID: 1458937877}
   - 114: {fileID: 1458937876}
+  - 114: {fileID: 1458937881}
   m_Layer: 0
   m_Name: LilBot
   m_TagString: Untagged
@@ -6429,12 +6434,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   debug: 0
-  agent: {fileID: 0}
   body: {fileID: 0}
   controls: {fileID: 0}
-  locations: []
-  waypoint: {fileID: 0}
-  hasDestination: 0
+  objectives: []
 --- !u!114 &1458937878
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6480,6 +6482,20 @@ MonoBehaviour:
   max: 500
   mat: {fileID: 2100000, guid: a4d64f7270174a74d9d735c4d9e8a3bc, type: 2}
   _level: 500
+--- !u!114 &1458937881
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1458937874}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 591f0457cb2f6a64e80fcc81731d8f65, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  colliderPairs:
+  - coll1: {fileID: 2140980923}
+    coll2: {fileID: 1808990328}
 --- !u!1 &1467315809 stripped
 GameObject:
   m_PrefabParentObject: {fileID: 100000, guid: b46dc2f3ad23564459aeb9b749c695ef, type: 3}
@@ -7681,6 +7697,21 @@ Transform:
 GameObject:
   m_PrefabParentObject: {fileID: 100066, guid: 0896129da2188a1428f65ee2da3ac6ac, type: 3}
   m_PrefabInternal: {fileID: 1058987158}
+--- !u!54 &1808990325
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1808990324}
+  serializedVersion: 2
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_UseGravity: 1
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
 --- !u!65 &1808990328
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -7704,8 +7735,24 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 50b95490a37d5f74e8b188c558a5dafb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  debug: 0
-  speedMul: 1
+  maxHorizontalForce: 1000
+  maxVerticalForce: 1000
+  horAngle: 0
+  verAngle: 0
+  angleLimit: 90
+  connected: {fileID: 1348113463}
+  horPid:
+    kp: 5
+    ki: 1
+    kd: 1
+    integrator: {x: 0, y: 0, z: 0}
+    prevError: {x: 0, y: 0, z: 0}
+  verPid:
+    kp: 5
+    ki: 1
+    kd: 1
+    integrator: {x: 0, y: 0, z: 0}
+    prevError: {x: 0, y: 0, z: 0}
 --- !u!1 &1829570727
 GameObject:
   m_ObjectHideFlags: 0
@@ -8618,6 +8665,50 @@ MonoBehaviour:
 GameObject:
   m_PrefabParentObject: {fileID: 100060, guid: 0896129da2188a1428f65ee2da3ac6ac, type: 3}
   m_PrefabInternal: {fileID: 1058987158}
+--- !u!114 &2140980921
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 2140980917}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 50b95490a37d5f74e8b188c558a5dafb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxHorizontalForce: 100
+  maxVerticalForce: 1000
+  horAngle: 45
+  verAngle: 0
+  angleLimit: 90
+  connected: {fileID: 1808990325}
+  horPid:
+    kp: 1
+    ki: 1
+    kd: 1
+    integrator: {x: 0, y: 0, z: 0}
+    prevError: {x: 0, y: 0, z: 0}
+  verPid:
+    kp: 2
+    ki: 2
+    kd: 2
+    integrator: {x: 0, y: 0, z: 0}
+    prevError: {x: 0, y: 0, z: 0}
+--- !u!54 &2140980922
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 2140980917}
+  serializedVersion: 2
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_UseGravity: 1
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
 --- !u!65 &2140980923
 BoxCollider:
   m_ObjectHideFlags: 0
