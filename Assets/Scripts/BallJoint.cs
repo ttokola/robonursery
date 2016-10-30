@@ -111,9 +111,7 @@ public class BallJoint : MonoBehaviour {
         var errorThreshold = 5f;
         var localRot = rb.rotation.eulerAngles;
         angle = connected.rotation.eulerAngles + angle; // Rotate relative to parent
-        angle = Clamp180(angle);
-        localRot = Clamp180(localRot);
-        var error = angle - localRot;
+        Vector3 error = Utils.AngleDiff180(localRot, angle);
         
         // Break and apply damping if error below threshold
         /*if (Mathf.Abs(error) < errorThreshold)
