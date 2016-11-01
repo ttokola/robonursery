@@ -7735,24 +7735,25 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 50b95490a37d5f74e8b188c558a5dafb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxHorizontalForce: 1000
-  maxVerticalForce: 1000
+  maxHorizontalForce: 100
+  maxVerticalForce: 100
   horAngle: 0
   verAngle: 0
   angleLimit: 90
   connected: {fileID: 1348113463}
   horPid:
-    kp: 5
+    kp: 1
     ki: 1
-    kd: 1
+    kd: 10
     integrator: {x: 0, y: 0, z: 0}
     prevError: {x: 0, y: 0, z: 0}
   verPid:
-    kp: 5
-    ki: 1
-    kd: 1
+    kp: 1
+    ki: 2
+    kd: 10
     integrator: {x: 0, y: 0, z: 0}
     prevError: {x: 0, y: 0, z: 0}
+  torque: {x: 0, y: 0, z: 0}
 --- !u!1 &1829570727
 GameObject:
   m_ObjectHideFlags: 0
@@ -8671,29 +8672,30 @@ MonoBehaviour:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 2140980917}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 50b95490a37d5f74e8b188c558a5dafb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   maxHorizontalForce: 100
-  maxVerticalForce: 1000
-  horAngle: 45
+  maxVerticalForce: 100
+  horAngle: 0
   verAngle: 0
   angleLimit: 90
   connected: {fileID: 1808990325}
   horPid:
     kp: 1
     ki: 1
-    kd: 1
+    kd: 5
     integrator: {x: 0, y: 0, z: 0}
     prevError: {x: 0, y: 0, z: 0}
   verPid:
-    kp: 2
-    ki: 2
-    kd: 2
+    kp: 1
+    ki: 1
+    kd: 5
     integrator: {x: 0, y: 0, z: 0}
     prevError: {x: 0, y: 0, z: 0}
+  torque: {x: 0, y: 0, z: 0}
 --- !u!54 &2140980922
 Rigidbody:
   m_ObjectHideFlags: 0

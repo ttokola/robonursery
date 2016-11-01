@@ -10,12 +10,14 @@ using System.Collections;
 
 [System.Serializable]
 public struct PIDParams
+// kp, ki and kd are tuning parameters
+// https://en.wikipedia.org/wiki/PID_controller#PID_controller_theory
 {
     public float kp;
     public float ki;
     public float kd;
-    public Vector3 integrator;
-    public Vector3 prevError;
+    public float integrator;
+    public float prevError;
 }
 
 public class BallJoint : MonoBehaviour {
@@ -69,8 +71,8 @@ public class BallJoint : MonoBehaviour {
     
     void FixedUpdate ()
     {
-        RotateRbToAngle(horRb, new Vector3(0, horAngle, 0), maxHorizontalForce, ref horPid);
-        RotateRbToAngle(verRb, new Vector3(0, 0, verAngle), maxVerticalForce, ref verPid);
+        RotateRbToAngle(horRb, "y", horAngle, maxHorizontalForce, ref horPid);
+        RotateRbToAngle(verRb, "z", verAngle, maxVerticalForce, ref verPid);
         if (Time.time - start > 5)
         {
              //joint.angularZMotion = ConfigurableJointMotion.Limited;
@@ -79,40 +81,30 @@ public class BallJoint : MonoBehaviour {
         }
     }
     
-    float Clamp180 (float angle)
-    {
-        angle = angle % 360;
-        if (angle > 180)
-        {
-            return -(360 - angle);
-        }
-        else if (angle < -180)
-        {
-            return 360 + angle;
-        }
-        return angle;
-    }
-    
-    Vector3 Clamp180 (Vector3 angle)
-    {
-        angle.x = Clamp180(angle.x);
-        angle.y = Clamp180(angle.y);
-        angle.z = Clamp180(angle.z);
-        return angle;
-    }
-    
-    int RotateRbToAngle (Rigidbody rb, Vector3 angle, float maxTorque, ref PIDParams pp)
+    int RotateRbToAngle (Rigidbody rb, string axle, float angle, float maxTorque, ref PIDParams pp)
     // Attempt to rotate a rigidbody to rotation by adding torque
-    {   // Adding torque towards angle that can't be reached could rotate the parents
+    {
         var damping = 10f;
         rb.angularDrag = damping;
-        var minDamp = damping;
-        var maxDamp = 50f;
-        var errorThreshold = 5f;
-        var localRot = rb.rotation.eulerAngles;
-        angle = connected.rotation.eulerAngles + angle; // Rotate relative to parent
-        Vector3 error = Utils.AngleDiff180(localRot, angle);
-        
+        //var minDamp = damping;
+        //var maxDamp = 50f;
+        //var errorThreshold = 5f;
+        var localRot = new float();
+        switch (axle)
+        {
+        case "y":
+            localRot = rb.rotation.eulerAngles.y;
+            angle = connected.rotation.eulerAngles.y + angle; // Rotate relative to parent
+            break;
+        case "z":
+            localRot = rb.rotation.eulerAngles.z;
+            angle = connected.rotation.eulerAngles.z + angle; // Rotate relative to parent
+            break;
+        default:
+            Debug.LogError(string.Format("Unknown axle {0}", axle));
+            return -1;
+        }
+        var error = Utils.AngleDiff180(localRot, angle);
         // Break and apply damping if error below threshold
         /*if (Mathf.Abs(error) < errorThreshold)
         {
@@ -126,10 +118,24 @@ public class BallJoint : MonoBehaviour {
             return 0;
         }*/
         
-        var errorDiff = error - pp.prevError;
         pp.integrator += error * Time.deltaTime;
-        var torque = Vector3.ClampMagnitude((error * pp.kp + pp.integrator * pp.ki + errorDiff * pp.kd), maxTorque);
-        Debug.Log(string.Format("{0} {1} {2} {3} {4} {5} {6} {7} {8}", rb, rb.rotation.eulerAngles, localRot, angle, error, errorDiff, torque, pp.integrator, pp.prevError));
+        var errorDiff = error - pp.prevError;
+        var temp = error*pp.kp + pp.integrator*pp.ki + errorDiff*pp.kd;
+        var torque = new Vector3();
+        switch (axle)
+        {
+        case "y":
+            torque = new Vector3(0, temp, 0);
+            break;
+        case "z":
+            torque = new Vector3(0, 0, temp);
+            break;
+        default:
+            Debug.LogError(string.Format("Unknown axle {0}", axle));
+            return -1;
+        }
+        torque = Vector3.ClampMagnitude(torque, maxTorque);
+        //Debug.Log(string.Format("{0} {1} {2} {3} {4} {5} {6} {7} {8}", rb, rb.rotation.eulerAngles, localRot, angle, error, errorDiff, torque, pp.integrator, pp.prevError));
         rb.AddRelativeTorque(torque);
         pp.prevError = error;
         
