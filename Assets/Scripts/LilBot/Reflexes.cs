@@ -10,15 +10,18 @@ namespace LilBotNamespace
     
 public class Reflexes : MonoBehaviour 
 {
+    public bool autoLoad = true;
 	public bool debug = false;	
     public bool loading = false;
     public Vector3 destination;
+    
+    public ArmControls armControls;
     
 	private Battery bat;
 	private ManualController manControl;
 	private BotQueue queue;
 
-	/*void Start ()
+	void Start ()
 	{
 		bat = GetComponent<Battery> ();
 		manControl = GetComponent<ManualController> ();
@@ -27,7 +30,8 @@ public class Reflexes : MonoBehaviour
 	
 	void FixedUpdate ()
 	{
-		if (bat.level < 30 && ! loading)
+        //armControls.Wave();
+		/*if (bat.level < 30 && ! loading)
 		{
 			if (debug) { Debug.Log("Critical battery level, autoloading"); }
             destination = GameObject.Find("LoadingDockElevatorR").transform.position;
@@ -47,8 +51,8 @@ public class Reflexes : MonoBehaviour
 		else
 		{
 			manControl.enabled = true;
-		}
-	}*/
+		}*/
+	}
 }
 
 } // End namespace

@@ -11,18 +11,18 @@ public class BotQueue : MonoBehaviour {
 
 	public bool debug = false;
     public Transform body;
-    public Controls controls;	
+    public MovementControls controls;	
     public string[] objectives;
     
     private Reflexes reflexes;
     private int currentObjectiveIndex;
 	
-	/*void Start ()
+	void Start ()
 	{
         reflexes = GetComponent<Reflexes> ();
         currentObjectiveIndex = 0;
 	}
-    
+    /*
     int Execute(string objective)
     {
         string[] obj = objective.Split(new char[]{" "}));

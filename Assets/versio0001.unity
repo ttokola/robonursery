@@ -529,7 +529,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c52d7767f94bc6d47895872fd58d2e09, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  coordtext: {fileID: 0}
+  coordtext: {fileID: 1000011320674938, guid: ab4f0a47b18b47245a8e54037ad8972e, type: 2}
 --- !u!1 &216310280 stripped
 GameObject:
   m_PrefabParentObject: {fileID: 100000, guid: b46dc2f3ad23564459aeb9b749c695ef, type: 3}
@@ -4647,6 +4647,144 @@ Prefab:
     - {fileID: 9500000, guid: 0896129da2188a1428f65ee2da3ac6ac, type: 3}
   m_ParentPrefab: {fileID: 100100000, guid: 0896129da2188a1428f65ee2da3ac6ac, type: 3}
   m_IsPrefabParent: 0
+--- !u!1 &1058987159 stripped
+GameObject:
+  m_PrefabParentObject: {fileID: 100076, guid: 0896129da2188a1428f65ee2da3ac6ac, type: 3}
+  m_PrefabInternal: {fileID: 1058987158}
+--- !u!1 &1058987160 stripped
+GameObject:
+  m_PrefabParentObject: {fileID: 100072, guid: 0896129da2188a1428f65ee2da3ac6ac, type: 3}
+  m_PrefabInternal: {fileID: 1058987158}
+--- !u!1 &1058987161 stripped
+GameObject:
+  m_PrefabParentObject: {fileID: 100070, guid: 0896129da2188a1428f65ee2da3ac6ac, type: 3}
+  m_PrefabInternal: {fileID: 1058987158}
+--- !u!65 &1058987163
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1058987159}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 0.554398, y: 0.074916, z: 0.072418}
+  m_Center: {x: 0.347518, y: 0, z: 0}
+--- !u!54 &1058987164
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1058987159}
+  serializedVersion: 2
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 10
+  m_UseGravity: 1
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
+--- !u!135 &1058987165
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1058987160}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.042533
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &1058987166
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1058987159}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 50b95490a37d5f74e8b188c558a5dafb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxHorizontalForce: 10
+  maxVerticalForce: 50
+  horAngle: 0
+  verAngle: 0
+  angleLimit: 95
+  connected: {fileID: 1348113463}
+  horPid:
+    kp: 1
+    ki: 0
+    kd: 0
+    integrator: 0
+    prevError: 0
+  verPid:
+    kp: 1
+    ki: 3
+    kd: 10
+    integrator: 0
+    prevError: 0
+  errorThreshold: 5
+--- !u!65 &1058987167
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1058987161}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 0.53522503, y: 0.073384, z: 0.075106}
+  m_Center: {x: 0.3103975, y: 0, z: 0}
+--- !u!54 &1058987168
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1058987161}
+  serializedVersion: 2
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 10
+  m_UseGravity: 1
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
+--- !u!114 &1058987175
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1058987161}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 50b95490a37d5f74e8b188c558a5dafb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxHorizontalForce: 10
+  maxVerticalForce: 20
+  horAngle: 0
+  verAngle: 0
+  angleLimit: 170
+  connected: {fileID: 1058987164}
+  horPid:
+    kp: 1
+    ki: 0
+    kd: 0
+    integrator: 0
+    prevError: 0
+  verPid:
+    kp: 1
+    ki: 2
+    kd: 5
+    integrator: 0
+    prevError: 0
+  errorThreshold: 5
 --- !u!1 &1098829024
 GameObject:
   m_ObjectHideFlags: 0
@@ -6387,6 +6525,7 @@ GameObject:
   - 114: {fileID: 1458937877}
   - 114: {fileID: 1458937876}
   - 114: {fileID: 1458937881}
+  - 114: {fileID: 1458937882}
   m_Layer: 0
   m_Name: LilBot
   m_TagString: Untagged
@@ -6419,9 +6558,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f7359e3cc5dbcfc45adfa83b0cbe6f6c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  autoLoad: 1
   debug: 0
   loading: 0
   destination: {x: 0, y: 0, z: 0}
+  armControls: {fileID: 1458937882}
 --- !u!114 &1458937877
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6448,9 +6589,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f495b2b3433399b4e97666f218a6d438, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  armState: 2
   torqueMod: 10
   enable: 1
+  armControls: {fileID: 1458937882}
   controls: {fileID: 1458937879}
+  fall: 0
+  body: {fileID: 1348113463}
 --- !u!114 &1458937879
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6496,6 +6641,23 @@ MonoBehaviour:
   colliderPairs:
   - coll1: {fileID: 2140980923}
     coll2: {fileID: 1808990328}
+  - coll1: {fileID: 1058987167}
+    coll2: {fileID: 1058987163}
+--- !u!114 &1458937882
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1458937874}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 50011204ff568974cbfca02ce9771a01, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  leftUpper: {fileID: 1808990326}
+  leftLower: {fileID: 2140980921}
+  rightUpper: {fileID: 1058987166}
+  rightLower: {fileID: 1058987175}
 --- !u!1 &1467315809 stripped
 GameObject:
   m_PrefabParentObject: {fileID: 100000, guid: b46dc2f3ad23564459aeb9b749c695ef, type: 3}
@@ -7706,12 +7868,42 @@ Rigidbody:
   serializedVersion: 2
   m_Mass: 1
   m_Drag: 0
-  m_AngularDrag: 0.05
+  m_AngularDrag: 10
   m_UseGravity: 1
   m_IsKinematic: 0
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!114 &1808990326
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1808990324}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 50b95490a37d5f74e8b188c558a5dafb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxHorizontalForce: 10
+  maxVerticalForce: 50
+  horAngle: 0
+  verAngle: 0
+  angleLimit: 95
+  connected: {fileID: 1348113463}
+  horPid:
+    kp: 1
+    ki: 0
+    kd: 0
+    integrator: 0
+    prevError: 0
+  verPid:
+    kp: 1
+    ki: 3
+    kd: 10
+    integrator: 0
+    prevError: 0
+  errorThreshold: 5
 --- !u!65 &1808990328
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -7724,36 +7916,6 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 0.554642, y: 0.075263, z: 0.075264}
   m_Center: {x: -0.310033, y: -0.0003395006, z: 0}
---- !u!114 &1808990329
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1808990324}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 50b95490a37d5f74e8b188c558a5dafb, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  maxHorizontalForce: 100
-  maxVerticalForce: 100
-  horAngle: 0
-  verAngle: 0
-  angleLimit: 90
-  connected: {fileID: 1348113463}
-  horPid:
-    kp: 1
-    ki: 1
-    kd: 10
-    integrator: {x: 0, y: 0, z: 0}
-    prevError: {x: 0, y: 0, z: 0}
-  verPid:
-    kp: 1
-    ki: 2
-    kd: 10
-    integrator: {x: 0, y: 0, z: 0}
-    prevError: {x: 0, y: 0, z: 0}
-  torque: {x: 0, y: 0, z: 0}
 --- !u!1 &1829570727
 GameObject:
   m_ObjectHideFlags: 0
@@ -8677,25 +8839,25 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 50b95490a37d5f74e8b188c558a5dafb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxHorizontalForce: 100
-  maxVerticalForce: 100
+  maxHorizontalForce: 10
+  maxVerticalForce: 20
   horAngle: 0
   verAngle: 0
-  angleLimit: 90
+  angleLimit: 170
   connected: {fileID: 1808990325}
   horPid:
     kp: 1
-    ki: 1
-    kd: 5
-    integrator: {x: 0, y: 0, z: 0}
-    prevError: {x: 0, y: 0, z: 0}
+    ki: 0
+    kd: 0
+    integrator: 0
+    prevError: 0
   verPid:
     kp: 1
-    ki: 1
+    ki: 2
     kd: 5
-    integrator: {x: 0, y: 0, z: 0}
-    prevError: {x: 0, y: 0, z: 0}
-  torque: {x: 0, y: 0, z: 0}
+    integrator: 0
+    prevError: 0
+  errorThreshold: 5
 --- !u!54 &2140980922
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -8705,7 +8867,7 @@ Rigidbody:
   serializedVersion: 2
   m_Mass: 1
   m_Drag: 0
-  m_AngularDrag: 0.05
+  m_AngularDrag: 10
   m_UseGravity: 1
   m_IsKinematic: 0
   m_Interpolate: 0

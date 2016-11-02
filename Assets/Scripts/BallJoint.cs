@@ -27,6 +27,7 @@ public class BallJoint : MonoBehaviour {
     public float angleLimit;
     public Rigidbody connected;
     public PIDParams horPid, verPid;
+    public float errorThreshold = 5f;
     
     private float start;
     private ConfigurableJoint horJoint, verJoint;
@@ -42,7 +43,7 @@ public class BallJoint : MonoBehaviour {
         horRb = horJointContainer.AddComponent<Rigidbody> ();
         //horRb.useGravity = false;
         // Need to move fast enough
-        horRb.maxAngularVelocity = verRb.maxAngularVelocity = 100;
+        horRb.maxAngularVelocity = verRb.maxAngularVelocity = 50;
         // Set up the configurable joints for the fake and main rigidbody
         // The fake rigidbody rotates in vertically around z-axis and the main rigidbody horizontally around y-axis
         var jointLimit = new SoftJointLimit();
@@ -65,25 +66,30 @@ public class BallJoint : MonoBehaviour {
         verJoint.angularYMotion = ConfigurableJointMotion.Locked;
         verJoint.angularZMotion = ConfigurableJointMotion.Limited;
         verJoint.angularZLimit = jointLimit;
-        
-        start = Time.time;
     }
     
-    void FixedUpdate ()
+    public int SetAngle (float horAngle, float verAngle)
+    // Set the angle of the ball joint
     {
-        RotateRbToAngle(horRb, "y", horAngle, maxHorizontalForce, ref horPid);
-        RotateRbToAngle(verRb, "z", verAngle, maxVerticalForce, ref verPid);
-        if (Time.time - start > 5)
+        var a = RotateRbToAngle(horRb, "y", horAngle, maxHorizontalForce, ref horPid);
+        var b = RotateRbToAngle(verRb, "z", verAngle, maxVerticalForce, ref verPid);
+        if (a != 0 || b != 0)
         {
-             //joint.angularZMotion = ConfigurableJointMotion.Limited;
-             //Debug.Log("Locked");
-             //RotateToAngle(new Vector3(0, 45, 0));
+            return -1;
         }
+        return 0;
+    }
+    
+    public void ResetPID ()
+    // Reset the integrator and previous error
+    {
+        horPid.integrator = horPid.prevError = verPid.integrator = verPid.prevError;
     }
     
     int RotateRbToAngle (Rigidbody rb, string axle, float angle, float maxTorque, ref PIDParams pp)
     // Attempt to rotate a rigidbody to rotation by adding torque
     {
+        angle = Mathf.Clamp(angle, -angleLimit, angleLimit); // Adding torque above limits might rotate the whole bot
         var damping = 10f;
         rb.angularDrag = damping;
         //var minDamp = damping;
@@ -135,10 +141,16 @@ public class BallJoint : MonoBehaviour {
             return -1;
         }
         torque = Vector3.ClampMagnitude(torque, maxTorque);
-        //Debug.Log(string.Format("{0} {1} {2} {3} {4} {5} {6} {7} {8}", rb, rb.rotation.eulerAngles, localRot, angle, error, errorDiff, torque, pp.integrator, pp.prevError));
+        Debug.Log(string.Format("{0} rot:{1} lrot:{2} dest:{3} err:{4} erdif:{5} torque:{6} integ{7} preverr{8}", rb, rb.rotation.eulerAngles, localRot, angle, error, errorDiff, torque, pp.integrator, pp.prevError));
         rb.AddRelativeTorque(torque);
         pp.prevError = error;
         
-        return 0;
+        //Debug.Log(string.Format("{0} {1} {2}", gameObject.name, error, Mathf.Abs(error) < errorThreshold));
+        if (Mathf.Abs(error) < errorThreshold)
+        {
+            //Debug.Log("here");
+            return 0;
+        }
+        return -1;
     }   
 }

@@ -1,4 +1,4 @@
-﻿// Low-level controls which control individual motors in the robot
+﻿// Low-level fucntions which control movement of the robot
 
 using UnityEngine;
 using System.Collections;
@@ -8,7 +8,7 @@ using LilBotNamespace;
 namespace LilBotNamespace
 {
 
-public class Controls : MonoBehaviour
+public class MovementControls : MonoBehaviour
 {
     public Rigidbody body;
 	public Battery battery;
@@ -105,7 +105,7 @@ public class Controls : MonoBehaviour
 		return TurnTo(target.position);
 	}
 	
-	public int DriveTo(Vector3 target)
+	public int DriveTo(Vector3 target, bool pathfinding)
 	// Drive near a position
 	// Return 1 if distance to target is below threshold, -1 otherwise
 	{
@@ -134,12 +134,22 @@ public class Controls : MonoBehaviour
 			return -1;
 		}
 	}
-	
-	public int DriveTo(Transform target)
+    
+	public int DriveTo(Vector3 target)
+    {
+        return DriveTo(target, false);
+	}
+
+    public int DriveTo(Transform target, bool pathfinding)
 	// Drive near the position of a transform
 	// Return 1 if distance to target is below threshold, -1 otherwise
 	{
 		return DriveTo(target.position);
+	}
+    
+	public int DriveTo(Transform target)
+	{
+		return DriveTo(target.position, false);
 	}
 	
 	void Update ()
