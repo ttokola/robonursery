@@ -95,16 +95,15 @@ public class BallJoint : MonoBehaviour {
         //var minDamp = damping;
         //var maxDamp = 50f;
         //var errorThreshold = 5f;
+        var relativeRot = Quaternion.Inverse(connected.rotation) * rb.rotation;
         var localRot = new float();
         switch (axle)
         {
         case "y":
-            localRot = rb.rotation.eulerAngles.y;
-            angle = connected.rotation.eulerAngles.y + angle; // Rotate relative to parent
+            localRot = relativeRot.eulerAngles.y;
             break;
         case "z":
-            localRot = rb.rotation.eulerAngles.z;
-            angle = connected.rotation.eulerAngles.z + angle; // Rotate relative to parent
+            localRot = relativeRot.eulerAngles.z;
             break;
         default:
             Debug.LogError(string.Format("Unknown axle {0}", axle));
@@ -141,7 +140,7 @@ public class BallJoint : MonoBehaviour {
             return -1;
         }
         torque = Vector3.ClampMagnitude(torque, maxTorque);
-        Debug.Log(string.Format("{0} rot:{1} lrot:{2} dest:{3} err:{4} erdif:{5} torque:{6} integ{7} preverr{8}", rb, rb.rotation.eulerAngles, localRot, angle, error, errorDiff, torque, pp.integrator, pp.prevError));
+        //Debug.Log(string.Format("{0} rot:{1} lrot:{2} dest:{3} err:{4} erdif:{5} torque:{6} integ{7} preverr{8}", rb, rb.rotation.eulerAngles, localRot, angle, error, errorDiff, torque, pp.integrator, pp.prevError));
         rb.AddRelativeTorque(torque);
         pp.prevError = error;
         
