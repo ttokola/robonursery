@@ -524,7 +524,7 @@ MonoBehaviour:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 197845889}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: c52d7767f94bc6d47895872fd58d2e09, type: 3}
   m_Name: 
@@ -4717,8 +4717,8 @@ MonoBehaviour:
   connected: {fileID: 1348113463}
   horPid:
     kp: 1
-    ki: 0
-    kd: 0
+    ki: 3
+    kd: 10
     integrator: 0
     prevError: 0
   verPid:
@@ -4774,8 +4774,8 @@ MonoBehaviour:
   connected: {fileID: 1058987164}
   horPid:
     kp: 1
-    ki: 0
-    kd: 0
+    ki: 2
+    kd: 5
     integrator: 0
     prevError: 0
   verPid:
@@ -6638,11 +6638,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 591f0457cb2f6a64e80fcc81731d8f65, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  colliderPairs:
-  - coll1: {fileID: 2140980923}
-    coll2: {fileID: 1808990328}
-  - coll1: {fileID: 1058987167}
-    coll2: {fileID: 1058987163}
+  ignoredColliderSets:
+  - colliders:
+    - {fileID: 2140980923}
+    - {fileID: 736784349}
+    - {fileID: 1808990328}
+    - {fileID: 1058987167}
+    - {fileID: 1058987165}
+    - {fileID: 1058987163}
 --- !u!114 &1458937882
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7893,8 +7896,8 @@ MonoBehaviour:
   connected: {fileID: 1348113463}
   horPid:
     kp: 1
-    ki: 0
-    kd: 0
+    ki: 3
+    kd: 10
     integrator: 0
     prevError: 0
   verPid:
@@ -8847,8 +8850,8 @@ MonoBehaviour:
   connected: {fileID: 1808990325}
   horPid:
     kp: 1
-    ki: 0
-    kd: 0
+    ki: 2
+    kd: 5
     integrator: 0
     prevError: 0
   verPid:
