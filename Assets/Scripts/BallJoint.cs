@@ -23,10 +23,10 @@ public struct PIDParams
 public class BallJoint : MonoBehaviour {
 
     public float maxHorizontalForce, maxVerticalForce;
-    public float horAngle, verAngle;
+    //public float horAngle, verAngle;
     public float angleLimit;
     public Rigidbody connected;
-    public PIDParams horPid, verPid;
+    public PIDParameters horPid, verPid;
     public float errorThreshold = 5f;
     
     private float start;
@@ -80,13 +80,7 @@ public class BallJoint : MonoBehaviour {
         return 0;
     }
     
-    public void ResetPID ()
-    // Reset the integrator and previous error
-    {
-        horPid.integrator = horPid.prevError = verPid.integrator = verPid.prevError;
-    }
-    
-    int RotateRbToAngle (Rigidbody rb, string axle, float angle, float maxTorque, ref PIDParams pp)
+    int RotateRbToAngle (Rigidbody rb, string axle, float angle, float maxTorque, ref PIDParameters pp)
     // Attempt to rotate a rigidbody to rotation by adding torque
     {
         angle = Mathf.Clamp(angle, -angleLimit, angleLimit); // Adding torque above limits might rotate the whole bot
@@ -123,17 +117,15 @@ public class BallJoint : MonoBehaviour {
             return 0;
         }*/
         
-        pp.integrator += error * Time.deltaTime;
-        var errorDiff = error - pp.prevError;
-        var temp = error*pp.kp + pp.integrator*pp.ki + errorDiff*pp.kd;
+        pp.AddError(error);
         var torque = new Vector3();
         switch (axle)
         {
         case "y":
-            torque = new Vector3(0, temp, 0);
+            torque = new Vector3(0, pp.Output(), 0);
             break;
         case "z":
-            torque = new Vector3(0, 0, temp);
+            torque = new Vector3(0, 0, pp.Output());
             break;
         default:
             Debug.LogError(string.Format("Unknown axle {0}", axle));
@@ -142,7 +134,6 @@ public class BallJoint : MonoBehaviour {
         torque = Vector3.ClampMagnitude(torque, maxTorque);
         //Debug.Log(string.Format("{0} rot:{1} lrot:{2} dest:{3} err:{4} erdif:{5} torque:{6} integ{7} preverr{8}", rb, rb.rotation.eulerAngles, localRot, angle, error, errorDiff, torque, pp.integrator, pp.prevError));
         rb.AddRelativeTorque(torque);
-        pp.prevError = error;
         
         //Debug.Log(string.Format("{0} {1} {2}", gameObject.name, error, Mathf.Abs(error) < errorThreshold));
         if (Mathf.Abs(error) < errorThreshold)
