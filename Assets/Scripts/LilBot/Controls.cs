@@ -1,4 +1,6 @@
-﻿using UnityEngine;
+﻿// Low-level fucntions which control movement of the robot
+
+using UnityEngine;
 using System.Collections;
 
 using LilBotNamespace;
@@ -6,11 +8,12 @@ using LilBotNamespace;
 namespace LilBotNamespace
 {
 
-public class Controls : MonoBehaviour
+public class MovementControls : MonoBehaviour
 {
     public Rigidbody body;
 	public Battery battery;
 	public WheelRotator leftWheel, rightWheel;
+    public BallJoint[] ballJoints;
     public float slowingDistance;
     
     private float angleThreshold;
@@ -23,6 +26,24 @@ public class Controls : MonoBehaviour
         angleThreshold = 3;
         distanceThreshold = 0.5f;
 	}
+    
+    /*public int SetJointAngle(string jointName, Vector3 angle)
+    {
+        foreach (BallJoint bj in ballJoints)
+        {
+            if (bj.name == jointName)
+            {
+                int s = bj.SetAngle(angle);
+                if (s != 0)
+                {
+                    battery.Deplete(0.1f);
+                }
+                return s;
+            }
+        }
+        return -1;
+    }*/
+        
 	
 	public void RotateWheel(string wheel, float torque)
 	// Ultimately, probably all moving components should consume battery straight in the baseclass
@@ -84,7 +105,7 @@ public class Controls : MonoBehaviour
 		return TurnTo(target.position);
 	}
 	
-	public int DriveTo(Vector3 target)
+	public int DriveTo(Vector3 target, bool pathfinding)
 	// Drive near a position
 	// Return 1 if distance to target is below threshold, -1 otherwise
 	{
@@ -113,12 +134,22 @@ public class Controls : MonoBehaviour
 			return -1;
 		}
 	}
-	
-	public int DriveTo(Transform target)
+    
+	public int DriveTo(Vector3 target)
+    {
+        return DriveTo(target, false);
+	}
+
+    public int DriveTo(Transform target, bool pathfinding)
 	// Drive near the position of a transform
 	// Return 1 if distance to target is below threshold, -1 otherwise
 	{
 		return DriveTo(target.position);
+	}
+    
+	public int DriveTo(Transform target)
+	{
+		return DriveTo(target.position, false);
 	}
 	
 	void Update ()

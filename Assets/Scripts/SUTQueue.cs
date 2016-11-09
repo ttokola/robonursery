@@ -37,7 +37,7 @@ public class SUTQueue : MonoBehaviour {
         {
             if (!hasDestination)
             {
-                agent.Warp(body.position);
+                //agent.Warp(body.position);
                 hasDestination = true;
                 waypointNumber = 1;            
                 if (reflexes.loading)
