@@ -61,7 +61,7 @@ public class FallAndRise : MonoBehaviour
             }
             string pos = (Utils.AngleNorm180(body.transform.eulerAngles.x) > 0) ? "forward" : "back";
             armControls.SetStaticPosition(pos);
-            if (Mathf.Abs(Utils.AngleNorm180(body.transform.eulerAngles.x)) < 45f)
+            if (Mathf.Abs(Utils.AngleNorm180(body.transform.eulerAngles.x)) < 30f)
             {
                 fallAndRiseState = 5;
                 riseupStart = Time.time;
@@ -69,7 +69,6 @@ public class FallAndRise : MonoBehaviour
             break;
         // Move back upright
         case 5:
-            Debug.Log("here");
             body.angularVelocity = Vector3.zero;
             body.velocity = Vector3.zero;
             body.constraints = oldConstraints;
@@ -96,7 +95,7 @@ public class FallAndRise : MonoBehaviour
 	
 	void Update ()
     {
-        //FallAndRise();
+        Execute();
 	}
 }
 
