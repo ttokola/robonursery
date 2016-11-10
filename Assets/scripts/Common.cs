@@ -35,6 +35,21 @@ public static class Utils
 		return destAngle;
 	}
     
+    public static float AngleNorm180(float angle)
+    // Return the angle normalized to the range [-180, 180]
+    {
+        angle = angle % 360;
+        if (angle > 180)
+        {
+            return angle-360;
+        }
+        if (angle < -180)
+        {
+            return 360+angle;
+        }
+        return angle;
+    }
+    
     public static float AngleNorm360(float angle)
     // Return the angle normalized to the range [0, 360]
     {

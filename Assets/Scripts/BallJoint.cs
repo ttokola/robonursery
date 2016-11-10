@@ -8,18 +8,6 @@
 using UnityEngine;
 using System.Collections;
 
-[System.Serializable]
-public struct PIDParams
-// kp, ki and kd are tuning parameters
-// https://en.wikipedia.org/wiki/PID_controller#PID_controller_theory
-{
-    public float kp;
-    public float ki;
-    public float kd;
-    public float integrator;
-    public float prevError;
-}
-
 public class BallJoint : MonoBehaviour {
 
     public float maxHorizontalForce, maxVerticalForce;

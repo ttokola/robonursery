@@ -1,7 +1,8 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class ArmControls : MonoBehaviour {
+public class ArmControls : MonoBehaviour
+{
     
     public BallJoint leftUpper;
     public BallJoint leftLower;

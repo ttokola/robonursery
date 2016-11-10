@@ -524,7 +524,7 @@ MonoBehaviour:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 197845889}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: c52d7767f94bc6d47895872fd58d2e09, type: 3}
   m_Name: 
@@ -4709,24 +4709,28 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 50b95490a37d5f74e8b188c558a5dafb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxHorizontalForce: 10
-  maxVerticalForce: 50
-  horAngle: 0
-  verAngle: 0
+  maxHorizontalForce: 550
+  maxVerticalForce: 550
   angleLimit: 95
   connected: {fileID: 1348113463}
   horPid:
     kp: 1
-    ki: 3
-    kd: 10
+    ki: 2
+    kd: 5
+    maxIntegratorMagnitude: 35
     integrator: 0
+    currentError: 0
     prevError: 0
+    output: 0
   verPid:
     kp: 1
-    ki: 3
-    kd: 10
+    ki: 2
+    kd: 5
+    maxIntegratorMagnitude: 35
     integrator: 0
+    currentError: 0
     prevError: 0
+    output: 0
   errorThreshold: 5
 --- !u!65 &1058987167
 BoxCollider:
@@ -4766,24 +4770,28 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 50b95490a37d5f74e8b188c558a5dafb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxHorizontalForce: 10
-  maxVerticalForce: 20
-  horAngle: 0
-  verAngle: 0
+  maxHorizontalForce: 550
+  maxVerticalForce: 550
   angleLimit: 170
   connected: {fileID: 1058987164}
   horPid:
     kp: 1
     ki: 2
     kd: 5
+    maxIntegratorMagnitude: 35
     integrator: 0
+    currentError: 0
     prevError: 0
+    output: 0
   verPid:
     kp: 1
     ki: 2
     kd: 5
+    maxIntegratorMagnitude: 35
     integrator: 0
+    currentError: 0
     prevError: 0
+    output: 0
   errorThreshold: 5
 --- !u!1 &1098829024
 GameObject:
@@ -5539,7 +5547,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 741a5495f2dff634d864ff22d84f6ce1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  debug: 1
+  debug: 0
 --- !u!59 &1251232915
 HingeJoint:
   m_ObjectHideFlags: 0
@@ -6047,6 +6055,26 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 80
   m_CollisionDetection: 0
+--- !u!195 &1348113466
+NavMeshAgent:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1348113460}
+  m_Enabled: 1
+  m_Radius: 0.314369
+  m_Speed: 3.5
+  m_Acceleration: 8
+  avoidancePriority: 50
+  m_AngularSpeed: 120
+  m_StoppingDistance: 0
+  m_AutoTraverseOffMeshLink: 1
+  m_AutoBraking: 1
+  m_AutoRepath: 1
+  m_Height: 0.943116
+  m_BaseOffset: 0.471558
+  m_WalkableMask: 4294967295
+  m_ObstacleAvoidanceType: 4
 --- !u!1 &1352261802
 GameObject:
   m_ObjectHideFlags: 0
@@ -6190,7 +6218,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 741a5495f2dff634d864ff22d84f6ce1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  debug: 1
+  debug: 0
 --- !u!59 &1398950156
 HingeJoint:
   m_ObjectHideFlags: 0
@@ -6526,6 +6554,8 @@ GameObject:
   - 114: {fileID: 1458937876}
   - 114: {fileID: 1458937881}
   - 114: {fileID: 1458937882}
+  - 114: {fileID: 1458937883}
+  - 114: {fileID: 1458937884}
   m_Layer: 0
   m_Name: LilBot
   m_TagString: Untagged
@@ -6569,15 +6599,12 @@ MonoBehaviour:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1458937874}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: fffc4b815a4387643b293c580e507121, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  debug: 0
-  body: {fileID: 0}
-  controls: {fileID: 0}
-  objectives: []
+  controls: {fileID: 1458937879}
 --- !u!114 &1458937878
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6612,7 +6639,8 @@ MonoBehaviour:
   leftWheel: {fileID: 1398950155}
   rightWheel: {fileID: 1251232911}
   ballJoints: []
-  slowingDistance: 0
+  slowingDistance: 1.5
+  pathFinding: {fileID: 1458937884}
 --- !u!114 &1458937880
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6661,6 +6689,102 @@ MonoBehaviour:
   leftLower: {fileID: 2140980921}
   rightUpper: {fileID: 1058987166}
   rightLower: {fileID: 1058987175}
+--- !u!114 &1458937883
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1458937874}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ea34a6cc718c989438a3bfc8835b636b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  body: {fileID: 1348113463}
+  armControls: {fileID: 1458937882}
+  wheels: []
+--- !u!114 &1458937884
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1458937874}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 22e0f36b56f894549ac71a75aeee1bb9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  waypoint: {fileID: 1464048799}
+  agent: {fileID: 1348113466}
+  destination: {x: 0, y: 0, z: 0}
+  nextWaypoint: {x: 0, y: 0, z: 0}
+  ready: 0
+--- !u!1 &1464048799
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 4
+  m_Component:
+  - 4: {fileID: 1464048802}
+  - 33: {fileID: 1464048801}
+  - 23: {fileID: 1464048800}
+  m_Layer: 0
+  m_Name: Waypoint (1)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!23 &1464048800
+MeshRenderer:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1464048799}
+  m_Enabled: 1
+  m_CastShadows: 1
+  m_ReceiveShadows: 1
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_Materials:
+  - {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
+  m_SubsetIndices: 
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_PreserveUVs: 1
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_SelectedWireframeHidden: 0
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_SortingLayerID: 0
+  m_SortingOrder: 0
+--- !u!33 &1464048801
+MeshFilter:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1464048799}
+  m_Mesh: {fileID: 10208, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!4 &1464048802
+Transform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1464048799}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 12
 --- !u!1 &1467315809 stripped
 GameObject:
   m_PrefabParentObject: {fileID: 100000, guid: b46dc2f3ad23564459aeb9b749c695ef, type: 3}
@@ -7888,24 +8012,28 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 50b95490a37d5f74e8b188c558a5dafb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxHorizontalForce: 10
-  maxVerticalForce: 50
-  horAngle: 0
-  verAngle: 0
+  maxHorizontalForce: 550
+  maxVerticalForce: 550
   angleLimit: 95
   connected: {fileID: 1348113463}
   horPid:
     kp: 1
-    ki: 3
-    kd: 10
+    ki: 2
+    kd: 5
+    maxIntegratorMagnitude: 35
     integrator: 0
+    currentError: 0
     prevError: 0
+    output: 0
   verPid:
     kp: 1
-    ki: 3
-    kd: 10
+    ki: 2
+    kd: 5
+    maxIntegratorMagnitude: 35
     integrator: 0
+    currentError: 0
     prevError: 0
+    output: 0
   errorThreshold: 5
 --- !u!65 &1808990328
 BoxCollider:
@@ -8842,24 +8970,28 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 50b95490a37d5f74e8b188c558a5dafb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxHorizontalForce: 10
-  maxVerticalForce: 20
-  horAngle: 0
-  verAngle: 0
+  maxHorizontalForce: 550
+  maxVerticalForce: 550
   angleLimit: 170
   connected: {fileID: 1808990325}
   horPid:
     kp: 1
     ki: 2
     kd: 5
+    maxIntegratorMagnitude: 35
     integrator: 0
+    currentError: 0
     prevError: 0
+    output: 0
   verPid:
     kp: 1
     ki: 2
     kd: 5
+    maxIntegratorMagnitude: 35
     integrator: 0
+    currentError: 0
     prevError: 0
+    output: 0
   errorThreshold: 5
 --- !u!54 &2140980922
 Rigidbody:

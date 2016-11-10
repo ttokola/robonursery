@@ -15,10 +15,13 @@ public class MovementControls : MonoBehaviour
 	public WheelRotator leftWheel, rightWheel;
     public BallJoint[] ballJoints;
     public float slowingDistance;
+    public PathFinding pathFinding;
     
     private float angleThreshold;
 	private float torqueMod;
     private float distanceThreshold;
+    private Vector3 currentDestination, prevTarget;
+    private bool getWaypoint;
 
 	void Start () 
 	{
@@ -70,7 +73,7 @@ public class MovementControls : MonoBehaviour
 	public void Turn(float force)
 	// Turn left (negative force) or right (positive force)
 	{
-		float mod = 1.5f; // Seems torque needs to be increased for turning, might need finetuning
+		float mod = 1; // Seems torque needs to be increased for turning, might need finetuning
 		RotateWheel("left", force * mod);
 		RotateWheel("right", -force * mod);
 	}
@@ -86,7 +89,7 @@ public class MovementControls : MonoBehaviour
 	// Turn towards a coordinate
 	// Return 1 if angle to target is below threshold, -1 otherwise
 	{
-		float angle = Utils.AngleTo(body.position, body.transform.right, target);
+		float angle = Utils.AngleTo(body.position, body.transform.forward, target);
 		if (Mathf.Abs(angle) > angleThreshold)
 		{
 			float direction = Mathf.Sign(angle);
@@ -109,22 +112,66 @@ public class MovementControls : MonoBehaviour
 	// Drive near a position
 	// Return 1 if distance to target is below threshold, -1 otherwise
 	{
-		float dist = Vector3.Distance(
+        // Check if we are already there
+        var dist = new float();
+		dist = Vector3.Distance(
 			new Vector3(body.position.x, 0, body.position.z),
 			new Vector3(target.x, 0, target.z)
 		);
-		
 		if (Mathf.Abs(dist) < distanceThreshold) {
 			return 1;
 		}
-        if (Mathf.Abs(dist) < slowingDistance * body.velocity.magnitude) {
+        
+        // Get next waypoint if pathfinding
+        var dest = new Vector3();
+        if (pathfinding)
+        {
+            if (target != prevTarget)
+            {
+                getWaypoint = true;
+            }
+            if (getWaypoint)
+            {
+                pathFinding.destination = target;
+                getWaypoint = false;
+            }
+            if (pathFinding.ready)
+            {
+                dest = pathFinding.nextWaypoint;
+            }
+            else
+            {
+                return -1;
+            }
+        }
+        else
+        {
+            dest = target;
+        }
+        
+        // Calculate distance again, needed because we might only be at the
+        // waypoint and not the actual target
+		dist = Vector3.Distance(
+			new Vector3(body.position.x, 0, body.position.z),
+			new Vector3(dest.x, 0, dest.z)
+		);
+        
+        // Current waypoint reached but not yet at target, get next one
+        if (pathfinding && (Mathf.Abs(dist) < distanceThreshold)) {
+            getWaypoint = true;
+            return -1;
+        }
+		if (TurnTo(dest) == -1) {
+            Debug.Log(string.Format("turning towards {0}", dest));
 			return -1;
 		}
-		if (TurnTo(target) == -1) {
+        // Don't move too fast
+        if (Mathf.Abs(dist) < slowingDistance * body.velocity.magnitude) {
 			return -1;
 		}
 		if (dist > distanceThreshold)
 		{
+            Debug.Log(string.Format("driving towards {0}", dest));
 			Drive(1);
 			return -1;
 		}
@@ -133,6 +180,7 @@ public class MovementControls : MonoBehaviour
 			Drive(-1);
 			return -1;
 		}
+        prevTarget = target;
 	}
     
 	public int DriveTo(Vector3 target)

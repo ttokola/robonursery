@@ -22,7 +22,7 @@ public class WheelRotator : MonoBehaviour
 	
 	public void Rotate (float torque)
 	{
-		rb.AddTorque(-(tf.right * torque));
+		rb.AddTorque((tf.right * torque * 10f));
 		if (debug && torque != 0) {
 			Debug.Log(string.Format("{0}: Adding {1} torque to {2}", Time.time, torque, gameObject.name));
 		}

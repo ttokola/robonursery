@@ -6,13 +6,13 @@ public class PIDParameters
 {
     // kp, ki and kd are tuning parameters
     // https://en.wikipedia.org/wiki/PID_controller#PID_controller_theory
-    [Tooltip("Tuning parameter for current error")]
+    [Tooltip("Tuning parameter for current error. Increasing this value will make the current error having a larger effect on the output.")]
     public float kp;
-    [Tooltip("Tuning parameter for accumulated error")]
+    [Tooltip("Tuning parameter for accumulated error. Increasing this value will make the accumulated error having a larger effect on the output.")]
     public float ki;
-    [Tooltip("Tuning parameter for error difference")]
+    [Tooltip("Tuning parameter for error difference.. Increasing this value will make the error difference having a larger effect on the output.")]
     public float kd;
-    [Tooltip("The maximum magnitude of the integrator, this should be nonzero to avoid overshooting of the output due to high accumulator value")]
+    [Tooltip("The maximum magnitude of the integrator. Larger values allow a larger accumulated error. Set this to nonzero to avoid the output from overshooting due to massive accumulated error.")]
     public float maxIntegratorMagnitude;
     [Tooltip("Don't edit, only visible for debugging purposes")]
     public float integrator;
@@ -20,6 +20,8 @@ public class PIDParameters
     public float currentError = 0;
     [Tooltip("Don't edit, only visible for debugging purposes")]
     public float prevError = 0;
+    [Tooltip("Don't edit, only visible for debugging purposes")]
+    public float output;
 
     public void AddError (float error)
     {
@@ -42,7 +44,8 @@ public class PIDParameters
     
     public float Output ()
     {
-        return currentError*kp + integrator*ki + (currentError - prevError)*kd;
+        output = currentError*kp + integrator*ki + (currentError - prevError)*kd;
+        return output;
     }
     
     // Constructor
