@@ -95,4 +95,12 @@ public static class Utils
         angle.z = AngleDiff180(angleFrom.z, angleTo.z);
         return angle;
     }
+    
+    public static float FlatDist(Vector3 pos1, Vector3 pos2)
+    {
+        return Vector3.Distance(
+            new Vector3(pos1.x, 0, pos1.z),
+            new Vector3(pos2.x, 0, pos2.z)
+        );
+    }
 }

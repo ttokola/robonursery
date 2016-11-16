@@ -95,7 +95,7 @@ public class FallAndRise : MonoBehaviour
 	
 	void Update ()
     {
-        Execute();
+        //Execute();
 	}
 }
 

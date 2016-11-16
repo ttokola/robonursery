@@ -2657,7 +2657,7 @@ HingeJoint:
   m_Anchor: {x: 0, y: 0, z: 0}
   m_Axis: {x: 1, y: 0, z: 0}
   m_AutoConfigureConnectedAnchor: 1
-  m_ConnectedAnchor: {x: 0, y: -0.35, z: 0.0000012844811}
+  m_ConnectedAnchor: {x: 0, y: -0.35000002, z: 0.0000012844812}
   m_UseSpring: 0
   m_Spring:
     spring: 0
@@ -4545,15 +4545,15 @@ Prefab:
     m_Modifications:
     - target: {fileID: 400018, guid: 0896129da2188a1428f65ee2da3ac6ac, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -0.2567563
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 400018, guid: 0896129da2188a1428f65ee2da3ac6ac, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -0.81467175
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 400018, guid: 0896129da2188a1428f65ee2da3ac6ac, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0.012638092
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 400018, guid: 0896129da2188a1428f65ee2da3ac6ac, type: 3}
       propertyPath: m_LocalRotation.x
@@ -5558,7 +5558,7 @@ HingeJoint:
   m_Anchor: {x: 0, y: 0, z: 0}
   m_Axis: {x: 1, y: 0, z: 0}
   m_AutoConfigureConnectedAnchor: 1
-  m_ConnectedAnchor: {x: 0.40014982, y: 6.2529646e-14, z: 0.000000017484556}
+  m_ConnectedAnchor: {x: 0.4001503, y: -0.00000002980226, z: 0.000000017484663}
   m_UseSpring: 0
   m_Spring:
     spring: 0
@@ -6055,6 +6055,10 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 80
   m_CollisionDetection: 0
+--- !u!4 &1348113465 stripped
+Transform:
+  m_PrefabParentObject: {fileID: 400002, guid: 0896129da2188a1428f65ee2da3ac6ac, type: 3}
+  m_PrefabInternal: {fileID: 1058987158}
 --- !u!195 &1348113466
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -6229,7 +6233,7 @@ HingeJoint:
   m_Anchor: {x: 0, y: 0, z: 0}
   m_Axis: {x: 1, y: 0, z: 0}
   m_AutoConfigureConnectedAnchor: 1
-  m_ConnectedAnchor: {x: -0.40014887, y: 6.2529646e-14, z: 0.000000017484556}
+  m_ConnectedAnchor: {x: -0.40014935, y: -0.00000002980226, z: 0.000000017484663}
   m_UseSpring: 0
   m_Spring:
     spring: 0
@@ -6570,7 +6574,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1458937874}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 5.211914, y: 0.81463623, z: -2.586914}
+  m_LocalPosition: {x: -12.75, y: 0.81463623, z: -0.58}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_Children:
@@ -6616,7 +6620,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f495b2b3433399b4e97666f218a6d438, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  armState: 2
+  armState: 1
   torqueMod: 10
   enable: 1
   armControls: {fileID: 1458937882}
@@ -6702,7 +6706,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   body: {fileID: 1348113463}
   armControls: {fileID: 1458937882}
-  wheels: []
+  wheels:
+  - {fileID: 1398950157}
+  - {fileID: 1251232916}
 --- !u!114 &1458937884
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6716,6 +6722,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   waypoint: {fileID: 1464048799}
   agent: {fileID: 1348113466}
+  parent: {fileID: 1348113465}
   destination: {x: 0, y: 0, z: 0}
   nextWaypoint: {x: 0, y: 0, z: 0}
   ready: 0
