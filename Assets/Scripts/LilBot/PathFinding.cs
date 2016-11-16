@@ -3,48 +3,65 @@ using System.Collections;
 
 public class PathFinding : MonoBehaviour {
 
-    private NavMeshPath path;
+    public bool showWaypoint = false;
+    
+    public NavMeshAgent agent;
+
     private int waypointIndex = 0;
     
-    public GameObject waypoint;
-    public NavMeshAgent agent;
-    public Transform parent;
-    
-    public Vector3 destination;
-    public Vector3 nextWaypoint;
-    public bool ready;
-    
+    private GameObject waypointDummy;
+    private NavMeshPath path;
+
 	void Start ()
     {
+        // Create a dummy waypoitn object for debugging
+        waypointDummy = GameObject.CreatePrimitive(PrimitiveType.Capsule);
+        waypointDummy.transform.localScale = new Vector3(0.5f, 1f, 0.5f);
+        Destroy (waypointDummy.GetComponent<Collider> ());
+        waypointDummy.SetActive(showWaypoint);
         // We want to move with driving controls instead of moving with the navmesh
         agent.updatePosition = false;
         agent.updateRotation = false;
-        ready = false;
         path = new NavMeshPath();
 	}
     
+    void OnValidate ()
+    // Change waypoint visibility if it's changed from inspector
+    {
+        if (waypointDummy != null)
+        {
+            waypointDummy.SetActive(showWaypoint);
+        }
+    }
+    
     public void SetDestination(Vector3 destination)
+    // Calculate the path for the agent
+    // Simulation is halted until the path calculation is complete,
+    // so this might become problematic with many bots in the future
     {
         agent.CalculatePath(destination, path);
-        Debug.Log("set new dest");
         waypointIndex = 0;
     }
     
     public Vector3 NextWaypoint()
+    // Get the next waypoint of the path if possible,
+    // otherwise return the last waypoint
     {
-        // First, this gets the second waypoint. First waypoint is the position
-        // of the agent in the beginning of the path calculation, we don't
-        // care about that
+        // We want to start from index 1 (second waypoint).
+        // First waypoint is the position of the agent at the beginning
+        // of the path calculation, we don't care about that
         waypointIndex = Mathf.Min(path.corners.Length+1, waypointIndex+1);
-        Debug.Log(path.corners[waypointIndex]);
-        waypoint.transform.position = path.corners[waypointIndex];
+        waypointDummy.transform.position = path.corners[waypointIndex];
+        Debug.Log("returning wp");
         return path.corners[waypointIndex];
-    }
-        
+    }    
     
     void FixedUpdate ()
     {
-        // Always move agent with the parent transform
-        agent.Warp(parent.transform.position);
+        // Always move agent with the transform
+        // This throws errors if the agent has no transform,
+        // which is probably what we want since we are using the agent
+        // to just calculate paths for the actual rigidbody
+        agent.Warp(agent.transform.position);
     }
 }

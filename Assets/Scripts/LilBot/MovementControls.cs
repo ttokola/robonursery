@@ -143,7 +143,6 @@ public class MovementControls : MonoBehaviour
         // Calculate distance again, needed because we might only be at the
         // waypoint and not the actual target
 		dist = Utils.FlatDist(body.position, waypoint);
-        Debug.Log(dist);
         
         // Current waypoint reached but not yet at target, get next one
         if (pathfinding && (Mathf.Abs(dist) <= distanceThreshold)) {
