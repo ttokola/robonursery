@@ -1638,13 +1638,94 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 0.303218, y: 0.303222, z: 0.303222}
   m_Center: {x: 0, y: 0, z: 0}
---- !u!138 &543701773
-FixedJoint:
+--- !u!153 &543701773
+ConfigurableJoint:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 543701767}
   m_ConnectedBody: {fileID: 2020935360}
+  m_Anchor: {x: 0, y: 0, z: 0}
+  m_Axis: {x: 1, y: 0, z: 0}
+  m_AutoConfigureConnectedAnchor: 1
+  m_ConnectedAnchor: {x: 0, y: 0.2110064, z: -0.00000070045957}
+  serializedVersion: 2
+  m_SecondaryAxis: {x: 0, y: 1, z: 0}
+  m_XMotion: 0
+  m_YMotion: 0
+  m_ZMotion: 0
+  m_AngularXMotion: 2
+  m_AngularYMotion: 2
+  m_AngularZMotion: 2
+  m_LinearLimitSpring:
+    spring: 0
+    damper: 0
+  m_LinearLimit:
+    limit: 0
+    bounciness: 0
+    contactDistance: 0
+  m_AngularXLimitSpring:
+    spring: 0
+    damper: 0
+  m_LowAngularXLimit:
+    limit: 0
+    bounciness: 0
+    contactDistance: 0
+  m_HighAngularXLimit:
+    limit: 0
+    bounciness: 0
+    contactDistance: 0
+  m_AngularYZLimitSpring:
+    spring: 0
+    damper: 0
+  m_AngularYLimit:
+    limit: 0
+    bounciness: 0
+    contactDistance: 0
+  m_AngularZLimit:
+    limit: 0
+    bounciness: 0
+    contactDistance: 0
+  m_TargetPosition: {x: 0, y: 0, z: 0}
+  m_TargetVelocity: {x: 0, y: 0, z: 0}
+  m_XDrive:
+    serializedVersion: 3
+    positionSpring: 0
+    positionDamper: 0
+    maximumForce: 3.4028233e+38
+  m_YDrive:
+    serializedVersion: 3
+    positionSpring: 0
+    positionDamper: 0
+    maximumForce: 3.4028233e+38
+  m_ZDrive:
+    serializedVersion: 3
+    positionSpring: 0
+    positionDamper: 0
+    maximumForce: 3.4028233e+38
+  m_TargetRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_TargetAngularVelocity: {x: 0, y: 0, z: 0}
+  m_RotationDriveMode: 0
+  m_AngularXDrive:
+    serializedVersion: 3
+    positionSpring: 0
+    positionDamper: 0
+    maximumForce: 3.4028233e+38
+  m_AngularYZDrive:
+    serializedVersion: 3
+    positionSpring: 0
+    positionDamper: 0
+    maximumForce: 3.4028233e+38
+  m_SlerpDrive:
+    serializedVersion: 3
+    positionSpring: 0
+    positionDamper: 0
+    maximumForce: 3.4028233e+38
+  m_ProjectionMode: 0
+  m_ProjectionDistance: 0.1
+  m_ProjectionAngle: 180
+  m_ConfiguredInWorldSpace: 0
+  m_SwapBodies: 0
   m_BreakForce: Infinity
   m_BreakTorque: Infinity
   m_EnableCollision: 0
@@ -6055,10 +6136,6 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 80
   m_CollisionDetection: 0
---- !u!4 &1348113465 stripped
-Transform:
-  m_PrefabParentObject: {fileID: 400002, guid: 0896129da2188a1428f65ee2da3ac6ac, type: 3}
-  m_PrefabInternal: {fileID: 1058987158}
 --- !u!195 &1348113466
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -6560,6 +6637,7 @@ GameObject:
   - 114: {fileID: 1458937882}
   - 114: {fileID: 1458937883}
   - 114: {fileID: 1458937884}
+  - 114: {fileID: 1458937885}
   m_Layer: 0
   m_Name: LilBot
   m_TagString: Untagged
@@ -6574,7 +6652,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1458937874}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -12.75, y: 0.81463623, z: -0.58}
+  m_LocalPosition: {x: -12.75, y: 0.24, z: -8}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_Children:
@@ -6638,13 +6716,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 29509426a80354840b809a08c5d8e2a7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  slowingDistance: 1.5
   body: {fileID: 1348113463}
+  ballJoints: []
   battery: {fileID: 1458937880}
+  pathFinding: {fileID: 1458937884}
   leftWheel: {fileID: 1398950155}
   rightWheel: {fileID: 1251232911}
-  ballJoints: []
-  slowingDistance: 1.5
-  pathFinding: {fileID: 1458937884}
 --- !u!114 &1458937880
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6720,78 +6798,25 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 22e0f36b56f894549ac71a75aeee1bb9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  waypoint: {fileID: 1464048799}
+  showWaypoint: 1
   agent: {fileID: 1348113466}
-  parent: {fileID: 1348113465}
-  destination: {x: 0, y: 0, z: 0}
-  nextWaypoint: {x: 0, y: 0, z: 0}
-  ready: 0
---- !u!1 &1464048799
-GameObject:
+--- !u!114 &1458937885
+MonoBehaviour:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
-  serializedVersion: 4
-  m_Component:
-  - 4: {fileID: 1464048802}
-  - 33: {fileID: 1464048801}
-  - 23: {fileID: 1464048800}
-  m_Layer: 0
-  m_Name: Waypoint (1)
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!23 &1464048800
-MeshRenderer:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1464048799}
+  m_GameObject: {fileID: 1458937874}
   m_Enabled: 1
-  m_CastShadows: 1
-  m_ReceiveShadows: 1
-  m_MotionVectors: 1
-  m_LightProbeUsage: 1
-  m_ReflectionProbeUsage: 1
-  m_Materials:
-  - {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
-  m_SubsetIndices: 
-  m_StaticBatchRoot: {fileID: 0}
-  m_ProbeAnchor: {fileID: 0}
-  m_LightProbeVolumeOverride: {fileID: 0}
-  m_ScaleInLightmap: 1
-  m_PreserveUVs: 1
-  m_IgnoreNormalsForChartDetection: 0
-  m_ImportantGI: 0
-  m_SelectedWireframeHidden: 0
-  m_MinimumChartSize: 4
-  m_AutoUVMaxDistance: 0.5
-  m_AutoUVMaxAngle: 89
-  m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingOrder: 0
---- !u!33 &1464048801
-MeshFilter:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1464048799}
-  m_Mesh: {fileID: 10208, guid: 0000000000000000e000000000000000, type: 0}
---- !u!4 &1464048802
-Transform:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1464048799}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_RootOrder: 12
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ec95a52aa8ea0a04ba8c78fff809b5ee, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  enabled: 1
+  xLimit: 90
+  yLimit: 90
+  head: {fileID: 543701769}
+  neck: {fileID: 2020935360}
+  target: {fileID: 906539626}
 --- !u!1 &1467315809 stripped
 GameObject:
   m_PrefabParentObject: {fileID: 100000, guid: b46dc2f3ad23564459aeb9b749c695ef, type: 3}

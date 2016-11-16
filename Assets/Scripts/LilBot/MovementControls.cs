@@ -10,45 +10,28 @@ namespace LilBotNamespace
 
 public class MovementControls : MonoBehaviour
 {
-    public Rigidbody body;
-	public Battery battery;
-	public WheelRotator leftWheel, rightWheel;
-    public BallJoint[] ballJoints;
     public float slowingDistance;
-    public PathFinding pathFinding;
     
-    private float angleThreshold;
-	private float torqueMod;
-    private float distanceThreshold;
+    public Rigidbody body;
+
+    public BallJoint[] ballJoints;   
+	public Battery battery;
+    public PathFinding pathFinding;
+	public WheelRotator leftWheel, rightWheel;
+
+    private bool getWaypoint = false;    
+    private float angleThreshold = 3f;
+    private float distanceThreshold = 0.5f;
+	private float torqueMod = 1f;
     private Vector3 waypoint, prevTarget;
-    private bool getWaypoint;
 
 	void Start () 
 	{
-		torqueMod = 1;
-        angleThreshold = 3;
-        distanceThreshold = 0.5f;
-	}
-    
-    /*public int SetJointAngle(string jointName, Vector3 angle)
-    {
-        foreach (BallJoint bj in ballJoints)
-        {
-            if (bj.name == jointName)
-            {
-                int s = bj.SetAngle(angle);
-                if (s != 0)
-                {
-                    battery.Deplete(0.1f);
-                }
-                return s;
-            }
-        }
-        return -1;
-    }*/
         
+	}
 	
 	public void RotateWheel(string wheel, float torque)
+    // Rotate the given wheel and deplete battery
 	// Ultimately, probably all moving components should consume battery straight in the baseclass
 	{
 		if (battery.normLevel <= 0)
@@ -73,7 +56,7 @@ public class MovementControls : MonoBehaviour
 	public void Turn(float force)
 	// Turn left (negative force) or right (positive force)
 	{
-		float mod = 1; // Seems torque needs to be increased for turning, might need finetuning
+		float mod = 2; // May need to increase torque for turning
 		RotateWheel("left", force * mod);
 		RotateWheel("right", -force * mod);
 	}
@@ -108,7 +91,7 @@ public class MovementControls : MonoBehaviour
 		return TurnTo(target.position);
 	}
 	
-	public int DriveTo(Vector3 target, bool pathfinding)
+	public int DriveTo(Vector3 target, bool enablePathfinding)
 	// Drive near a position
 	// Return 1 if distance to target is below threshold, -1 otherwise
 	{
@@ -121,7 +104,7 @@ public class MovementControls : MonoBehaviour
 		}
         
         // Get next waypoint if pathfinding
-        if (pathfinding)
+        if (enablePathfinding)
         {
             if (target != prevTarget)
             {
@@ -145,7 +128,7 @@ public class MovementControls : MonoBehaviour
 		dist = Utils.FlatDist(body.position, waypoint);
         
         // Current waypoint reached but not yet at target, get next one
-        if (pathfinding && (Mathf.Abs(dist) <= distanceThreshold)) {
+        if (enablePathfinding && (Mathf.Abs(dist) <= distanceThreshold)) {
             getWaypoint = true;
             return -1;
         }
@@ -165,16 +148,15 @@ public class MovementControls : MonoBehaviour
 
 	}
     
+    // Overloaded methods for driving, return codes as above
 	public int DriveTo(Vector3 target)
     {
         return DriveTo(target, false);
 	}
 
-    public int DriveTo(Transform target, bool pathfinding)
-	// Drive near the position of a transform
-	// Return 1 if distance to target is below threshold, -1 otherwise
+    public int DriveTo(Transform target, bool enablePathfinding)
 	{
-		return DriveTo(target.position);
+		return DriveTo(target.position, enablePathfinding);
 	}
     
 	public int DriveTo(Transform target)

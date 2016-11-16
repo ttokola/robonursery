@@ -20,8 +20,8 @@ public class ArmControls : MonoBehaviour
         switch (position)
         {
         case "idle":
-            lAngles = new float[] {90, 10, 90, -10};
-            rAngles = new float[] {-90, -30, -90, 30};
+            lAngles = new float[] {90, 10, 90, 0};
+            rAngles = new float[] {-90, -30, -90, 0};
             break;
         case "sides":
             lAngles = new float[] {0, 0, 0, 0};

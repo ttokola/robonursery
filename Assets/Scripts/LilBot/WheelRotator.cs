@@ -8,7 +8,7 @@ namespace LilBotNamespace
 
 public class WheelRotator : MonoBehaviour
 {
-    private float mod = 20f;
+    private float mod = 10f;
     
 	private Rigidbody rb;
 	private Transform tf;

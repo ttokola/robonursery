@@ -77,7 +77,7 @@ public class BallJoint : MonoBehaviour {
         //var minDamp = damping;
         //var maxDamp = 50f;
         //var errorThreshold = 5f;
-        var relativeRot = Quaternion.Inverse(connected.rotation) * rb.rotation;
+        var relativeRot = Utils.RelativeRotation(rb.rotation, connected.rotation);
         var localRot = new float();
         switch (axle)
         {

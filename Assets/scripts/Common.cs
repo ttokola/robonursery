@@ -103,4 +103,10 @@ public static class Utils
             new Vector3(pos2.x, 0, pos2.z)
         );
     }
+    
+    public static Quaternion RelativeRotation(Quaternion targetRot, Quaternion relativeRot)
+    // Return the rotation of target relative to other rotation
+    {
+        return (Quaternion.Inverse(relativeRot) * targetRot);
+    }
 }
