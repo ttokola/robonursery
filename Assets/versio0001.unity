@@ -534,6 +534,17 @@ MonoBehaviour:
 GameObject:
   m_PrefabParentObject: {fileID: 100000, guid: b46dc2f3ad23564459aeb9b749c695ef, type: 3}
   m_PrefabInternal: {fileID: 1762150701}
+--- !u!114 &216310281
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 216310280}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6d0ba5fc4a1b15e4884a8735200b58f5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!64 &216310283
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -6638,6 +6649,7 @@ GameObject:
   - 114: {fileID: 1458937883}
   - 114: {fileID: 1458937884}
   - 114: {fileID: 1458937885}
+  - 114: {fileID: 1458937886}
   m_Layer: 0
   m_Name: LilBot
   m_TagString: Untagged
@@ -6814,9 +6826,26 @@ MonoBehaviour:
   enabled: 1
   xLimit: 90
   yLimit: 90
+  headMovementSpeedMod: 1
   head: {fileID: 543701769}
   neck: {fileID: 2020935360}
   target: {fileID: 906539626}
+--- !u!114 &1458937886
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1458937874}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ce15e927a1a4d824c9809cbdf142df78, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  battery: {fileID: 1458937880}
+  loadingAreas:
+  - {fileID: 216310281}
+  - {fileID: 1467315813}
+  movementControls: {fileID: 1458937879}
 --- !u!1 &1467315809 stripped
 GameObject:
   m_PrefabParentObject: {fileID: 100000, guid: b46dc2f3ad23564459aeb9b749c695ef, type: 3}
@@ -8005,6 +8034,10 @@ Prefab:
     - target: {fileID: 100000, guid: b46dc2f3ad23564459aeb9b749c695ef, type: 3}
       propertyPath: m_StaticEditorFlags
       value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 100000, guid: b46dc2f3ad23564459aeb9b749c695ef, type: 3}
+      propertyPath: m_TagString
+      value: LoadingDock
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 9500000, guid: b46dc2f3ad23564459aeb9b749c695ef, type: 3}

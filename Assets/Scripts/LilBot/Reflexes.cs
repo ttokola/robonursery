@@ -11,8 +11,6 @@ namespace LilBotNamespace
 public class Reflexes : MonoBehaviour 
 {
     public bool autoLoad = true;
-	public bool debug = false;	
-    public bool loading = false;
     public Vector3 destination;
     
     public ArmControls armControls;
