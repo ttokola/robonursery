@@ -58,6 +58,7 @@ ModelImporter:
     100100: RHand
     100102: RMiddleJoint
     100104: RUpperJoint
+    100106: MouthDummy
     400000: Floor
     400002: LoadingDockElevator
     400004: //RootNode
@@ -111,6 +112,7 @@ ModelImporter:
     400100: RHand
     400102: RMiddleJoint
     400104: RUpperJoint
+    400106: MouthDummy
     2300000: Floor
     2300002: LoadingDockElevator
     2300004: README_IN_NODE_EDITOR
@@ -157,6 +159,7 @@ ModelImporter:
     2300086: RHand
     2300088: RMiddleJoint
     2300090: RUpperJoint
+    2300092: MouthDummy
     3300000: Floor
     3300002: LoadingDockElevator
     3300004: README_IN_NODE_EDITOR
@@ -203,6 +206,7 @@ ModelImporter:
     3300086: RHand
     3300088: RMiddleJoint
     3300090: RUpperJoint
+    3300092: MouthDummy
     4300000: README_IN_NODE_EDITOR
     4300002: LoadingDockElevator
     4300004: Walls
@@ -249,6 +253,7 @@ ModelImporter:
     4300086: RHand
     4300088: RUpperJoint
     4300090: RMiddleJoint
+    4300092: MouthDummy
     7400000: Default Take
     9500000: //RootNode
   materials:
