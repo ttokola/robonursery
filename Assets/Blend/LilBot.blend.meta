@@ -45,6 +45,7 @@ ModelImporter:
     100074: RMiddleJoint
     100076: RUpperArm
     100078: RUpperJoint
+    100080: MouthDummy
     400000: Axle
     400002: Body
     400004: Eyes
@@ -85,6 +86,7 @@ ModelImporter:
     400074: RMiddleJoint
     400076: RUpperArm
     400078: RUpperJoint
+    400080: MouthDummy
     2300000: Axle
     2300002: Body
     2300004: Eyes
@@ -120,6 +122,7 @@ ModelImporter:
     2300064: RMiddleJoint
     2300066: RUpperArm
     2300068: RUpperJoint
+    2300070: MouthDummy
     3300000: Axle
     3300002: Body
     3300004: Eyes
@@ -155,6 +158,7 @@ ModelImporter:
     3300064: RMiddleJoint
     3300066: RUpperArm
     3300068: RUpperJoint
+    3300070: MouthDummy
     4300000: Body
     4300002: Axle
     4300004: Neck
@@ -190,6 +194,7 @@ ModelImporter:
     4300064: RUpperJoint
     4300066: RUpperArm
     4300068: RMiddleJoint
+    4300070: MouthDummy
     7400000: Default Take
     9500000: //RootNode
   materials:
