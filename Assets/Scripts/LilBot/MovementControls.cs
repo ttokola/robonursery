@@ -21,7 +21,6 @@ public class MovementControls : MonoBehaviour
 
     private bool getWaypoint = false;    
     private float angleThreshold = 3f;
-    private float distanceThreshold = 0.5f;
 	private float torqueMod = 1f;
     private Vector3 waypoint, prevTarget;
 
@@ -91,9 +90,10 @@ public class MovementControls : MonoBehaviour
 		return TurnTo(target.position);
 	}
 	
-	public int DriveTo(Vector3 target, bool enablePathfinding)
-	// Drive near a position
+	public int DriveTo(Vector3 target, bool enablePathfinding, Collider other=null, float distanceThreshold=0.5f)
+	// Drive near a position until threshold is reached
 	// Return 1 if distance to target is below threshold, -1 otherwise
+    // If collider is provided, then also return 1 if colliders are touching even before threshold is reached
 	{
         // Check if we are already there
         var dist = new float();
@@ -102,6 +102,11 @@ public class MovementControls : MonoBehaviour
 		if (Mathf.Abs(dist) <= distanceThreshold) {
 			return 1;
 		}
+        if (CheckCollision.Check(body.GetComponent<Collider> (), other))
+        {
+            Debug.Log("Touhcing other");
+            return 1;
+        }
         
         // Get next waypoint if pathfinding
         if (enablePathfinding)
@@ -156,12 +161,13 @@ public class MovementControls : MonoBehaviour
 
     public int DriveTo(Transform target, bool enablePathfinding)
 	{
-		return DriveTo(target.position, enablePathfinding);
+        var coll = target.gameObject.GetComponent<Collider> ();
+		return DriveTo(target.position, enablePathfinding, coll);
 	}
     
 	public int DriveTo(Transform target)
 	{
-		return DriveTo(target.position, false);
+		return DriveTo(target, false);
 	}
 	
 	void Update ()

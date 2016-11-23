@@ -9,6 +9,8 @@ namespace LilBotNamespace
     
 public class BotQueue : MonoBehaviour {
 
+    public Transform tr;
+    
     public MovementControls controls;
 	
 	void Start ()
@@ -17,7 +19,7 @@ public class BotQueue : MonoBehaviour {
     
 	void FixedUpdate ()
 	{
-        controls.DriveTo(new Vector3(5, 0, 5), true);
+        controls.DriveTo(tr);
 	}
 }
 
