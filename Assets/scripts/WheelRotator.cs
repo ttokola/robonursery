@@ -5,7 +5,7 @@ public class WheelRotator : MonoBehaviour
 {
 	private Rigidbody rb;
 	private Transform tf;
-    private AudioSource sound;
+    private AudioSource engineSound;
     private float engineTime;
 	
 	public bool debug = true;
@@ -14,7 +14,7 @@ public class WheelRotator : MonoBehaviour
 	{
 		rb = GetComponent<Rigidbody> ();
 		tf = GetComponent<Transform> ();
-        sound = GetComponent<AudioSource> ();
+        engineSound = GetComponent<AudioSource> ();
 		rb.maxAngularVelocity = 100;  // Enables faster spinning of wheels
 	}
 	
@@ -35,11 +35,12 @@ public class WheelRotator : MonoBehaviour
     {
         if (Time.time - engineTime > 0.03)
         {
-            sound.volume = Mathf.Max(0f, sound.volume - 0.02f);
+            
+            engineSound.volume = Mathf.Max(0f, engineSound.volume - 0.06f);
         }
         else
         {
-            sound.volume = Mathf.Min(0.2f, sound.volume + 0.01f);
+            engineSound.volume = Mathf.Min(0.6f, engineSound.volume + 0.03f);
         }
     }
 }
