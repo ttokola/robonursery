@@ -10,7 +10,11 @@ public class SUTQueue : MonoBehaviour {
     public SUTFunctions controls;	
 	public Vector3[] locations;
     public GameObject waypoint;
+    public Football football;
     public bool hasDestination = false;
+    public bool playFootball;
+    public bool team;
+    public int role;
     
     private SUTReflexes reflexes;
     private bool hasPath = false;
@@ -21,7 +25,10 @@ public class SUTQueue : MonoBehaviour {
 	void Start ()
 	{
         reflexes = GetComponent<SUTReflexes> ();
-		queue = new Queue<Vector3>(locations);
+        if(playFootball)
+            queue = new Queue<Vector3>();
+        else
+            queue = new Queue<Vector3>(locations);
         agent.updatePosition = false;
         agent.updateRotation = false;
 	}
@@ -30,6 +37,10 @@ public class SUTQueue : MonoBehaviour {
 	{
 		if (queue.Count == 0)
 		{
+            if (playFootball)
+            {
+                queue.Enqueue(football.getDestination(team, role, body.position));
+            }
 			return;
 		}
         
