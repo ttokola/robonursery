@@ -16,6 +16,7 @@ public class ListWrapper
 public class IgnoreCollision : MonoBehaviour {
 
     public List<ListWrapper> ignoredColliderSets;
+    public List<Collider> ignoreAllCollisions;
     
 	void Start ()
     {
@@ -29,6 +30,13 @@ public class IgnoreCollision : MonoBehaviour {
                 {
                     Physics.IgnoreCollision(lw.colliders[i], lw.colliders[j]);
                 }
+            }
+        }
+        foreach (Collider a in ignoreAllCollisions)
+        {
+            foreach (Collider b in Object.FindObjectsOfType<Collider> ())
+            {
+                Physics.IgnoreCollision(a, b);
             }
         }
     }

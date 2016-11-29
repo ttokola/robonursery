@@ -2080,7 +2080,7 @@ Rigidbody:
   m_UseGravity: 1
   m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 0
+  m_Constraints: 112
   m_CollisionDetection: 0
 --- !u!23 &623879819
 MeshRenderer:
@@ -2885,6 +2885,10 @@ BoxCollider:
 --- !u!1 &736784345 stripped
 GameObject:
   m_PrefabParentObject: {fileID: 100062, guid: 0896129da2188a1428f65ee2da3ac6ac, type: 3}
+  m_PrefabInternal: {fileID: 1058987158}
+--- !u!4 &736784346 stripped
+Transform:
+  m_PrefabParentObject: {fileID: 400062, guid: 0896129da2188a1428f65ee2da3ac6ac, type: 3}
   m_PrefabInternal: {fileID: 1058987158}
 --- !u!135 &736784349
 SphereCollider:
@@ -4966,6 +4970,10 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!4 &1058987170 stripped
+Transform:
+  m_PrefabParentObject: {fileID: 400072, guid: 0896129da2188a1428f65ee2da3ac6ac, type: 3}
+  m_PrefabInternal: {fileID: 1058987158}
 --- !u!114 &1058987175
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6766,6 +6774,7 @@ GameObject:
   - 114: {fileID: 1458937885}
   - 114: {fileID: 1458937886}
   - 114: {fileID: 1458937887}
+  - 114: {fileID: 1458937888}
   m_Layer: 0
   m_Name: LilBot
   m_TagString: Untagged
@@ -6780,7 +6789,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1458937874}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -13.16, y: -0.1, z: -1.75}
+  m_LocalPosition: {x: -14.96, y: -0.1, z: -1.75}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_Children:
@@ -6807,7 +6816,7 @@ MonoBehaviour:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1458937874}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: fffc4b815a4387643b293c580e507121, type: 3}
   m_Name: 
@@ -6820,7 +6829,7 @@ MonoBehaviour:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1458937874}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f495b2b3433399b4e97666f218a6d438, type: 3}
   m_Name: 
@@ -6883,6 +6892,13 @@ MonoBehaviour:
     - {fileID: 1058987167}
     - {fileID: 1058987165}
     - {fileID: 1058987163}
+  ignoreAllCollisions:
+  - {fileID: 2140980923}
+  - {fileID: 736784349}
+  - {fileID: 1808990328}
+  - {fileID: 1058987167}
+  - {fileID: 1058987165}
+  - {fileID: 1058987163}
 --- !u!114 &1458937882
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6980,6 +6996,24 @@ MonoBehaviour:
   frowningTexture: {fileID: 2800000, guid: b0b5f6b8f1f28bd4a89b1c319eb369e8, type: 3}
   mouth: 0
   eyebrowAngle: 0
+--- !u!114 &1458937888
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1458937874}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f9d1741956beee945b5b3fef7228a25f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  tar: {fileID: 623879817}
+  leftWheel: {fileID: 1398950157}
+  rightWheel: {fileID: 1251232916}
+  leftHand: {fileID: 736784346}
+  rightHand: {fileID: 1058987170}
+  armControls: {fileID: 1458937882}
+  movementControls: {fileID: 1458937879}
 --- !u!1 &1467315809 stripped
 GameObject:
   m_PrefabParentObject: {fileID: 100000, guid: b46dc2f3ad23564459aeb9b749c695ef, type: 3}
