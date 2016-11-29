@@ -7,6 +7,7 @@ public class SUTFunctions : MonoBehaviour
 	public Battery battery;
 	public WheelRotator leftWheel, rightWheel;
     public float slowingDistance;
+    public AudioSource emptyBattery;
     
     private float angleThreshold;
 	private float torqueMod;
@@ -29,6 +30,10 @@ public class SUTFunctions : MonoBehaviour
 		if (torque != 0)
 		{
 			battery.Deplete(1);
+            if (battery.normLevel <= 0)
+            {
+                emptyBattery.Play();
+            }        
 		}
 		if (wheel == "left")
 		{

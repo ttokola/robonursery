@@ -12,6 +12,8 @@ public class SUTReflexes : MonoBehaviour
 	private Battery bat;
 	private SUTManualController manControl;
 	private SUTQueue queue;
+    public AudioSource fullCharge;
+    public AudioSource lowCharge;
 
 	void Start ()
 	{
@@ -28,6 +30,7 @@ public class SUTReflexes : MonoBehaviour
             destination = GameObject.Find("LoadingDockElevatorR").transform.position;
 			loading = true;
             queue.hasDestination = false;
+            lowCharge.Play();
 		}
 		if (loading)
 		{
@@ -37,6 +40,7 @@ public class SUTReflexes : MonoBehaviour
 			{
 				loading = false;
                 queue.hasDestination = false;
+                fullCharge.Play();
 			}
 		}
 		else
