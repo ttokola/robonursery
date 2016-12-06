@@ -34,6 +34,7 @@ public class LoadBattery : MonoBehaviour
             {
                 destination = area.transform.position;
                 noFree = false;
+                break;
             }
         }
         if (noFree)

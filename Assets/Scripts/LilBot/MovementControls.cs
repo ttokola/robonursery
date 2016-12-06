@@ -1,4 +1,4 @@
-﻿// Low-level fucntions which control movement of the robot
+﻿// Low-level functions which control movement of the robot
 
 using UnityEngine;
 using System.Collections;
@@ -102,12 +102,15 @@ public class MovementControls : MonoBehaviour
 		if (Mathf.Abs(dist) <= distanceThreshold) {
 			return 1;
 		}
-        if (CheckCollision.Check(body.GetComponent<Collider> (), other))
+        if (other != null)
         {
-            Debug.Log("Touhcing other");
-            return 1;
+            if (CheckCollision.Check(body.GetComponent<Collider> (), other))
+            {
+                Debug.Log("Touching other");
+                return 1;
+            }            
         }
-        
+     
         // Get next waypoint if pathfinding
         if (enablePathfinding)
         {

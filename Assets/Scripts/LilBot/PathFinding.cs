@@ -14,12 +14,12 @@ public class PathFinding : MonoBehaviour {
 
 	void Start ()
     {
-        // Create a dummy waypoitn object for debugging
+        // Create a dummy waypoint object for debugging
         waypointDummy = GameObject.CreatePrimitive(PrimitiveType.Capsule);
         waypointDummy.transform.localScale = new Vector3(0.5f, 1f, 0.5f);
         Destroy (waypointDummy.GetComponent<Collider> ());
         waypointDummy.SetActive(showWaypoint);
-        // We want to move with driving controls instead of moving with the navmesh
+        // We want to move with driving controls instead of moving with the NavMeshAgent
         agent.updatePosition = false;
         agent.updateRotation = false;
         path = new NavMeshPath();

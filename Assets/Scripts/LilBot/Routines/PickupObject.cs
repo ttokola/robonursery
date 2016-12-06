@@ -66,7 +66,7 @@ public class PickupObject : MonoBehaviour {
 	
 	void Update ()
     {
-        Execute(tar);
+        //Execute(tar);
 	}
 }
 
