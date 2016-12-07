@@ -54,15 +54,6 @@ public class ManualController : MonoBehaviour
         {
             armControls.SetStaticPosition("up");
         }
-        else if (armState == ArmState.waving)
-        {
-            armControls.Wave();;
-        }
-        
-        if (fall)
-        {
-            body.constraints = RigidbodyConstraints.None;
-        }
 	}
 }
 

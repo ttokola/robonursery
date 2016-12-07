@@ -9,11 +9,38 @@ public class ArmControls : MonoBehaviour
     public BallJoint rightUpper;
     public BallJoint rightLower;
     
-    private string prevPosition;
-    
-    private int waveState = 0;
+    public int SetStaticPosition (float[] leftAngles, float[] rightAngles)
+    /*  Set the arms into any static angle
+        both leftAngles and rightAngles should have 4 values, one for
+        upper X, upper Y, lower X and lower Y angles
+    */
+    {
+        var leftUpperStatus = leftUpper.SetAngle(leftAngles[0], leftAngles[1]);
+        var leftLowerStatus = leftLower.SetAngle(leftAngles[2], leftAngles[3]);
+        var rightUpperStatus = rightUpper.SetAngle(rightAngles[0], rightAngles[1]);
+        var rightLowerStatus = rightLower.SetAngle(rightAngles[2], rightAngles[3]);
+        if (leftUpperStatus != 0 || leftLowerStatus != 0 ||
+            rightUpperStatus != 0 || rightLowerStatus != 0)
+        {
+            return 2;
+        }
+        return 0;
+    }
     
     public int SetStaticPosition (string position)
+    /*  Set the arms into a predetermined static position
+        Available position strings and their correspoding arm positions:
+            idle: folded in front of the robot
+            sides: extended to the sides
+            forward: extended forwards
+            forwardL: extended forwards, leaning down
+            forwardH: extended forwards, leaning up
+            back: extended backwards
+            down: extended down
+            
+        New static positions can be easily added by adding correspoding
+        string-angle mapping to the switch.
+    */    
     {
         var lAngles = new float[4];
         var rAngles = new float[4];
@@ -51,23 +78,13 @@ public class ArmControls : MonoBehaviour
             lAngles = new float[] {0, -90, 0, 0};
             rAngles = new float[] {0, 90, 0, 0};
             break;
-        case "wave1":
-            lAngles = new float[] {0, 0, 0, -80};
-            rAngles = new float[] {-90, -30, -90, 30};
-            break;
-        case "wave2":
-            lAngles = new float[] {0, 0, 0, -110};
-            rAngles = new float[] {-90, -30, -90, 30};
-            break;
         }
-        // Ugly
-        var a = leftUpper.SetAngle(lAngles[0], lAngles[1]);
-        var b = leftLower.SetAngle(lAngles[2], lAngles[3]);
-        var c = rightUpper.SetAngle(rAngles[0], rAngles[1]);
-        var d = rightLower.SetAngle(rAngles[2], rAngles[3]);
+        return SetStaticPosition(lAngles, rAngles);
         
+        // Pid resetting might actually cause wrong movements, don't do this
+        /*
         // Reset pid params if we are adjusting to new position
-        /*if (position != prevPosition)
+        if (position != prevPosition)
         {
             Debug.Log("here");
             leftUpper.ResetPID();
@@ -75,17 +92,10 @@ public class ArmControls : MonoBehaviour
             rightUpper.ResetPID();
             rightLower.ResetPID();
         }*/
-        
-        prevPosition = position;
-        
-        // Ugly
-        if (a != 0 || b != 0 || c != 0 || d != 0)
-        {
-            return -1;
-        }
-        return 0;
     }
     
+    // Maybe move this into a routine
+    /*
     public void Wave ()
     {
         if (waveState == 0 && SetStaticPosition("wave1") == 0)
@@ -97,9 +107,5 @@ public class ArmControls : MonoBehaviour
             waveState = 0;
         }
     }
-    
-    public void Dance ()
-    {
-        ;
-    }
+    */
 }
