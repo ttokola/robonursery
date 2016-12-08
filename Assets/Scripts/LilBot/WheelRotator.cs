@@ -9,7 +9,7 @@ namespace LilBotNamespace
 public class WheelRotator : MonoBehaviour
 {
     private float lastEngineRunTime;
-    private float mod = 10f;
+    private float mod = 20f;
     
     private AudioSource engineSound;
 	private Rigidbody rb;

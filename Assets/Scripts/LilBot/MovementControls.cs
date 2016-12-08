@@ -22,12 +22,10 @@ public class MovementControls : MonoBehaviour
     private bool getWaypoint = false;    
     private float angleThreshold = 3f;
 	private float torqueMod = 1f;
-    private Vector3 waypoint, prevTarget;
-
-	void Start () 
-	{
-        
-	}
+    private Vector3 waypoint;
+    private Vector3? prevTarget;  // The ? creates this as nullable, need
+                                  // because first target might be 0,0,0 which
+                                  // will mess up the pathfinding
 	
 	public void RotateWheel(string wheel, float torque)
     // Rotate the given wheel and deplete battery
@@ -102,7 +100,7 @@ public class MovementControls : MonoBehaviour
 		if (Mathf.Abs(dist) <= distanceThreshold) {
 			return 1;
 		}
-        if (CheckCollision.Check(body.GetComponent<Collider> (), other))
+        if (other != null && CheckCollision.Check(body.GetComponent<Collider> (), other))
         {
             Debug.Log("Touhcing other");
             return 1;
