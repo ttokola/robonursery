@@ -15,8 +15,9 @@ public class LoadBattery : MonoBehaviour
     public MovementControls movementControls;
     
     private Vector3 destination;
+    private bool hasDest = false;
 	
-	int Execute ()
+	public int Execute ()
     // Attempt to load at a loading station
     // Return codes:
     // 0: Successfully loaded or already full battery
@@ -25,23 +26,29 @@ public class LoadBattery : MonoBehaviour
 	{
         if (battery.normLevel >= 1.0f)
         {
+            hasDest = false;
 			return 0;
 		}
-        var noFree = true;
+        
+        if (hasDest)
+        {
+            movementControls.DriveTo(destination, true);
+            return 1;
+        }   
+        
         foreach (var area in loadingAreas)
         {
             if (area.IsFree())
             {
                 destination = area.transform.position;
-                noFree = false;
+                hasDest = true;
                 break;
             }
         }
-        if (noFree)
+        if (!hasDest)
         {
             return 2;
         }
-        movementControls.DriveTo(destination);
 		return 1;
 	}
 }

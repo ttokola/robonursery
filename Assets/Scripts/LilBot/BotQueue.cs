@@ -27,7 +27,7 @@ public class BotQueue : MonoBehaviour {
 	
 	void FixedUpdate ()
 	{
-		if (queue.Count == 0)
+		if (queue.Count == 0 || reflexes.loading)
 		{
 			return;
 		}

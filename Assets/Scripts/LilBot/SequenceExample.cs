@@ -15,6 +15,7 @@ public class SequenceExample : MonoBehaviour {
     public ArmControls armControls;
     public MovementControls movementControls;
     public PickupObject pickupRoutine;
+    public bool loop;
     
     void Start ()
     {
@@ -47,6 +48,10 @@ public class SequenceExample : MonoBehaviour {
             break;
         case 3:
             armControls.SetStaticPosition("idle");
+            if (loop)
+            {
+                state = 0;
+            }
             break;
         }
     }

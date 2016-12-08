@@ -5,11 +5,11 @@ public class DockLoader : MonoBehaviour {
  
     private int trigCount = 0;
     
-	private Battery bat;
+	private LilBotNamespace.Battery bat;
     
 	void OnTriggerStay (Collider other)
 	{
-		bat = other.transform.root.gameObject.GetComponent<Battery> ();
+		bat = other.transform.root.gameObject.GetComponent<LilBotNamespace.Battery> ();
         bat.Charge(10);
 	}
     

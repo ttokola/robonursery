@@ -102,7 +102,7 @@ public class MovementControls : MonoBehaviour
 		}
         if (other != null && CheckCollision.Check(body.GetComponent<Collider> (), other))
         {
-            Debug.Log("Touhcing other");
+            Debug.Log("Touching other");
             return 1;
         }
         

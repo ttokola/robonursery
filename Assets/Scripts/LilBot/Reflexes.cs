@@ -11,45 +11,48 @@ namespace LilBotNamespace
 public class Reflexes : MonoBehaviour 
 {
     public bool autoLoad = true;
-    public Vector3 destination;
-    
-    public ArmControls armControls;
+    public bool loading = false;
     
 	private Battery bat;
 	private ManualController manControl;
 	private BotQueue queue;
+    private LoadBattery loader;
+    private SequenceExample sequence;
 
 	void Start ()
 	{
 		bat = GetComponent<Battery> ();
 		manControl = GetComponent<ManualController> ();
 		queue = GetComponent<BotQueue> ();
+        loader = GetComponent<LoadBattery> ();
+        sequence = GetComponent<SequenceExample> ();
 	}
 	
 	void FixedUpdate ()
 	{
-        //armControls.Wave();
-		/*if (bat.level < 30 && ! loading)
-		{
-			if (debug) { Debug.Log("Critical battery level, autoloading"); }
-            destination = GameObject.Find("LoadingDockElevatorR").transform.position;
-			loading = true;
-            queue.hasDestination = false;
-		}
-		if (loading)
-		{
-			// Halt current actions
-			manControl.enabled = false;
-			if (bat.normLevel >= 1.0f)
-			{
-				loading = false;
-                queue.hasDestination = false;
-			}
-		}
-		else
-		{
-			manControl.enabled = true;
-		}*/
+        if (autoLoad)
+        {
+            if (bat.level < 30 && !loading)
+            {
+                loading = true;
+            }
+            if (loading)
+            {
+                // Halt current actions
+                manControl.enabled = false;
+                sequence.enabled = false;
+                loader.Execute();
+                if (bat.normLevel >= 1.0f)
+                {
+                    loading = false;
+                }
+            }
+            else
+            {
+                //manControl.enabled = true;
+                sequence.enabled = true;
+            }            
+        }
 	}
 }
 
