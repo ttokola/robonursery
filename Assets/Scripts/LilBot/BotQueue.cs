@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 
@@ -6,21 +6,35 @@ using LilBotNamespace;
 
 namespace LilBotNamespace
 {
-    
+
 public class BotQueue : MonoBehaviour {
 
-    public Transform tr;
+	public bool debug = false;
+    public MovementControls controls;	
+    public PathFinding pathFinder;
+    public bool usePathfinding;
+	public Vector3[] locations;
     
-    public MovementControls controls;
+    private Reflexes reflexes;
+    private bool hasPath = false;
+	private Queue<Vector3> queue;
 	
 	void Start ()
 	{
+        reflexes = GetComponent<Reflexes> ();
+		queue = new Queue<Vector3>(locations);
 	}
-    
+	
 	void FixedUpdate ()
 	{
-        controls.DriveTo(tr);
+		if (queue.Count == 0)
+		{
+			return;
+		}
+        if (controls.DriveTo(queue.Peek(), usePathfinding) == 1)
+        {
+            queue.Dequeue();
+        }
 	}
 }
-
-} // End namespace
+}

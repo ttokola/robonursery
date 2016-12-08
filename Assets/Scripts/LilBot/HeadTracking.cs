@@ -5,7 +5,7 @@ using System.Collections;
 
 public class HeadTracking : MonoBehaviour {
 
-    public bool enabled = true;
+    public bool trackingEnabled = true;
     public float xLimit = 90;
     public float yLimit = 45;
     public float headMovementSpeedMod = 1f;
@@ -25,7 +25,7 @@ public class HeadTracking : MonoBehaviour {
 	
 	void FixedUpdate ()
     {
-        if (enabled && target != null)
+        if (trackingEnabled && target != null)
         {
             var dir = (target.position - head.transform.position);
             targetRot = Quaternion.LookRotation(dir);
