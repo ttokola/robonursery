@@ -22,7 +22,6 @@ public class Reflexes : MonoBehaviour
 	private ManualController manControl;
 	private BotQueue queue;
     private LoadBattery loader;
-    private SequenceExample sequence;
 
 	void Start ()
 	{
@@ -30,7 +29,7 @@ public class Reflexes : MonoBehaviour
 		manControl = GetComponent<ManualController> ();
 		queue = GetComponent<BotQueue> ();
         loader = GetComponent<LoadBattery> ();
-        sequence = GetComponent<SequenceExample> ();
+        //sequence = GetComponent<SequenceExample> ();
 	}
 	
 	void FixedUpdate ()
@@ -45,7 +44,7 @@ public class Reflexes : MonoBehaviour
             {
                 // Halt current actions
                 manControl.enabled = false;
-                sequence.enabled = false;
+                //sequence.enabled = false;
                 loader.Execute();
                 if (bat.normLevel >= 1.0f)
                 {
@@ -55,7 +54,7 @@ public class Reflexes : MonoBehaviour
             else
             {
                 //manControl.enabled = true;
-                sequence.enabled = true;
+                //sequence.enabled = true;
             }            
         }
 	}

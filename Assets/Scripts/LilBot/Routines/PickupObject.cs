@@ -4,7 +4,8 @@
     Works reliably only with objects with rigidbody enabled.
     
     Routine is implemented with a state-machine, do not attempt to move
-    the bot while routine is in progress
+    the bot while routine is in progress.
+    Do not move arms until object is dropped.
 */
 
 using UnityEngine;
@@ -24,7 +25,7 @@ public class PickupObject : MonoBehaviour {
     
     private int state = 0;
     
-    private FixedJoint joint;
+    private FixedJoint leftAttachJoint, rightAttachJoint;
     private Rigidbody targetRb;
     private Transform targetTr;
     private Vector3 posDiff;
@@ -39,6 +40,7 @@ public class PickupObject : MonoBehaviour {
         2: Routine in progress
     */
     {
+        //Debug.Log(string.Format("Pickup at state {0}", state));
         targetRb = target.GetComponent<Rigidbody> ();
         targetTr = target.GetComponent<Transform> ();
         switch(state)
@@ -63,12 +65,10 @@ public class PickupObject : MonoBehaviour {
             if (armControls.SetStaticPosition("forwardL") == 0)
             {
                 posDiff = leftHand.position - targetTr.position;
-                /*
-                handStartPos = leftHand.position;
-                targetStartPos = targetTr.position;
-                targetStartRot = targetTr.rotation;*/
-                joint = leftHand.gameObject.AddComponent<FixedJoint> ();
-                joint.connectedBody = targetRb;
+                leftAttachJoint = leftHand.gameObject.AddComponent<FixedJoint> ();
+                rightAttachJoint = rightHand.gameObject.AddComponent<FixedJoint> ();
+                leftAttachJoint.connectedBody = targetRb;
+                rightAttachJoint.connectedBody = targetRb;
                 leftWheel.constraints = rightWheel.constraints = RigidbodyConstraints.None;
                 state = 3; // Move on to holding state, keep holding object in FixedUpdate
             }
@@ -78,20 +78,18 @@ public class PickupObject : MonoBehaviour {
     }
     
     public void Drop ()
-    // Drop the currently held object
+    // Drop the currently held object, set state to zero so the routine can start from beginning on next Execute()
     {
+        Destroy(leftAttachJoint);
+        Destroy(rightAttachJoint);
         state = 0;
-        Destroy(joint);
     }
 	
 	void FixedUpdate ()
     {
         if (state == 3)  // Hold-object state, keep holding the object in hands until state changes
         {
-            armControls.SetStaticPosition("forwardH");
-            // Move relative to hands
-            //var diff = handStartPos - leftHand.position;
-            //targetTr.position = leftHand.position - posDiff;
+            armControls.SetStaticPosition("forward");
         }
 	}
 }
