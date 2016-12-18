@@ -31,19 +31,19 @@ public class PickupObject : MonoBehaviour {
         // Move near the object to be picked up
         case 0:
             armControls.SetStaticPosition("idle");
-            if (movementControls.DriveTo(target.transform, true) == 1)
+            if (movementControls.DriveTo(target.transform, true) == 0)
             {
                 state = 1;
                 leftWheel.constraints = rightWheel.constraints = RigidbodyConstraints.FreezeRotation;
             }
-            return 1;
+            return 2;
         case 1:
             targetRb.velocity = Vector3.zero;
             if (armControls.SetStaticPosition("sides") == 0)
             {
                 state = 2;
             }
-            return 1;
+            return 2;
         case 2:
             if (armControls.SetStaticPosition("forwardL") == 0)
             {
@@ -57,7 +57,7 @@ public class PickupObject : MonoBehaviour {
                 leftWheel.constraints = rightWheel.constraints = RigidbodyConstraints.None;
                 state = 3; // Move on to holding state, keep holding object in FixedUpdate
             }
-            return 1;
+            return 2;
         }
         return 0;
     }

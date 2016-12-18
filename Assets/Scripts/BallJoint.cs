@@ -61,11 +61,16 @@ public class BallJoint : MonoBehaviour {
     {
         var a = RotateRbToAngle(horRb, "y", horAngle, maxHorizontalForce, ref horPid);
         var b = RotateRbToAngle(verRb, "z", verAngle, maxVerticalForce, ref verPid);
-        if (a != 0 || b != 0)
+        // Return bad error code (1) first if needed, otherwise whatever we get
+        if (a == 1 || b == 1)
         {
-            return -1;
+            return 1;
         }
-        return 0;
+        if (a != 0)
+        {
+            return a;
+        }
+        return b;
     }
     
     int RotateRbToAngle (Rigidbody rb, string axle, float angle, float maxTorque, ref PIDParameters pp)
@@ -89,7 +94,7 @@ public class BallJoint : MonoBehaviour {
             break;
         default:
             Debug.LogError(string.Format("Unknown axle {0}", axle));
-            return -1;
+            return 1;
         }
         var error = Utils.AngleDiff180(localRot, angle);
         // Break and apply damping if error below threshold
@@ -117,7 +122,7 @@ public class BallJoint : MonoBehaviour {
             break;
         default:
             Debug.LogError(string.Format("Unknown axle {0}", axle));
-            return -1;
+            return 1;
         }
         torque = Vector3.ClampMagnitude(torque, maxTorque);
         //Debug.Log(string.Format("{0} rot:{1} lrot:{2} dest:{3} err:{4} erdif:{5} torque:{6} integ{7} preverr{8}", rb, rb.rotation.eulerAngles, localRot, angle, error, errorDiff, torque, pp.integrator, pp.prevError));
@@ -129,6 +134,6 @@ public class BallJoint : MonoBehaviour {
             //Debug.Log("here");
             return 0;
         }
-        return -1;
+        return 2;
     }   
 }

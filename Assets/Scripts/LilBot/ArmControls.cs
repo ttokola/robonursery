@@ -19,10 +19,21 @@ public class ArmControls : MonoBehaviour
         var leftLowerStatus = leftLower.SetAngle(leftAngles[2], leftAngles[3]);
         var rightUpperStatus = rightUpper.SetAngle(rightAngles[0], rightAngles[1]);
         var rightLowerStatus = rightLower.SetAngle(rightAngles[2], rightAngles[3]);
-        if (leftUpperStatus != 0 || leftLowerStatus != 0 ||
-            rightUpperStatus != 0 || rightLowerStatus != 0)
+        int[] statuses = {leftUpperStatus, leftLowerStatus,
+                          rightUpperStatus, rightLowerStatus};
+        foreach (var s in statuses)
         {
-            return 2;
+            if (s == 1)
+            {
+                return 1;
+            }
+        }
+        foreach (var s in statuses)
+        {
+            if (s != 0)
+            {
+                return s;
+            }
         }
         return 0;
     }

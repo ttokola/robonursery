@@ -85,7 +85,7 @@ public class FallAndRise : MonoBehaviour
             break;            
         }
         
-        return -1;
+        return 2;
     }
     
 	void Start ()

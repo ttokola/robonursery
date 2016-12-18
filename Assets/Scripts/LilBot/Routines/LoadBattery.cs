@@ -21,8 +21,8 @@ public class LoadBattery : MonoBehaviour
     // Attempt to load at a loading station
     // Return codes:
     // 0: Successfully loaded or already full battery
-    // 1: moving towards loading station
-    // 2: Cannot find a free loading station
+    // 1: Cannot find a free loading station
+    // 2: moving towards loading station
 	{
         if (battery.normLevel >= 1.0f)
         {
@@ -33,7 +33,7 @@ public class LoadBattery : MonoBehaviour
         if (hasDest)
         {
             movementControls.DriveTo(destination, true);
-            return 1;
+            return 2;
         }   
         
         foreach (var area in loadingAreas)
@@ -47,9 +47,9 @@ public class LoadBattery : MonoBehaviour
         }
         if (!hasDest)
         {
-            return 2;
+            return 1;
         }
-		return 1;
+		return 2;
 	}
 }
 

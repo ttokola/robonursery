@@ -27,7 +27,7 @@ public class MovementControls : MonoBehaviour
                                   // because first target might be 0,0,0 which
                                   // will mess up the pathfinding
 	
-	public void RotateWheel(string wheel, float torque)
+	void RotateWheel(string wheel, float torque)
     // Rotate the given wheel and deplete battery
 	// Ultimately, probably all moving components should consume battery straight in the baseclass
 	{
@@ -67,43 +67,43 @@ public class MovementControls : MonoBehaviour
 	
 	public int TurnTo(Vector3 target)
 	// Turn towards a coordinate
-	// Return 1 if angle to target is below threshold, -1 otherwise
+	// Return 0 if angle to target is below threshold, 2 otherwise
 	{
 		float angle = Utils.AngleTo(body.position, body.transform.forward, target);
 		if (Mathf.Abs(angle) > angleThreshold)
 		{
 			float direction = Mathf.Sign(angle);
 			Turn(1 * direction);
-			return -1;
+			return 2;
 		}
 		else
 		{
-			return 1;
+			return 0;
 		}
 	}
 	public int TurnTo(Transform target)
 	// Turn towards a transform
-	// Return 1 if angle to target is below threshold, -1 otherwise
+	// Return 0 if angle to target is below threshold, 2 otherwise
 	{
 		return TurnTo(target.position);
 	}
 	
 	public int DriveTo(Vector3 target, bool enablePathfinding, Collider other=null, float distanceThreshold=0.5f)
 	// Drive near a position until threshold is reached
-	// Return 1 if distance to target is below threshold, -1 otherwise
-    // If collider is provided, then also return 1 if colliders are touching even before threshold is reached
+	// Return 0 if distance to target is below threshold, 2 otherwise
+    // If collider is provided, then also return 0 if colliders are touching even before threshold is reached
 	{
         // Check if we are already there
         var dist = new float();
 		dist = Utils.FlatDist(body.position, target);
         
 		if (Mathf.Abs(dist) <= distanceThreshold) {
-			return 1;
+			return 0;
 		}
         if (other != null && CheckCollision.Check(body.GetComponent<Collider> (), other))
         {
             Debug.Log("Touching other");
-            return 1;
+            return 0;
         }
         
         // Get next waypoint if pathfinding
@@ -133,21 +133,21 @@ public class MovementControls : MonoBehaviour
         // Current waypoint reached but not yet at target, get next one
         if (enablePathfinding && (Mathf.Abs(dist) <= distanceThreshold)) {
             getWaypoint = true;
-            return -1;
+            return 2;
         }
-		if (TurnTo(waypoint) == -1) {
+		if (TurnTo(waypoint) == 2) {
             //Debug.Log(string.Format("turning towards {0}", dest));
-			return -1;
+			return 2;
 		}
         // Don't move too fast
         if (Mathf.Abs(dist) < slowingDistance * body.velocity.magnitude) {
-			return -1;
+			return 2;
 		}
         // Did not reach destination yet but we are turned correctly,
         // decide if we should drive forwards or backwards
         var dir = (dist > distanceThreshold) ? 1 : -1;
 		Drive(dir);
-		return -1;
+		return 2;
 
 	}
     

@@ -28,7 +28,7 @@ public class SequenceExample : MonoBehaviour {
         {
         case 0:
             armControls.SetStaticPosition("idle");
-            if (movementControls.DriveTo(Vector3.zero, true) == 1)
+            if (movementControls.DriveTo(Vector3.zero, true) == 0)
             {
                 state = 1;
             }
@@ -40,7 +40,7 @@ public class SequenceExample : MonoBehaviour {
             }
             break;
         case 2:
-            if (movementControls.DriveTo(Vector3.zero, true) == 1)
+            if (movementControls.DriveTo(Vector3.zero, true) == 0)
             {
                 pickupRoutine.Drop();
                 state = 3;
