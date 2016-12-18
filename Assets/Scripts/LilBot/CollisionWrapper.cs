@@ -1,4 +1,7 @@
-﻿// Add simple collision check script to object, used with collision check function
+﻿/*
+    Add simple collision check script to object, used with
+    main collision check script (CheckCollision.cs)
+*/
 
 using UnityEngine;
 using System.Collections;

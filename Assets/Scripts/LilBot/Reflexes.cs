@@ -1,4 +1,7 @@
-﻿// Autonomous actions which can possibly override anything else, like manual control or queue executing
+﻿/*
+    Autonomous actions which can possibly override anything else,
+    such as manual control or queue executing
+*/
 
 using UnityEngine;
 using System.Collections;
@@ -10,7 +13,9 @@ namespace LilBotNamespace
     
 public class Reflexes : MonoBehaviour 
 {
+    [Tooltip("Automatically load the battery on low charge, halts all current actions until loaded")]
     public bool autoLoad = true;
+    [Tooltip("Debug bool for checking current load status")]
     public bool loading = false;
     
 	private Battery bat;

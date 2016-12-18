@@ -1,4 +1,8 @@
-﻿using UnityEngine;
+﻿/*
+    Internal battery object, used with bots
+*/
+
+using UnityEngine;
 using System.Collections;
 
 using LilBotNamespace;

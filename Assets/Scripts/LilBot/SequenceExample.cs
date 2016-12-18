@@ -1,4 +1,8 @@
-﻿using UnityEngine;
+﻿/*
+    Example of sequencing multiple bot actions using a state machine
+*/
+
+using UnityEngine;
 using System.Collections;
 
 using LilBotNamespace;

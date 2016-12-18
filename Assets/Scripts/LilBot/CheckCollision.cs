@@ -1,4 +1,6 @@
-﻿// Check if two objects are touching
+﻿/*
+    Wrapper script to check if two objects are touching
+*/
 
 using UnityEngine;
 using System.Collections;
@@ -8,6 +10,15 @@ public class CheckCollision : MonoBehaviour
     private static CollisionWrapper wrapper;
     
     public static bool Check (Collider coll1, Collider coll2, bool checkObjectTree=true)
+    /*
+        Check if two objects are touching
+        
+        If checkObjectTree is true, then check if any object related object
+        in first param is touching with any object related to
+        object in second param
+        
+        Returns true if touching, false otherwise
+    */
     {
         if (!checkObjectTree)
         {

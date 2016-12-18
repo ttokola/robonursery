@@ -1,8 +1,19 @@
-﻿using UnityEngine;
+﻿/*
+    Control facial expressions and eyebrow angle
+    
+    To add a new expression, create a new texture,
+    create a new enumeration for the expression,
+    and map the texture to the enumeration in SetMouth(MouthState state)
+    
+    Also map a string to this enumeration SetMouth(string state)
+*/
+
+using UnityEngine;
 using System.Collections;
 
 public class FaceControls : MonoBehaviour {
     
+    // Enumeration for the different mouht states
     public enum MouthState {smiling, neutral, frowning};
     
     public Renderer mouthRend;
@@ -19,8 +30,14 @@ public class FaceControls : MonoBehaviour {
         mouthMat = Instantiate(mouthRend.material);
 	}
 	
-    // Mapping of strings to mouth state enum
-	void SetMouth (string state)
+    /*
+        Mapping of strings to mouth state enum
+        We want to map strings to enums so we can set the facial expressions
+        From the inspector too, using the enum, but can use a string to set
+        The expression from another function
+    */
+	public void SetMouth (string state)
+    // Use this function to set the mouth expression from other scripts
     {
         switch (state)
         {
@@ -35,7 +52,9 @@ public class FaceControls : MonoBehaviour {
             break;
         }
 	}
+    
     void SetMouth (MouthState state)
+    // Set the mouth expression using enum, don't use this outside this script
     {
         switch (state)
         {
@@ -52,16 +71,14 @@ public class FaceControls : MonoBehaviour {
         mouthRend.material = mouthMat;
     }
     
-    void SetEyebrowAngle (float angle)
+    public void SetEyebrowAngle (float angle)
+    // Set the eyebrows to an arbitrary angle
     {
-        var rot = leftEyebrow.rotation.eulerAngles;
-        rot.z = -angle;
-        leftEyebrow.transform.rotation = Quaternion.Euler(rot);
-        rot = rightEyebrow.rotation.eulerAngles;
-        rot.z = angle;
-        rightEyebrow.transform.rotation = Quaternion.Euler(rot);
+        eyebrowAngle = angle;
     }
+
     void SetEyebrowAngle (string expr)
+    // Set the eyebrows to a predetermined angle, specified by a string
     {
         switch (expr)
         {
@@ -76,10 +93,22 @@ public class FaceControls : MonoBehaviour {
             break;
         }
     }
+
+    void RotateEyebrows ()
+    // Rotate the eyebrows, called on Update()
+    {
+        var rot = leftEyebrow.rotation.eulerAngles;
+        rot.z = -eyebrowAngle;
+        leftEyebrow.transform.rotation = Quaternion.Euler(rot);
+        rot = rightEyebrow.rotation.eulerAngles;
+        rot.z = eyebrowAngle;
+        rightEyebrow.transform.rotation = Quaternion.Euler(rot);
+    }
     
     void Update ()
     {
+        // Set the facial expression on every update
         SetMouth(mouth);
-        SetEyebrowAngle(eyebrowAngle);
+        RotateEyebrows();
     }
 }

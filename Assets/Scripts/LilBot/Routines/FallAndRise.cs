@@ -1,4 +1,12 @@
-﻿using UnityEngine;
+﻿/*
+    Fall deliberately, and get back up using hands
+    Rising up is not physically accurate
+    
+    Routine is implemented with a state-machine, do not attempt to move
+    the bot while routine is in progress
+*/
+    
+using UnityEngine;
 using System.Collections;
 
 namespace LilBotNamespace
@@ -17,9 +25,13 @@ public class FallAndRise : MonoBehaviour
     private int fallAndRiseState = 0;
     private RigidbodyConstraints oldConstraints;
     
-    int Execute ()
-    /*  Fall deliberately, and get back up using hands
-        Rising up is not physically accurate */
+    public int Execute ()
+    /*
+        Call this continuously to execute the routine
+        Return codes:
+        0: Routine complete
+        2: Routine in progress
+    */
     {
         // State-machine for the fall and rise routine
         switch (fallAndRiseState)
@@ -87,16 +99,6 @@ public class FallAndRise : MonoBehaviour
         
         return 2;
     }
-    
-	void Start ()
-    {
-        
-	}
-	
-	void Update ()
-    {
-        //Execute();
-	}
 }
 
 } // End namespace

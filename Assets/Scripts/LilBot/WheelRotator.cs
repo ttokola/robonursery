@@ -1,4 +1,8 @@
-﻿using UnityEngine;
+﻿/*
+    Rotate an individual wheel, and play sound effects
+*/
+
+using UnityEngine;
 using System.Collections;
 
 using LilBotNamespace;

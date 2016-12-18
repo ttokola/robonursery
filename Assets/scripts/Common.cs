@@ -1,4 +1,8 @@
-﻿using UnityEngine;
+﻿/*
+    Miscellaneous helper functions for calculating angles etc.
+*/
+
+using UnityEngine;
 using System.Collections;
 
 public static class Utils
@@ -20,8 +24,7 @@ public static class Utils
 	}
 	
 	public static float AngleTo(Vector3 pointFrom, Vector3 reference, Vector3 pointTo)
-	// Return the angle between points from and to,
-	// relative to reference vector
+	// Return the angle between points from and to, relative to reference vector
 	{
 		float refAngle = Vector3.Angle(Vector3.right, reference);
 		if (reference.z > 0) { // It's on the left side

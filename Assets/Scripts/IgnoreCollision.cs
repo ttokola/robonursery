@@ -6,6 +6,7 @@ using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 
+// Why do we need a wrapper? answer:
 // http://answers.unity3d.com/questions/289692/serialize-nested-lists.html
 [System.Serializable]
 public class ListWrapper

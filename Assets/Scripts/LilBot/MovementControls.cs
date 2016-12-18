@@ -1,4 +1,13 @@
-﻿// Low-level fucntions which control movement of the robot
+﻿/*
+    Control movement of the robot
+    
+    Private functions in this script perform low level functions,
+    such as rotating individual wheels,
+    while pulic functions are intended for more general purpose usage,
+    e.g. driving towards a target
+    
+    Check individual functions for usage
+*/
 
 using UnityEngine;
 using System.Collections;
@@ -29,7 +38,6 @@ public class MovementControls : MonoBehaviour
 	
 	void RotateWheel(string wheel, float torque)
     // Rotate the given wheel and deplete battery
-	// Ultimately, probably all moving components should consume battery straight in the baseclass
 	{
 		if (battery.normLevel <= 0)
 		{
@@ -66,8 +74,12 @@ public class MovementControls : MonoBehaviour
 	}
 	
 	public int TurnTo(Vector3 target)
-	// Turn towards a coordinate
-	// Return 0 if angle to target is below threshold, 2 otherwise
+	/*
+        Turn towards a target vector coordinate
+        Return codes:
+            0: Successfully turned towards target
+            2: Turning in progress
+    */
 	{
 		float angle = Utils.AngleTo(body.position, body.transform.forward, target);
 		if (Mathf.Abs(angle) > angleThreshold)
@@ -82,16 +94,27 @@ public class MovementControls : MonoBehaviour
 		}
 	}
 	public int TurnTo(Transform target)
-	// Turn towards a transform
-	// Return 0 if angle to target is below threshold, 2 otherwise
+	/*
+        Turn towards a target coordinate
+        overloaded function which gets the coordinates
+        from the position of the target transform
+    */
 	{
 		return TurnTo(target.position);
 	}
 	
-	public int DriveTo(Vector3 target, bool enablePathfinding, Collider other=null, float distanceThreshold=0.5f)
-	// Drive near a position until threshold is reached
-	// Return 0 if distance to target is below threshold, 2 otherwise
-    // If collider is provided, then also return 0 if colliders are touching even before threshold is reached
+	public int DriveTo(Vector3 target, bool enablePathfinding,
+                       Collider other=null, float distanceThreshold=0.5f)
+	/* 
+        Drive near a position until distance threshold is reached.
+        
+        If collider is provided, then also return 0 if colliders are touching
+        even before threshold is reached.
+        
+        Return codes:
+            0: Target reached, distance below threshold
+            2: Driving towards target otherwise
+    */
 	{
         // Check if we are already there
         var dist = new float();
@@ -151,7 +174,9 @@ public class MovementControls : MonoBehaviour
 
 	}
     
-    // Overloaded methods for driving, return codes as above
+    /*  
+        Overloaded methods for driving, return codes as above
+    */
 	public int DriveTo(Vector3 target)
     {
         return DriveTo(target, false);
@@ -166,13 +191,6 @@ public class MovementControls : MonoBehaviour
 	public int DriveTo(Transform target)
 	{
 		return DriveTo(target, false);
-	}
-	
-	void Update ()
-	{
-		//Debug.Log(Utils.Vec3FullAngle(body.right, new Vector3(goTo.x, 0, goTo.z)));
-		//Debug.Log(Utils.AngleTo(body.position, body.right, goTo));
-		//Debug.Log(battery.normLevel);
 	}
 }
 

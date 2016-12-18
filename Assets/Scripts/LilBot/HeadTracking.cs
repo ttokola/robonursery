@@ -1,4 +1,6 @@
-﻿// Rotate the head towards a given transform
+﻿/*
+    Track the head towards a specified transform
+*/
 
 using UnityEngine;
 using System.Collections;
@@ -12,6 +14,7 @@ public class HeadTracking : MonoBehaviour {
     
     public Rigidbody head;
     public Rigidbody neck;
+    [Tooltip("The target transform towards which the head will be rotated, if possible")]
     public Transform target;
     
     private float timer;

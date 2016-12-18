@@ -2,7 +2,8 @@
     Configures a ball joint.
     
     The object should be oriented so that y points up and z points forward. The
-    object origin should be set to the center of the imaginary ball joint.
+    object origin should be set to the center of the invisible ball joint
+    this script will create.
 */
 
 using UnityEngine;
@@ -57,7 +58,14 @@ public class BallJoint : MonoBehaviour {
     }
     
     public int SetAngle (float horAngle, float verAngle)
-    // Set the angle of the ball joint
+    /*
+        Set the angle of the ball joint
+        
+        Return codes:
+            0: Angle set successfully
+            1: Cannot set angle
+            others: Depends on RotateRbToAngle implementation
+    */
     {
         var a = RotateRbToAngle(horRb, "y", horAngle, maxHorizontalForce, ref horPid);
         var b = RotateRbToAngle(verRb, "z", verAngle, maxVerticalForce, ref verPid);

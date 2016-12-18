@@ -1,4 +1,6 @@
-﻿// Autonomous actions which can possibly override anything else, like manual control or queue executing
+﻿/*
+    Load battery on low charge
+*/
 
 using UnityEngine;
 using System.Collections;
@@ -18,11 +20,13 @@ public class LoadBattery : MonoBehaviour
     private bool hasDest = false;
 	
 	public int Execute ()
-    // Attempt to load at a loading station
-    // Return codes:
-    // 0: Successfully loaded or already full battery
-    // 1: Cannot find a free loading station
-    // 2: moving towards loading station
+    /*
+        Call this continuously to execute the routine
+        Return codes:
+        0: Successfully loaded or already full battery
+        1: Cannot find a free loading station
+        2: Moving towards loading station
+    */
 	{
         if (battery.normLevel >= 1.0f)
         {

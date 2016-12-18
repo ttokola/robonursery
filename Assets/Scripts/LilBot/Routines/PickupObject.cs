@@ -1,4 +1,13 @@
-﻿using UnityEngine;
+﻿/*
+    Move to an object, pick it up, and hold it until Drop() is called
+    
+    Works reliably only with objects with rigidbody enabled.
+    
+    Routine is implemented with a state-machine, do not attempt to move
+    the bot while routine is in progress
+*/
+
+using UnityEngine;
 using System.Collections;
 
 namespace LilBotNamespace
@@ -23,6 +32,12 @@ public class PickupObject : MonoBehaviour {
     private Quaternion targetStartRot;
     
     public int Execute (GameObject target)
+    /*
+        Call this continuously to execute the routine
+        Return codes:
+        0: Routine complete
+        2: Routine in progress
+    */
     {
         targetRb = target.GetComponent<Rigidbody> ();
         targetTr = target.GetComponent<Transform> ();
@@ -63,6 +78,7 @@ public class PickupObject : MonoBehaviour {
     }
     
     public void Drop ()
+    // Drop the currently held object
     {
         state = 0;
         Destroy(joint);
@@ -70,7 +86,7 @@ public class PickupObject : MonoBehaviour {
 	
 	void FixedUpdate ()
     {
-        if (state == 3)
+        if (state == 3)  // Hold-object state, keep holding the object in hands until state changes
         {
             armControls.SetStaticPosition("forwardH");
             // Move relative to hands

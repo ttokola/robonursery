@@ -1,4 +1,12 @@
-﻿using UnityEngine;
+﻿/*
+    Base class for pid parameters
+    https://en.wikipedia.org/wiki/PID_controller
+    
+    These are used mainly with arm controls, but could be also used
+    with more fine-tuned driving controls in the future
+*/
+
+using UnityEngine;
 using System.Collections;
 
 [System.Serializable]

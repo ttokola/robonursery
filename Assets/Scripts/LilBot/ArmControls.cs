@@ -1,4 +1,8 @@
-﻿using UnityEngine;
+﻿/*
+    Control the arms using ball joints
+*/
+
+using UnityEngine;
 using System.Collections;
 
 public class ArmControls : MonoBehaviour
@@ -10,8 +14,9 @@ public class ArmControls : MonoBehaviour
     public BallJoint rightLower;
     
     public int SetStaticPosition (float[] leftAngles, float[] rightAngles)
-    /*  Set the arms into any static angle
-        both leftAngles and rightAngles should have 4 values, one for
+    /*
+        Set the arms into any static angle
+        Both leftAngles and rightAngles should have 4 values, one for
         upper X, upper Y, lower X and lower Y angles
     */
     {
@@ -21,6 +26,7 @@ public class ArmControls : MonoBehaviour
         var rightLowerStatus = rightLower.SetAngle(rightAngles[2], rightAngles[3]);
         int[] statuses = {leftUpperStatus, leftLowerStatus,
                           rightUpperStatus, rightLowerStatus};
+        // Check for bad return codes
         foreach (var s in statuses)
         {
             if (s == 1)
@@ -39,7 +45,8 @@ public class ArmControls : MonoBehaviour
     }
     
     public int SetStaticPosition (string position)
-    /*  Set the arms into a predetermined static position
+    /*
+        Set the arms into a predetermined static position
         Available position strings and their correspoding arm positions:
             idle: folded in front of the robot
             sides: extended to the sides
@@ -48,8 +55,9 @@ public class ArmControls : MonoBehaviour
             forwardH: extended forwards, leaning up
             back: extended backwards
             down: extended down
+            up: extended up
             
-        New static positions can be easily added by adding correspoding
+        New static positions can be added by adding correspoding
         string-angle mapping to the switch.
     */    
     {
@@ -93,6 +101,7 @@ public class ArmControls : MonoBehaviour
         return SetStaticPosition(lAngles, rAngles);
         
         // Pid resetting might actually cause wrong movements, don't do this
+        // Saved for future reference
         /*
         // Reset pid params if we are adjusting to new position
         if (position != prevPosition)
@@ -104,19 +113,4 @@ public class ArmControls : MonoBehaviour
             rightLower.ResetPID();
         }*/
     }
-    
-    // Maybe move this into a routine
-    /*
-    public void Wave ()
-    {
-        if (waveState == 0 && SetStaticPosition("wave1") == 0)
-        {
-            waveState = 1;
-        }
-        if (waveState == 1 && SetStaticPosition("wave2") == 0)
-        {
-            waveState = 0;
-        }
-    }
-    */
 }

@@ -1,4 +1,8 @@
-﻿using UnityEngine;
+﻿/*
+    Pathfinding using the Unity internal pathfinding engine
+*/
+
+using UnityEngine;
 using System.Collections;
 
 public class PathFinding : MonoBehaviour {
@@ -35,17 +39,21 @@ public class PathFinding : MonoBehaviour {
     }
     
     public void SetDestination(Vector3 destination)
-    // Calculate the path for the agent
-    // Simulation is halted until the path calculation is complete,
-    // so this might become problematic with many bots in the future
+    /*
+        Calculate the path for the agent
+        Simulation is halted until the path calculation is complete,
+        so this might become problematic with many bots in the future
+    */
     {
         agent.CalculatePath(destination, path);
         waypointIndex = 0;
     }
     
     public Vector3 NextWaypoint()
-    // Get the next waypoint of the path if possible,
-    // otherwise return the last waypoint
+    /*
+        Get the next waypoint of the path if possible,
+        otherwise return the last waypoint
+    */
     {
         // We want to start from index 1 (second waypoint).
         // First waypoint is the position of the agent at the beginning

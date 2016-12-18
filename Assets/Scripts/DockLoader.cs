@@ -1,4 +1,8 @@
-﻿using UnityEngine;
+﻿/*
+    Configure loading behaviour near a loading dock
+*/
+
+using UnityEngine;
 using System.Collections;
 
 public class DockLoader : MonoBehaviour {
