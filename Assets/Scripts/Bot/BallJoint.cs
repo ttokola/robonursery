@@ -11,12 +11,14 @@ using System.Collections;
 
 public class BallJoint : MonoBehaviour {
 
+    [Tooltip("The maximum allowed force for horizontal and vertical movement for this balljoint")]
     public float maxHorizontalForce, maxVerticalForce;
-    //public float horAngle, verAngle;
+    [Tooltip("Determines the maximum absolute (-+) angle for x and y rotations of this balljoint")]
     public float angleLimit;
+    [Tooltip("The threshold below which the angle joint is considered to be at the target rotation")]
+    public float errorThreshold = 5f;
     public Rigidbody connected;
     public PIDParameters horPid, verPid;
-    public float errorThreshold = 5f;
     
     private float start;
     private ConfigurableJoint horJoint, verJoint;
