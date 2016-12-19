@@ -1,3 +1,10 @@
+/*
+    A simple queue for chaining multiple movements
+    
+    Sequences give more fine-tuned options, but this can still be used
+    for testing simple movements
+*/
+
 using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;

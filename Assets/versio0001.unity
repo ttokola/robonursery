@@ -4692,7 +4692,6 @@ GameObject:
   - 4: {fileID: 1458937875}
   - 114: {fileID: 1458937879}
   - 114: {fileID: 1458937878}
-  - 114: {fileID: 1458937877}
   - 114: {fileID: 1458937876}
   - 114: {fileID: 1458937881}
   - 114: {fileID: 1458937882}
@@ -4744,23 +4743,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   autoLoad: 1
   loading: 0
---- !u!114 &1458937877
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 114000010787007156, guid: efcbc2e263fda9d479f16b725d093624,
-    type: 2}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1458937874}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fffc4b815a4387643b293c580e507121, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  debug: 0
-  controls: {fileID: 1458937879}
-  pathFinder: {fileID: 1458937884}
-  usePathfinding: 1
-  locations: []
 --- !u!114 &1458937878
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4789,9 +4771,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 29509426a80354840b809a08c5d8e2a7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  slowingDistance: 1.5
+  slowingDistanceModifier: 1
+  wheelTorqueModifier: 1
+  wheelTorqueTurningModifier: 2
   body: {fileID: 1348113463}
-  ballJoints: []
   battery: {fileID: 1458937880}
   pathFinding: {fileID: 1458937884}
   leftWheel: {fileID: 1398950155}
@@ -5884,9 +5867,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 29509426a80354840b809a08c5d8e2a7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  slowingDistance: 1.5
+  slowingDistanceModifier: 1
+  wheelTorqueModifier: 1
+  wheelTorqueTurningModifier: 2
   body: {fileID: 1608744271}
-  ballJoints: []
   battery: {fileID: 1665910898}
   pathFinding: {fileID: 1665910903}
   leftWheel: {fileID: 553592829}
