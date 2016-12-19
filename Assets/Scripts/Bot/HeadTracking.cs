@@ -7,14 +7,20 @@ using System.Collections;
 
 public class HeadTracking : MonoBehaviour {
 
+    [Tooltip("Enable actual tracking, keep the script always enabled to avoid head flopping around")]
     public bool trackingEnabled = true;
+    [Tooltip("Maximum horizontal angle of the head")]
     public float xLimit = 90;
+    [Tooltip("Maximum vertical angle of the head")]
     public float yLimit = 45;
+    [Tooltip("Modifier for the rotation speed of the head")]
     public float headMovementSpeedMod = 1f;
     
+    [Tooltip("Drag the rigidbody attached to the robot head here")]
     public Rigidbody head;
+    [Tooltip("Drag the rigidbody attached to the robot neck here. Neck is considered as the neutral position to which the head rotation is compared.")]
     public Rigidbody neck;
-    [Tooltip("The target transform towards which the head will be rotated, if possible")]
+    [Tooltip("The target transform towards which the head will be rotated, if possible. Change this from other scripts to change the target dynamically.")]
     public Transform target;
     
     private float timer;

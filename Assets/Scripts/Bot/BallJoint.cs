@@ -17,6 +17,7 @@ public class BallJoint : MonoBehaviour {
     public float angleLimit;
     [Tooltip("The threshold below which the angle joint is considered to be at the target rotation")]
     public float errorThreshold = 5f;
+    [Tooltip("The rigidbody to which this rigidbody should connect with the balljoint")]
     public Rigidbody connected;
     public PIDParameters horPid, verPid;
     

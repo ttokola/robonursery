@@ -1,8 +1,8 @@
 /*
-    A simple queue for chaining multiple movements
+    A simple queue for chaining multiple movements,
     
-    Sequences give more fine-tuned options, but this can still be used
-    for testing simple movements
+    As sequences give more fine-tuned options, this script is deprecated,
+    but can still be used to test simple movements
 */
 
 using UnityEngine;

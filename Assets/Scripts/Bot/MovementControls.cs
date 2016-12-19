@@ -26,10 +26,13 @@ public class MovementControls : MonoBehaviour
     [Tooltip("Additional modifier for wheel rotation torque during turning")]
 	public float wheelTorqueTurningModifier = 2f;
     
-    public Rigidbody body;
- 
+    [Tooltip("Drag the rigidbody attached to the robot body here")]
+    public Rigidbody robotBody;
+    [Tooltip("Drag the battery attached to the robot here")]
 	public Battery battery;
+    [Tooltip("Drag the pathfinding script attached to the robot here")]
     public PathFinding pathFinding;
+    [Tooltip("Drag the rigidbodies attached to robot wheels here")]
 	public WheelRotator leftWheel, rightWheel;
 
     private bool getWaypoint = false;
@@ -83,7 +86,7 @@ public class MovementControls : MonoBehaviour
             2: Turning in progress
     */
 	{
-		float angle = Utils.AngleTo(body.position, body.transform.forward, target);
+		float angle = Utils.AngleTo(robotBody.position, robotBody.transform.forward, target);
 		if (Mathf.Abs(angle) > angleThreshold)
 		{
 			float direction = Mathf.Sign(angle);
@@ -120,12 +123,12 @@ public class MovementControls : MonoBehaviour
 	{
         // Check if we are already there
         var dist = new float();
-		dist = Utils.FlatDist(body.position, target);
+		dist = Utils.FlatDist(robotBody.position, target);
         
 		if (Mathf.Abs(dist) <= distanceThreshold) {
 			return 0;
 		}
-        if (other != null && CheckCollision.Check(body.GetComponent<Collider> (), other))
+        if (other != null && CheckCollision.Check(robotBody.GetComponent<Collider> (), other))
         {
             //Debug.Log("Touching other");
             return 0;
@@ -153,7 +156,7 @@ public class MovementControls : MonoBehaviour
         
         // Calculate distance again, needed because we might only be at the
         // waypoint and not the actual target
-		dist = Utils.FlatDist(body.position, waypoint);
+		dist = Utils.FlatDist(robotBody.position, waypoint);
         
         // Current waypoint reached but not yet at target, get next one
         if (enablePathfinding && (Mathf.Abs(dist) <= distanceThreshold)) {
@@ -165,7 +168,7 @@ public class MovementControls : MonoBehaviour
 			return 2;
 		}
         // Don't move too fast
-        if (Mathf.Abs(dist) < slowingDistanceModifier * body.velocity.magnitude) {
+        if (Mathf.Abs(dist) < slowingDistanceModifier * robotBody.velocity.magnitude) {
 			return 2;
 		}
         // Did not reach destination yet but we are turned correctly,

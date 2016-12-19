@@ -14,9 +14,10 @@ namespace LilBotNamespace
     
 public class FallAndRise : MonoBehaviour
 {
-    public Rigidbody body;
-    
     public ArmControls armControls;
+    [Tooltip("Drag the rigidbody attached to robot body here")]
+    public Rigidbody robotBody;
+    [Tooltip("Drag the rigidbodies attached to robot wheels here. Wheels may be locked during the routine to prevent slipping.")]
     public Rigidbody[] wheels;
 
     private float fallAndRiseStartTime;
@@ -38,14 +39,14 @@ public class FallAndRise : MonoBehaviour
         {
         // Routine start
         case 0:
-            oldConstraints = body.constraints;
-            body.constraints = RigidbodyConstraints.None;
+            oldConstraints = robotBody.constraints;
+            robotBody.constraints = RigidbodyConstraints.None;
             fallAndRiseStartTime = Time.time;
             fallAndRiseState = 1;
             break;
         // No rotation restriction, falling down
         case 1:
-            if (Mathf.Abs(Utils.AngleNorm180(body.transform.eulerAngles.x)) > 45f)
+            if (Mathf.Abs(Utils.AngleNorm180(robotBody.transform.eulerAngles.x)) > 45f)
             {
                 fallAndRiseState = 2;
                 fallenTime = Time.time;
@@ -71,9 +72,9 @@ public class FallAndRise : MonoBehaviour
             {
                 rb.constraints = RigidbodyConstraints.FreezeRotation;
             }
-            string pos = (Utils.AngleNorm180(body.transform.eulerAngles.x) > 0) ? "forward" : "back";
+            string pos = (Utils.AngleNorm180(robotBody.transform.eulerAngles.x) > 0) ? "forward" : "back";
             armControls.SetStaticPosition(pos);
-            if (Mathf.Abs(Utils.AngleNorm180(body.transform.eulerAngles.x)) < 30f)
+            if (Mathf.Abs(Utils.AngleNorm180(robotBody.transform.eulerAngles.x)) < 30f)
             {
                 fallAndRiseState = 5;
                 riseupStart = Time.time;
@@ -81,10 +82,10 @@ public class FallAndRise : MonoBehaviour
             break;
         // Move back upright
         case 5:
-            body.angularVelocity = Vector3.zero;
-            body.velocity = Vector3.zero;
-            body.constraints = oldConstraints;
-            body.MoveRotation(Quaternion.Euler(Vector3.zero));
+            robotBody.angularVelocity = Vector3.zero;
+            robotBody.velocity = Vector3.zero;
+            robotBody.constraints = oldConstraints;
+            robotBody.MoveRotation(Quaternion.Euler(Vector3.zero));
             if (Time.time - riseupStart > 5f) // Assume we are up after 5s
             {
                 foreach (Rigidbody rb in wheels)

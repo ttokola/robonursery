@@ -16,11 +16,15 @@ public class FaceControls : MonoBehaviour {
     // Enumeration for the different mouht states
     public enum MouthState {smiling, neutral, frowning};
     
+    [Tooltip("Drag the mesh of the mouth here")]
     public Renderer mouthRend;
+    [Tooltip("Drag the transforms of left and right eyebrow here")]
     public Transform leftEyebrow, rightEyebrow;
+    [Tooltip("Define the textures to be used for each mouth expression")]
     public Texture smilingTexture, neutralTexture, frowningTexture;
-    
+    [Tooltip("View or change the current mouth expression")]
     public MouthState mouth;
+    [Tooltip("View or change the current eyebrow angle")]
     public float eyebrowAngle = 0f;
     
     private Material mouthMat;

@@ -2002,6 +2002,7 @@ MonoBehaviour:
   maxHorizontalForce: 550
   maxVerticalForce: 550
   angleLimit: 95
+  errorThreshold: 5
   connected: {fileID: 1608744271}
   horPid:
     kp: 1
@@ -2021,7 +2022,6 @@ MonoBehaviour:
     currentError: 0
     prevError: 0
     output: 0
-  errorThreshold: 5
 --- !u!65 &837893889
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -2657,6 +2657,7 @@ MonoBehaviour:
   maxHorizontalForce: 550
   maxVerticalForce: 550
   angleLimit: 95
+  errorThreshold: 5
   connected: {fileID: 1348113463}
   horPid:
     kp: 1
@@ -2676,7 +2677,6 @@ MonoBehaviour:
     currentError: 0
     prevError: 0
     output: 0
-  errorThreshold: 5
 --- !u!65 &1058987167
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -2826,6 +2826,7 @@ MonoBehaviour:
   maxHorizontalForce: 550
   maxVerticalForce: 550
   angleLimit: 170
+  errorThreshold: 5
   connected: {fileID: 1058987164}
   horPid:
     kp: 1
@@ -2845,7 +2846,6 @@ MonoBehaviour:
     currentError: 0
     prevError: 0
     output: 0
-  errorThreshold: 5
 --- !u!23 &1058987176
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -4756,9 +4756,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   torqueMod: 10
-  enable: 1
   controls: {fileID: 1458937879}
-  body: {fileID: 1348113463}
 --- !u!114 &1458937879
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4774,7 +4772,7 @@ MonoBehaviour:
   slowingDistanceModifier: 1
   wheelTorqueModifier: 1
   wheelTorqueTurningModifier: 2
-  body: {fileID: 1348113463}
+  robotBody: {fileID: 1348113463}
   battery: {fileID: 1458937880}
   pathFinding: {fileID: 1458937884}
   leftWheel: {fileID: 1398950155}
@@ -4850,8 +4848,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ea34a6cc718c989438a3bfc8835b636b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  body: {fileID: 1348113463}
   armControls: {fileID: 1458937882}
+  robotBody: {fileID: 1348113463}
   wheels:
   - {fileID: 1398950157}
   - {fileID: 1251232916}
@@ -4939,7 +4937,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f9d1741956beee945b5b3fef7228a25f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  tar: {fileID: 0}
   leftWheel: {fileID: 1398950157}
   rightWheel: {fileID: 1251232916}
   leftHand: {fileID: 736784346}
@@ -5669,7 +5666,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f9d1741956beee945b5b3fef7228a25f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  tar: {fileID: 0}
   leftWheel: {fileID: 553592835}
   rightWheel: {fileID: 1326957694}
   leftHand: {fileID: 33065604}
@@ -5760,8 +5756,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ea34a6cc718c989438a3bfc8835b636b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  body: {fileID: 1608744271}
   armControls: {fileID: 1665910905}
+  robotBody: {fileID: 1608744271}
   wheels:
   - {fileID: 553592835}
   - {fileID: 1326957694}
@@ -5852,9 +5848,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   torqueMod: 10
-  enable: 1
   controls: {fileID: 1665910910}
-  body: {fileID: 1608744271}
 --- !u!114 &1665910910
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5870,7 +5864,7 @@ MonoBehaviour:
   slowingDistanceModifier: 1
   wheelTorqueModifier: 1
   wheelTorqueTurningModifier: 2
-  body: {fileID: 1608744271}
+  robotBody: {fileID: 1608744271}
   battery: {fileID: 1665910898}
   pathFinding: {fileID: 1665910903}
   leftWheel: {fileID: 553592829}
@@ -6132,6 +6126,7 @@ MonoBehaviour:
   maxHorizontalForce: 550
   maxVerticalForce: 550
   angleLimit: 170
+  errorThreshold: 5
   connected: {fileID: 837893890}
   horPid:
     kp: 1
@@ -6151,7 +6146,6 @@ MonoBehaviour:
     currentError: 0
     prevError: 0
     output: 0
-  errorThreshold: 5
 --- !u!65 &1752153860
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -6255,6 +6249,7 @@ MonoBehaviour:
   maxHorizontalForce: 550
   maxVerticalForce: 550
   angleLimit: 95
+  errorThreshold: 5
   connected: {fileID: 1348113463}
   horPid:
     kp: 1
@@ -6274,7 +6269,6 @@ MonoBehaviour:
     currentError: 0
     prevError: 0
     output: 0
-  errorThreshold: 5
 --- !u!4 &1808990327
 Transform:
   m_ObjectHideFlags: 0
@@ -6505,6 +6499,7 @@ MonoBehaviour:
   maxHorizontalForce: 550
   maxVerticalForce: 550
   angleLimit: 170
+  errorThreshold: 5
   connected: {fileID: 1943238568}
   horPid:
     kp: 1
@@ -6524,7 +6519,6 @@ MonoBehaviour:
     currentError: 0
     prevError: 0
     output: 0
-  errorThreshold: 5
 --- !u!65 &1905028875
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -6627,6 +6621,7 @@ MonoBehaviour:
   maxHorizontalForce: 550
   maxVerticalForce: 550
   angleLimit: 95
+  errorThreshold: 5
   connected: {fileID: 1608744271}
   horPid:
     kp: 1
@@ -6646,7 +6641,6 @@ MonoBehaviour:
     currentError: 0
     prevError: 0
     output: 0
-  errorThreshold: 5
 --- !u!65 &1943238567
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -7022,6 +7016,7 @@ MonoBehaviour:
   maxHorizontalForce: 550
   maxVerticalForce: 550
   angleLimit: 170
+  errorThreshold: 5
   connected: {fileID: 1808990325}
   horPid:
     kp: 1
@@ -7041,7 +7036,6 @@ MonoBehaviour:
     currentError: 0
     prevError: 0
     output: 0
-  errorThreshold: 5
 --- !u!54 &2140980922
 Rigidbody:
   m_ObjectHideFlags: 0

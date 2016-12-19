@@ -12,7 +12,9 @@ namespace LilBotNamespace
     
 public class LoadBattery : MonoBehaviour 
 {
+    [Tooltip("Drag the battery attached to the robot here")]
     public Battery battery;
+    [Tooltip("Drag the loading docks with DockLoader script attached to them here")]
     public DockLoader[] loadingAreas;
     public MovementControls movementControls;
     

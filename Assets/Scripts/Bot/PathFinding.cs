@@ -7,8 +7,10 @@ using System.Collections;
 
 public class PathFinding : MonoBehaviour {
 
+    [Tooltip("Enable display of debug mesh to view the next waypoint")]
     public bool showWaypoint = false;
     
+    [Tooltip("Drag the NavMesh agent attached to the robot here")]
     public NavMeshAgent agent;
 
     private int waypointIndex = 0;

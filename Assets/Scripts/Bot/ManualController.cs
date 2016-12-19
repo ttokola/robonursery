@@ -1,8 +1,9 @@
 ﻿/*
-    Drive the bot manually
-    Do not attempt to use other movement functions while doing this
+    Drive the bot manually. Manual controls are always enabled
+    if this script is enabled.
+    Do not attempt to use other movement functions while doing this.
     
-    Manual arm controls not implemented
+    Manual arm controls not yet implemented.
 */
 
 using UnityEngine;
@@ -15,17 +16,13 @@ namespace LilBotNamespace
     
 public class ManualController : MonoBehaviour 
 {
+    [Tooltip("Modifier for the rotation of the wheels with manual controls, note that this will be further modified by the modifier in the movement controls")]
 	public float torqueMod = 1;
-	public bool enable;
-	public MovementControls controls;
     
-    public Rigidbody body;
+    public MovementControls controls;
 	
 	void FixedUpdate ()
 	{
-		if (! enable) {
-			return;
-		}
 		controls.Drive(Input.GetAxis("Vertical") * torqueMod);
 		controls.Turn(Input.GetAxis("Horizontal") * torqueMod);
 	}

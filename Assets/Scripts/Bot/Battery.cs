@@ -11,7 +11,9 @@ namespace LilBotNamespace
 {
 public class Battery : MonoBehaviour
 {
+    [Tooltip("Maximum battery level")]
 	public float max;
+    [Tooltip("The material which should be recolored according to battery state")]
 	public Material mat;
 
     private bool previouslyEmpty, previouslyFull, previouslyLow;

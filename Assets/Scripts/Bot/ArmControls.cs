@@ -7,10 +7,13 @@ using System.Collections;
 
 public class ArmControls : MonoBehaviour
 {
-    
+    [Tooltip("Drag the balljoint script attached to the upper left arm here")]
     public BallJoint leftUpper;
+    [Tooltip("Drag the balljoint script attached to the lower left arm here")]
     public BallJoint leftLower;
+    [Tooltip("Drag the balljoint script attached to the upper right arm here")]
     public BallJoint rightUpper;
+    [Tooltip("Drag the balljoint script attached to the lower right arm here")]
     public BallJoint rightLower;
     
     public int SetStaticPosition (float[] leftAngles, float[] rightAngles)

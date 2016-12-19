@@ -16,8 +16,9 @@ namespace LilBotNamespace
 
 public class PickupObject : MonoBehaviour {
 
-    public GameObject tar;
+    [Tooltip("Drag the rigidbodies attached to robot wheels here, wheels will be locked to avoid slipping when picking up objects")]
     public Rigidbody leftWheel, rightWheel;
+    [Tooltip("Drag the transforms of the robot hands here")]
     public Transform leftHand, rightHand;
     
 	public ArmControls armControls;

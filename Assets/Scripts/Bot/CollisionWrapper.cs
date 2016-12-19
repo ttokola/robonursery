@@ -1,6 +1,6 @@
 ﻿/*
-    Add simple collision check script to object, used with
-    main collision check script (CheckCollision.cs)
+    Add simple collision check script to object,
+    used with main collision check script (CheckCollision.cs)
 */
 
 using UnityEngine;
