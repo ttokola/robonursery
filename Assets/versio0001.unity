@@ -4702,7 +4702,6 @@ GameObject:
   - 114: {fileID: 1458937887}
   - 114: {fileID: 1458937888}
   - 114: {fileID: 1458937880}
-  - 114: {fileID: 1458937889}
   m_Layer: 0
   m_Name: LilBot
   m_TagString: Untagged
@@ -4944,23 +4943,6 @@ MonoBehaviour:
   rightHand: {fileID: 1058987170}
   armControls: {fileID: 1458937882}
   movementControls: {fileID: 1458937879}
---- !u!114 &1458937889
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 114000010404900970, guid: efcbc2e263fda9d479f16b725d093624,
-    type: 2}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1458937874}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fb551382f9957c84bade39ca66ed623c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  ball: {fileID: 1035204841}
-  armControls: {fileID: 1458937882}
-  movementControls: {fileID: 1458937879}
-  pickupRoutine: {fileID: 1458937888}
-  loop: 1
 --- !u!1 &1477531372
 GameObject:
   m_ObjectHideFlags: 0
