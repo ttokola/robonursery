@@ -16,7 +16,9 @@ public class ListWrapper
 
 public class IgnoreCollision : MonoBehaviour {
 
+    [Tooltip("Defines sets of colliders amongst which collisions are disabled")]
     public List<ListWrapper> ignoredColliderSets;
+    [Tooltip("Defines colliders for which collisions are globally disabled")]
     public List<Collider> ignoreAllCollisions;
     
 	void Start ()
