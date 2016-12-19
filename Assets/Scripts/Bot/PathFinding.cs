@@ -60,7 +60,7 @@ public class PathFinding : MonoBehaviour {
         // of the path calculation, we don't care about that
         waypointIndex = Mathf.Min(path.corners.Length+1, waypointIndex+1);
         waypointDummy.transform.position = path.corners[waypointIndex];
-        Debug.Log("returning wp");
+        //Debug.Log("returning wp");
         return path.corners[waypointIndex];
     }    
     
