@@ -2481,7 +2481,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f495b2b3433399b4e97666f218a6d438, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  torqueMod: 10
+  torqueMod: 1
   controls: {fileID: 114000010113950696}
 --- !u!114 &114000010684345384
 MonoBehaviour:
@@ -2668,6 +2668,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c03a7405df0e644409539936d4762739, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  enableDepletion: 0
   max: 500
   mat: {fileID: 2100000, guid: c7225ce4a78201540bdeff1c8185fb9e, type: 2}
   _level: 500

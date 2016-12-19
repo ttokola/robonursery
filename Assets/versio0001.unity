@@ -358,6 +358,11 @@ Prefab:
       propertyPath: m_RootOrder
       value: 5
       objectReference: {fileID: 0}
+    - target: {fileID: 114000010675296108, guid: 830458524f2d6cd43b04b6e90025e334,
+        type: 2}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 830458524f2d6cd43b04b6e90025e334, type: 2}
   m_IsPrefabParent: 0
@@ -849,6 +854,16 @@ Prefab:
     - target: {fileID: 1000010671708894, guid: 830458524f2d6cd43b04b6e90025e334, type: 2}
       propertyPath: m_Name
       value: LilBot (1)
+      objectReference: {fileID: 0}
+    - target: {fileID: 59000011901295466, guid: 830458524f2d6cd43b04b6e90025e334,
+        type: 2}
+      propertyPath: m_ConnectedAnchor.x
+      value: 0.4001503
+      objectReference: {fileID: 0}
+    - target: {fileID: 59000010376685252, guid: 830458524f2d6cd43b04b6e90025e334,
+        type: 2}
+      propertyPath: m_ConnectedAnchor.x
+      value: -0.4001484
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 830458524f2d6cd43b04b6e90025e334, type: 2}

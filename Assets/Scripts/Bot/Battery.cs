@@ -11,6 +11,8 @@ namespace LilBotNamespace
 {
 public class Battery : MonoBehaviour
 {
+    [Tooltip("Enables depletion of battery")]
+    public bool enableDepletion = false;
     [Tooltip("Maximum battery level")]
 	public float max;
     [Tooltip("The material which should be recolored according to battery state")]
@@ -116,11 +118,16 @@ public class Battery : MonoBehaviour
 	}
 		
 	public void Deplete(float amount)
+    // Depletes the battery by given amount
 	{
-		level -= amount * Time.deltaTime;
+        if (enableDepletion)
+        {
+            level -= amount * Time.deltaTime;
+        }
 	}
 	
 	public void Charge(float amount)
+    // Charges the battery by given amount
 	{
 		level += amount * Time.deltaTime;
 	}
