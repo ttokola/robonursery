@@ -19,18 +19,20 @@ namespace LilBotNamespace
 
 public class MovementControls : MonoBehaviour
 {
-    public float slowingDistance;
+    [Tooltip("Modifier determining how early we should start slowing to avoid overshooting")]
+    public float slowingDistanceModifier = 1;
+    [Tooltip("Modifier for overall wheel rotation torque, fine-tune this to get a desired speed")]
+	public float wheelTorqueModifier = 1f;
+    [Tooltip("Additional modifier for wheel rotation torque during turning")]
+	public float wheelTorqueTurningModifier = 2f;
     
     public Rigidbody body;
-
-    public BallJoint[] ballJoints;   
+ 
 	public Battery battery;
     public PathFinding pathFinding;
 	public WheelRotator leftWheel, rightWheel;
 
-    private bool getWaypoint = false;    
-    private float angleThreshold = 3f;
-	private float torqueMod = 1f;
+    private bool getWaypoint = false;
     private Vector3 waypoint;
     private Vector3? prevTarget;  // The ? creates this as nullable, need
                                   // because first target might be 0,0,0 which
@@ -49,11 +51,11 @@ public class MovementControls : MonoBehaviour
 		}
 		if (wheel == "left")
 		{
-			leftWheel.Rotate(torque * torqueMod);
+			leftWheel.Rotate(torque * wheelTorqueModifier);
 		}
 		else
 		{
-			rightWheel.Rotate(torque * torqueMod);
+			rightWheel.Rotate(torque * wheelTorqueModifier);
 		}
 
 	}
@@ -61,9 +63,8 @@ public class MovementControls : MonoBehaviour
 	public void Turn(float force)
 	// Turn left (negative force) or right (positive force)
 	{
-		float mod = 2; // May need to increase torque for turning
-		RotateWheel("left", force * mod);
-		RotateWheel("right", -force * mod);
+		RotateWheel("left", force * wheelTorqueTurningModifier);
+		RotateWheel("right", -force * wheelTorqueTurningModifier);
 	}
 	
 	public void Drive(float force)
@@ -73,9 +74,10 @@ public class MovementControls : MonoBehaviour
 		RotateWheel("right", force);
 	}
 	
-	public int TurnTo(Vector3 target)
+	public int TurnTo(Vector3 target, float angleThreshold=3.0f)
 	/*
-        Turn towards a target vector coordinate
+        Turn towards a target vector coordinate,
+        until threshold in degrees is reached
         Return codes:
             0: Successfully turned towards target
             2: Turning in progress
@@ -93,7 +95,7 @@ public class MovementControls : MonoBehaviour
 			return 0;
 		}
 	}
-	public int TurnTo(Transform target)
+	public int TurnTo(Transform target, float angleThreshold=3.0f)
 	/*
         Turn towards a target coordinate
         overloaded function which gets the coordinates
@@ -125,7 +127,7 @@ public class MovementControls : MonoBehaviour
 		}
         if (other != null && CheckCollision.Check(body.GetComponent<Collider> (), other))
         {
-            Debug.Log("Touching other");
+            //Debug.Log("Touching other");
             return 0;
         }
         
@@ -163,7 +165,7 @@ public class MovementControls : MonoBehaviour
 			return 2;
 		}
         // Don't move too fast
-        if (Mathf.Abs(dist) < slowingDistance * body.velocity.magnitude) {
+        if (Mathf.Abs(dist) < slowingDistanceModifier * body.velocity.magnitude) {
 			return 2;
 		}
         // Did not reach destination yet but we are turned correctly,
@@ -176,6 +178,10 @@ public class MovementControls : MonoBehaviour
     
     /*  
         Overloaded methods for driving, return codes as above
+        
+        Coordinates inferred from Transform, if Transform is used as target
+        
+        Collision detection is enabled if Transform is provided as the target
     */
 	public int DriveTo(Vector3 target)
     {
