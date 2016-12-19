@@ -607,9 +607,9 @@ ConfigurableJoint:
   m_XMotion: 0
   m_YMotion: 0
   m_ZMotion: 0
-  m_AngularXMotion: 2
-  m_AngularYMotion: 2
-  m_AngularZMotion: 2
+  m_AngularXMotion: 1
+  m_AngularYMotion: 1
+  m_AngularZMotion: 0
   m_LinearLimitSpring:
     spring: 0
     damper: 0
@@ -621,18 +621,18 @@ ConfigurableJoint:
     spring: 0
     damper: 0
   m_LowAngularXLimit:
-    limit: 0
+    limit: -45
     bounciness: 0
     contactDistance: 0
   m_HighAngularXLimit:
-    limit: 0
+    limit: 45
     bounciness: 0
     contactDistance: 0
   m_AngularYZLimitSpring:
     spring: 0
     damper: 0
   m_AngularYLimit:
-    limit: 0
+    limit: 90
     bounciness: 0
     contactDistance: 0
   m_AngularZLimit:
@@ -1233,9 +1233,9 @@ ConfigurableJoint:
   m_XMotion: 0
   m_YMotion: 0
   m_ZMotion: 0
-  m_AngularXMotion: 2
-  m_AngularYMotion: 2
-  m_AngularZMotion: 2
+  m_AngularXMotion: 1
+  m_AngularYMotion: 1
+  m_AngularZMotion: 0
   m_LinearLimitSpring:
     spring: 0
     damper: 0
@@ -4880,12 +4880,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   trackingEnabled: 1
-  xLimit: 90
-  yLimit: 90
-  headMovementSpeedMod: 1
+  maxVerticalAngle: 45
+  maxHorizontalAngle: 90
+  headMovementSpeedMod: 10
+  neckJoint: {fileID: 543701773}
   head: {fileID: 543701769}
   neck: {fileID: 2020935360}
-  target: {fileID: 0}
+  target: {fileID: 1035204846}
 --- !u!114 &1458937886
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5724,9 +5725,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   trackingEnabled: 1
-  xLimit: 90
-  yLimit: 90
+  maxVerticalAngle: 45
+  maxHorizontalAngle: 90
   headMovementSpeedMod: 1
+  neckJoint: {fileID: 0}
   head: {fileID: 202211410}
   neck: {fileID: 178952425}
   target: {fileID: 0}
