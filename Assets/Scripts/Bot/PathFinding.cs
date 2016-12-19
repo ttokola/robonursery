@@ -31,15 +31,6 @@ public class PathFinding : MonoBehaviour {
         path = new NavMeshPath();
 	}
     
-    void OnValidate ()
-    // Change waypoint visibility if it's changed from inspector
-    {
-        if (waypointDummy != null)
-        {
-            waypointDummy.SetActive(showWaypoint);
-        }
-    }
-    
     public void SetDestination(Vector3 destination)
     /*
         Calculate the path for the agent
@@ -72,6 +63,7 @@ public class PathFinding : MonoBehaviour {
         // This throws errors if the agent has no transform,
         // which is probably what we want since we are using the agent
         // to just calculate paths for the actual rigidbody
+        waypointDummy.SetActive(showWaypoint);
         agent.Warp(agent.transform.position);
     }
 }

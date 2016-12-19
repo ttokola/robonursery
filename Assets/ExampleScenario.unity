@@ -291,7 +291,7 @@ Transform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 0
+  m_RootOrder: 1
 --- !u!1 &929635671 stripped
 GameObject:
   m_PrefabParentObject: {fileID: 100044, guid: 985dabbe3ee9fee4fbe0201494e6f1da, type: 3}
@@ -362,13 +362,13 @@ Prefab:
         type: 2}
       propertyPath: pos
       value: 
-      objectReference: {fileID: 2143514059}
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 830458524f2d6cd43b04b6e90025e334, type: 2}
   m_IsPrefabParent: 0
 --- !u!1 &960808157 stripped
 GameObject:
-  m_PrefabParentObject: {fileID: 1000010671708894, guid: 830458524f2d6cd43b04b6e90025e334,
+  m_PrefabParentObject: {fileID: 1000012365612368, guid: 830458524f2d6cd43b04b6e90025e334,
     type: 2}
   m_PrefabInternal: {fileID: 960808156}
 --- !u!114 &960808158
@@ -411,7 +411,7 @@ Transform:
   m_Children:
   - {fileID: 1572306400}
   m_Father: {fileID: 0}
-  m_RootOrder: 5
+  m_RootOrder: 6
 --- !u!1 &1062992142 stripped
 GameObject:
   m_PrefabParentObject: {fileID: 100040, guid: 985dabbe3ee9fee4fbe0201494e6f1da, type: 3}
@@ -501,7 +501,7 @@ Transform:
   m_LocalEulerAnglesHint: {x: 45, y: 135, z: 0}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 2
+  m_RootOrder: 3
 --- !u!1 &1339277932 stripped
 GameObject:
   m_PrefabParentObject: {fileID: 1000010671708894, guid: 0602dbe6f741a6b4d8544fa4a649720b,
@@ -795,7 +795,7 @@ Transform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 3
+  m_RootOrder: 4
 --- !u!1 &1675260780
 GameObject:
   m_ObjectHideFlags: 0
@@ -882,7 +882,7 @@ Transform:
   m_LocalEulerAnglesHint: {x: 35, y: 135, z: 0}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 4
+  m_RootOrder: 5
 --- !u!1 &1877743473 stripped
 GameObject:
   m_PrefabParentObject: {fileID: 100046, guid: 985dabbe3ee9fee4fbe0201494e6f1da, type: 3}
@@ -1005,8 +1005,3 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
---- !u!4 &2143514059 stripped
-Transform:
-  m_PrefabParentObject: {fileID: 4000011868252694, guid: 830458524f2d6cd43b04b6e90025e334,
-    type: 2}
-  m_PrefabInternal: {fileID: 960808156}
