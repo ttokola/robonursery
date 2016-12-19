@@ -14,7 +14,8 @@ public class DockLoader : MonoBehaviour {
 	void OnTriggerStay (Collider other)
 	{
 		bat = other.transform.root.gameObject.GetComponent<LilBotNamespace.Battery> ();
-        bat.Charge(10);
+        if (bat != null)
+            bat.Charge(10);
 	}
     
     void OnTriggerEnter (Collider other)
