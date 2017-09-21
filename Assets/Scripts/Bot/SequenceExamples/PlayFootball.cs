@@ -6,6 +6,7 @@ using UnityEngine;
 using System.Collections;
 
 using LilBotNamespace;
+using UnityEngine.AI;
 
 namespace LilBotNamespace
 {
