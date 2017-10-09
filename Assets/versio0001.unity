@@ -312,6 +312,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6d0ba5fc4a1b15e4884a8735200b58f5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &660019994
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 35813a1be64e144f887d7d5f15b963fa, type: 3}
+  m_Name: (Clone)
+  m_EditorClassIdentifier: 
+  brain: {fileID: 0}
 --- !u!1 &819060369
 GameObject:
   m_ObjectHideFlags: 0
@@ -360,14 +372,14 @@ MonoBehaviour:
     actionDescriptions:
     - Left
     - Rigth
-    actionSpaceType: 0
-    stateSpaceType: 0
-  brainType: 2
+    actionSpaceType: 1
+    stateSpaceType: 1
+  brainType: 0
   CoreBrains:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  instanceID: -134946
+  - {fileID: 924481439}
+  - {fileID: 1864379698}
+  - {fileID: 660019994}
+  instanceID: 10862
 --- !u!1 &866003614
 GameObject:
   m_ObjectHideFlags: 0
@@ -433,6 +445,33 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &924481439
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 41e9bda8f3cf1492fa74926a530f6f70, type: 3}
+  m_Name: (Clone)
+  m_EditorClassIdentifier: 
+  continuousPlayerActions:
+  - key: 113
+    index: 0
+    value: 10
+  - key: 97
+    index: 0
+    value: -10
+  - key: 101
+    index: 1
+    value: 10
+  - key: 100
+    index: 1
+    value: -10
+  discretePlayerActions: []
+  defaultAction: -1
+  brain: {fileID: 819060371}
 --- !u!1 &929635671 stripped
 GameObject:
   m_PrefabParentObject: {fileID: 100044, guid: 985dabbe3ee9fee4fbe0201494e6f1da, type: 3}
@@ -512,7 +551,7 @@ Prefab:
     - target: {fileID: 114000013816276306, guid: 830458524f2d6cd43b04b6e90025e334,
         type: 2}
       propertyPath: m_Enabled
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 114000011806935530, guid: 830458524f2d6cd43b04b6e90025e334,
         type: 2}
@@ -537,7 +576,7 @@ Prefab:
     - target: {fileID: 114000013302943076, guid: 830458524f2d6cd43b04b6e90025e334,
         type: 2}
       propertyPath: m_Enabled
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 830458524f2d6cd43b04b6e90025e334, type: 2}
@@ -570,7 +609,6 @@ MonoBehaviour:
   agentStoredAction: []
   memory: []
   id: 0
-  LilBot: {fileID: 100018, guid: 0896129da2188a1428f65ee2da3ac6ac, type: 3}
   Move: {fileID: 960031759}
 --- !u!114 &960031759 stripped
 MonoBehaviour:
@@ -1045,6 +1083,18 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 35, y: 135, z: 0}
+--- !u!114 &1864379698
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 943466ab374444748a364f9d6c3e2fe2, type: 3}
+  m_Name: (Clone)
+  m_EditorClassIdentifier: 
+  brain: {fileID: 0}
 --- !u!1 &1877743473 stripped
 GameObject:
   m_PrefabParentObject: {fileID: 100046, guid: 985dabbe3ee9fee4fbe0201494e6f1da, type: 3}
