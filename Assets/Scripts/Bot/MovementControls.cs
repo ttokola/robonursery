@@ -40,8 +40,8 @@ public class MovementControls : MonoBehaviour
     private Vector3? prevTarget;  // The ? creates this as nullable, need
                                   // because first target might be 0,0,0 which
                                   // will mess up the pathfinding
-	
-	void RotateWheel(string wheel, float torque)
+	//changed to public api2017
+	public void RotateWheel(string wheel, float torque)
     // Rotate the given wheel and deplete battery
 	{
 		if (battery.normLevel <= 0)
