@@ -83,8 +83,8 @@ public class BallJoint : MonoBehaviour {
         }
         return b;
     }
-    
-    int RotateRbToAngle (Rigidbody rb, string axle, float angle, float maxTorque, ref PIDParameters pp)
+    //changed to public for testing purposes api2017
+   public int RotateRbToAngle (Rigidbody rb, string axle, float angle, float maxTorque, ref PIDParameters pp)
     // Attempt to rotate a rigidbody to rotation by adding torque
     {
         angle = Mathf.Clamp(angle, -angleLimit, angleLimit); // Adding torque above limits might rotate the whole bot
