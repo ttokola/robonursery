@@ -19,8 +19,8 @@ public class MLAAgent : Agent
         List<float> state = new List<float>();
         state.Add(gameObject.transform.position.x);
         state.Add(gameObject.transform.position.z);
-        state.Add(gameObject.transform.GetComponent<Rigidbody>().velocity.x / 10f);
-        state.Add(gameObject.transform.GetComponent<Rigidbody>().velocity.z / 10f);
+        state.Add(gameObject.transform.GetComponent<Rigidbody>().velocity.x / 5f);
+        state.Add(gameObject.transform.GetComponent<Rigidbody>().velocity.z / 5f);
         state.Add(point.transform.position.x);
         state.Add(point.transform.position.z);
         return state;
@@ -44,18 +44,15 @@ public class MLAAgent : Agent
         }
         if (done == false)
         {
-            reward = 0.1f;
+            if (rb.velocity.magnitude != 0f) { reward = 0.1f; } else { done = true; reward = -1f; }
         }
+       
     }
 
     public override void AgentReset()
     {
-        gameObject.transform.position = new Vector3(0f, 0.5f, 0f);
+        gameObject.transform.position = new Vector3(Random.Range(-2f, 2f), 0.5f, Random.Range(-2f, 2f));
 
     }
-
-    public override void AgentOnDone()
-    {
-
-    }
+    
 }
