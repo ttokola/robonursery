@@ -62,10 +62,10 @@ public class MLAagent : Agent {
         //move the wheels using controls from Movementcontrols script
         Move.RotateWheel("left",act[0]);
         Move.RotateWheel("right", act[1]);
-        reward =+ 0.001f;
+        reward =+ 1f;
         if(act[0] >9 || act[1] >9)
         {
-            reward =+ 0.1f;
+            reward =+ 2f;
         }
 
 

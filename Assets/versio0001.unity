@@ -254,8 +254,8 @@ MonoBehaviour:
   frameToSkip: 0
   waitTime: 0
   trainingConfiguration:
-    width: 80
-    height: 80
+    width: 800
+    height: 800
     qualityLevel: 1
     timeScale: 100
     targetFrameRate: 60
@@ -285,6 +285,81 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 9
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &186506033
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 41e9bda8f3cf1492fa74926a530f6f70, type: 3}
+  m_Name: (Clone)(Clone)(Clone)(Clone)(Clone)(Clone)(Clone)(Clone)
+  m_EditorClassIdentifier: 
+  continuousPlayerActions:
+  - key: 113
+    index: 0
+    value: 10
+  - key: 97
+    index: 0
+    value: -10
+  - key: 101
+    index: 1
+    value: 10
+  - key: 100
+    index: 1
+    value: -10
+  - key: 100
+    index: 1
+    value: -10
+  - key: 100
+    index: 1
+    value: -10
+  - key: 100
+    index: 1
+    value: -10
+  - key: 100
+    index: 1
+    value: -10
+  - key: 100
+    index: 1
+    value: -10
+  - key: 100
+    index: 1
+    value: -10
+  - key: 100
+    index: 1
+    value: -10
+  - key: 100
+    index: 1
+    value: -10
+  - key: 100
+    index: 1
+    value: -10
+  - key: 100
+    index: 1
+    value: -10
+  - key: 100
+    index: 1
+    value: -10
+  - key: 100
+    index: 1
+    value: -10
+  discretePlayerActions: []
+  defaultAction: -1
+  brain: {fileID: 819060371}
+--- !u!114 &232493120
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 943466ab374444748a364f9d6c3e2fe2, type: 3}
+  m_Name: (Clone)(Clone)(Clone)(Clone)(Clone)(Clone)(Clone)(Clone)
+  m_EditorClassIdentifier: 
+  brain: {fileID: 0}
 --- !u!1 &554660146 stripped
 GameObject:
   m_PrefabParentObject: {fileID: 100042, guid: 985dabbe3ee9fee4fbe0201494e6f1da, type: 3}
@@ -312,18 +387,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6d0ba5fc4a1b15e4884a8735200b58f5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &613102905
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 943466ab374444748a364f9d6c3e2fe2, type: 3}
-  m_Name: (Clone)(Clone)(Clone)(Clone)(Clone)(Clone)
-  m_EditorClassIdentifier: 
-  brain: {fileID: 0}
 --- !u!1 &819060369
 GameObject:
   m_ObjectHideFlags: 0
@@ -387,12 +450,12 @@ MonoBehaviour:
     - 
     actionSpaceType: 1
     stateSpaceType: 1
-  brainType: 2
+  brainType: 0
   CoreBrains:
-  - {fileID: 939752022}
-  - {fileID: 613102905}
-  - {fileID: 1487300373}
-  instanceID: 11066
+  - {fileID: 186506033}
+  - {fileID: 232493120}
+  - {fileID: 986114319}
+  instanceID: 27560
 --- !u!1 &866003614
 GameObject:
   m_ObjectHideFlags: 0
@@ -485,69 +548,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6d0ba5fc4a1b15e4884a8735200b58f5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &939752022
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 41e9bda8f3cf1492fa74926a530f6f70, type: 3}
-  m_Name: (Clone)(Clone)(Clone)(Clone)(Clone)(Clone)
-  m_EditorClassIdentifier: 
-  continuousPlayerActions:
-  - key: 113
-    index: 0
-    value: 10
-  - key: 97
-    index: 0
-    value: -10
-  - key: 101
-    index: 1
-    value: 10
-  - key: 100
-    index: 1
-    value: -10
-  - key: 100
-    index: 1
-    value: -10
-  - key: 100
-    index: 1
-    value: -10
-  - key: 100
-    index: 1
-    value: -10
-  - key: 100
-    index: 1
-    value: -10
-  - key: 100
-    index: 1
-    value: -10
-  - key: 100
-    index: 1
-    value: -10
-  - key: 100
-    index: 1
-    value: -10
-  - key: 100
-    index: 1
-    value: -10
-  - key: 100
-    index: 1
-    value: -10
-  - key: 100
-    index: 1
-    value: -10
-  - key: 100
-    index: 1
-    value: -10
-  - key: 100
-    index: 1
-    value: -10
-  discretePlayerActions: []
-  defaultAction: -1
-  brain: {fileID: 819060371}
 --- !u!1001 &960031744
 Prefab:
   m_ObjectHideFlags: 0
@@ -680,6 +680,38 @@ MonoBehaviour:
     type: 2}
   m_PrefabInternal: {fileID: 960031744}
   m_Script: {fileID: 11500000, guid: 29509426a80354840b809a08c5d8e2a7, type: 3}
+--- !u!114 &960031761
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 960031746}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e040eaa8759024abbbb14994dc4c55ee, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  fixedPosition: 1
+  verticalOffset: 10
+  DisplayBrainName: 1
+  DisplayBrainType: 1
+  DisplayFrameCount: 1
+  DisplayCurrentReward: 1
+  DisplayMaxReward: 1
+  DisplayState: 1
+  DisplayAction: 1
+--- !u!114 &986114319
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 35813a1be64e144f887d7d5f15b963fa, type: 3}
+  m_Name: (Clone)(Clone)(Clone)(Clone)(Clone)(Clone)(Clone)(Clone)
+  m_EditorClassIdentifier: 
+  brain: {fileID: 819060371}
 --- !u!1 &1042820826
 GameObject:
   m_ObjectHideFlags: 0
@@ -801,18 +833,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 45, y: 135, z: 0}
---- !u!114 &1487300373
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 35813a1be64e144f887d7d5f15b963fa, type: 3}
-  m_Name: (Clone)(Clone)(Clone)(Clone)(Clone)(Clone)
-  m_EditorClassIdentifier: 
-  brain: {fileID: 819060371}
 --- !u!1001 &1488219333
 Prefab:
   m_ObjectHideFlags: 0
@@ -1064,7 +1084,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1661831482}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 3.48, y: 1.65, z: -2.52}
+  m_LocalPosition: {x: -1.77, y: 0.68, z: -3.64}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
