@@ -87,7 +87,7 @@ public class PlayFootball : MonoBehaviour {
         if ((ball.transform.position - goal).magnitude < 1.8f)
         {
             state = 4;
-            GameObject.FindGameObjectWithTag("GameController").GetComponent<Night>().Activate();
+            GameObject.FindGameObjectWithTag("GameController").GetComponent<DayController>().Activate();
         }
     }
     public void Reset()

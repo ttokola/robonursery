@@ -8,7 +8,10 @@ public class TemplateAgent : Agent {
 
     private Vector3 destionation = new Vector3(-28, 0, -6);
 
-	public override List<float> CollectState()
+    private bool externalAdd = false;
+    private int externalAddamount;
+
+    public override List<float> CollectState()
 	{
 		List<float> state = new List<float>();
 
@@ -33,6 +36,12 @@ public class TemplateAgent : Agent {
             case 3:
                 break;
         }
+
+        if (externalAdd)
+        {
+            reward = externalAddamount;
+            externalAdd = false;
+        }
 	}
 
 	public override void AgentReset()
@@ -44,4 +53,10 @@ public class TemplateAgent : Agent {
 	{
 
 	}
+
+    public void AddReward(int increament)
+    {
+        externalAddamount = increament;
+        externalAdd = true;
+    }
 }

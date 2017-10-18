@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Night : MonoBehaviour {
+public class DayController : MonoBehaviour {
 
     public Light worldLight;
     public Light ceilingLight;
