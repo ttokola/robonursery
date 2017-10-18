@@ -2,41 +2,32 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class HeadNoticing : MonoBehaviour {
+public class MovingScenario : MonoBehaviour {
 
-    public GameObject lilrobotHead;
+    public GameObject lilrobotBody;
 
-    private Vector3 orgPosition;
     private GameObject ball;
-    private Ray lilbotRay;
-    private RaycastHit hit;
     private bool done;
 
-    // Use this for initialization
-    void Start ()
+
+	// Use this for initialization
+	void Start ()
     {
         Debug.Log(this.GetType() + " started");
         done = false;
-        StartCoroutine(StartWait());  
-	}
+        StartCoroutine(StartWait());
+    }
 	
 	// Update is called once per frame
 	void Update ()
     {
-        orgPosition = lilrobotHead.transform.position;
-        lilbotRay = new Ray(orgPosition, lilrobotHead.transform.forward);
-
-        Debug.DrawRay(orgPosition, lilrobotHead.transform.forward * 10);
-
-		if(Physics.Raycast(lilbotRay, out hit, 10f))
+        if(ball != null)
         {
-            Debug.Log("Raycast hit "+hit.collider.name);
-            if(hit.collider.tag == "TargetBall")
+            if (Vector3.Distance(lilrobotBody.transform.position, ball.transform.position) < 2)
             {
                 if (!done)
                 {
-                    lilrobotHead.GetComponentInParent<TemplateAgent>().AddReward(100);
-                    Debug.Log("Reward earned!");
+                    lilrobotBody.GetComponentInParent<TemplateAgent>().AddReward(100);
                     done = true;
                 }
                 else
@@ -50,7 +41,7 @@ public class HeadNoticing : MonoBehaviour {
     void InstantiateBall()
     {
         ball = GameObject.CreatePrimitive(PrimitiveType.Sphere);
-        ball.transform.position = new Vector3(4.14f, 1.38f, 1.78f);
+        ball.transform.position = new Vector3(4.14f, 0.5f, 1.78f);
         ball.tag = "TargetBall";
     }
 
