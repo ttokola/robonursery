@@ -14,6 +14,7 @@ public class DayController : MonoBehaviour {
 
     public string status;
 
+
     private float wlintensityday;
     private float clintensityday;
     private bool activate;
@@ -21,11 +22,12 @@ public class DayController : MonoBehaviour {
     private int index;
     private bool nextscript;
 
-    private MonoBehaviour[] scenarios;
+    private IScenario[] scenarios;
 
 	// Use this for initialization
 	void Start ()
     {
+ 
         wlintensityday = worldLight.intensity;
         clintensityday = ceilingLight.intensity;
         status = "Day";
@@ -38,7 +40,6 @@ public class DayController : MonoBehaviour {
 	// Update is called once per frame
 	void Update ()
     {
-
         if (activate)
         {
             worldLight.intensity = Mathf.Lerp(worldLight.intensity, wlintensity, lerpPercent);
@@ -55,7 +56,8 @@ public class DayController : MonoBehaviour {
             if (nextscript)
             {
                 Debug.Log("Scenario setactive called");
-                scenarios[index].enabled = true;
+                scenarios[index].EnableScenario(true);
+                scenarios[index].ResetScenario();
                 nextscript = false;
             }
         }
@@ -63,13 +65,14 @@ public class DayController : MonoBehaviour {
 
     void Initialize()
     {
-        scenarios = transform.Find("Scenarios").GetComponents<MonoBehaviour>();
+        scenarios = transform.Find("Scenarios").GetComponents<IScenario>();
         Debug.Log("Initialization done");
         Debug.Log("Scenarios len: " + scenarios.Length);
     }
 
     public void Activate()
     {
+        Debug.Log("Activate called");
         activate = true;
         startTime = Time.time;
         status = "Night";
@@ -79,14 +82,19 @@ public class DayController : MonoBehaviour {
     {
         activate = false;
         status = "Day";
+        nextscript = true;
+        index = 0;
     }
 
     public void MovetoNextScenario(object scripttype, bool status)
     {
-        scenarios[index].enabled = false;
+        scenarios[index].EnableScenario(false);
         index++;
+        Debug.Log(index);
+        Debug.Log(scenarios.Length);
         if(index >= scenarios.Length)
         {
+            Debug.Log("Should not go here");
             Activate();
             index = 0;
         }

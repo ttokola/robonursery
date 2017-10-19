@@ -2,21 +2,14 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class MovingScenario : MonoBehaviour {
+public class MovingScenario : MonoBehaviour, IScenario {
 
     public GameObject lilrobotBody;
 
     private GameObject ball;
     private bool done;
+    private bool killcall = false;
 
-
-	// Use this for initialization
-	void Start ()
-    {
-        Debug.Log(this.GetType() + " started");
-        done = false;
-        StartCoroutine(StartWait());
-    }
 	
 	// Update is called once per frame
 	void Update ()
@@ -32,7 +25,12 @@ public class MovingScenario : MonoBehaviour {
                 }
                 else
                 {
-                    StartCoroutine(EndWait());
+                    if (!killcall)
+                    {
+                        StartCoroutine(EndWait());
+                        killcall = true;
+                    }
+                    
                 }
             }
         }
@@ -59,5 +57,18 @@ public class MovingScenario : MonoBehaviour {
 
         //Add functionality for moving to next scenarion by DayController
         GameObject.FindGameObjectWithTag("GameController").GetComponent<DayController>().MovetoNextScenario(this.GetType(), true);
+    }
+
+    public void EnableScenario(bool enabled)
+    {
+        this.enabled = enabled;
+    }
+
+    public void ResetScenario()
+    {
+        killcall = false;
+        Debug.Log(this.GetType() + " started");
+        done = false;
+        StartCoroutine(StartWait());
     }
 }
