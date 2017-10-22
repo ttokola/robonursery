@@ -15,6 +15,10 @@ public class ArmControls : MonoBehaviour
     public BallJoint rightUpper;
     [Tooltip("Drag the balljoint script attached to the lower right arm here")]
     public BallJoint rightLower;
+    [Tooltip("Drag the HandControl script attached to the right hand here")]
+    public HandControls rightHand;
+    [Tooltip("Drag the HandControl script attached to the left hand here")]
+    public HandControls leftHand;
     
     public int SetStaticPosition (float[] leftAngles, float[] rightAngles)
     /*
