@@ -16,11 +16,12 @@ public class agentParser : MonoBehaviour {
     [System.Serializable]
     public struct Component { 
         public GameObject gameObject;
-        public enum Type
+        public enum Type_
         {
             Joint,
             Wheel
         }
+        public Type_ Type;
         public int Axes;
         public Vector3 Dimensions;
         public int[] InputIndeces;
