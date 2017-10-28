@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class agentParser : MonoBehaviour {
+public class agentProto : MonoBehaviour {
 
     // Use this for initialization
     public bool RigidBody = true;
