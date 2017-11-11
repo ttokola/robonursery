@@ -1,35 +1,15 @@
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class agentProto : MonoBehaviour {
+public class AgentProto : AgentParser {
 
-    // Use this for initialization
-    public bool RigidBody = true;
-    [Header("Agent parameters")]
-
-        public int ActionSize;
-        public int StateSize;
-
-        public GameObject[] InUse;
-
-    [System.Serializable]
-    public struct Component { 
-        public GameObject gameObject;
-        public enum Type_
-        {
-            Joint,
-            Wheel
-        }
-        public Type_ Type;
-        public int Axes;
-        public Vector3 Dimensions;
-        public int[] InputIndeces;
-
-    }
-    public Component LForeArm;
-    public Component LUpperArm;
-    public Component RForeArm;
-    public Component RUpperArm;
-   
+    //public Component[] components;
+    //public List<Component> components = new List<Component>();
+    
+    //public Component LForeArm;
+    //public Component LUpperArm;
+    //public Component RForeArm;
+    //public Component RUpperArm;
+    
 }

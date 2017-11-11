@@ -25,7 +25,7 @@ public struct Component
 [System.Serializable]
 public struct AgentParameters
 {
-    public GameObject[] InUse;
+    //public GameObject[] InUse;
 
 }
 
@@ -72,12 +72,14 @@ public abstract class AgentParser : MonoBehaviour {
     [ContextMenu("Initialize AgentProto")]
     void InitializeParser()
     {
+        components.Clear();
         Transform[] allChildren = GetComponentsInChildren<Transform>();
         foreach (Transform child in allChildren)
         {
             if (child != allChildren[0])
             {
                 var component = new Component();
+                component.PartName = child.name;
                 component.gameObject = child.gameObject;
                 component.Movable = true;
                 components.Add(component);
