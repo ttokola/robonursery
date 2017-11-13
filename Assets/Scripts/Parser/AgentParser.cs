@@ -6,6 +6,8 @@ using UnityEditor;
 #endif
 
 
+public abstract class AgentParser : MonoBehaviour {
+
 [System.Serializable]
 public struct Component
 {
@@ -29,7 +31,6 @@ public struct AgentParameters
 
 }
 
-public abstract class AgentParser : MonoBehaviour {
 
     // Use this for initialization
     public AgentParameters agentParameters;
