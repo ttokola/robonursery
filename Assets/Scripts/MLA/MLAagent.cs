@@ -9,7 +9,6 @@ public class MLAagent : Agent {
 
     public MovementControls Move;
     public BallJoint Arms;
-    public ExampleControl example;
 
     public float leftWheel;
     public float rightWheel;
@@ -43,7 +42,7 @@ public class MLAagent : Agent {
     private void Start()
     {
         AgentProto AgentProto = this.gameObject.GetComponent<AgentProto>();
-        List<AgentParser.Component> components = AgentProto.GetComponents(); //All components of the robot
+        List<AgentProto.Component> components = AgentProto.GetComponents(); //All components of the robot
         AgentProto.Component obj = AgentProto.GetComponentByName("LUpperArm"); //One AgentParser.Component
         //AgentProto.Component obj = components[8];
         exampleRB = obj.gameObject.GetComponent<Rigidbody>(); //AgentParser.Component.gameObject contains the UnityEngine.GameObject
