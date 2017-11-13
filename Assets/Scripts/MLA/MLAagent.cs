@@ -34,10 +34,10 @@ public class MLAagent : Agent {
     private Rigidbody exampleRB;
     private Transform tf;
 
-    public void MoveArm(Transform obj, float force)
+    public void MoveArm(Rigidbody rb, Transform tf, float force)
     {
 
-        exampleRB.AddTorque(tf.up * force * 20f);
+        rb.AddTorque(tf.up * force * 20f);
     }
 
     private void Start()
@@ -92,7 +92,7 @@ public class MLAagent : Agent {
         //Move.RotateWheel("right", act[1]);
         
         
-        MoveArm(tf, act[0]);
+        MoveArm(exampleRB, tf, act[0]);
         reward =+ 1f;
         if(act[0] >9 || act[1] >9)
         {

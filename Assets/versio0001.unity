@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 0.6
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.35176677, g: 0.39220262, b: 0.4546886, a: 0.6}
+  m_IndirectSpecularColor: {r: 0.3517673, g: 0.39220318, b: 0.45468926, a: 0.6}
 --- !u!157 &3
 LightmapSettings:
   m_ObjectHideFlags: 0
@@ -77,15 +77,17 @@ LightmapSettings:
     m_PVRDirectSampleCount: 32
     m_PVRSampleCount: 500
     m_PVRBounces: 2
-    m_PVRFiltering: 0
+    m_PVRFilterTypeDirect: 0
+    m_PVRFilterTypeIndirect: 0
+    m_PVRFilterTypeAO: 0
     m_PVRFilteringMode: 1
     m_PVRCulling: 1
     m_PVRFilteringGaussRadiusDirect: 1
     m_PVRFilteringGaussRadiusIndirect: 5
     m_PVRFilteringGaussRadiusAO: 2
-    m_PVRFilteringAtrousColorSigma: 1
-    m_PVRFilteringAtrousNormalSigma: 1
-    m_PVRFilteringAtrousPositionSigma: 1
+    m_PVRFilteringAtrousPositionSigmaDirect: 0.5
+    m_PVRFilteringAtrousPositionSigmaIndirect: 2
+    m_PVRFilteringAtrousPositionSigmaAO: 1
   m_LightingDataAsset: {fileID: 112000001, guid: bd36248131c1d5c47821164112ba4b62,
     type: 2}
   m_UseShadowmask: 0
@@ -108,6 +110,8 @@ NavMeshSettings:
     manualTileSize: 0
     tileSize: 256
     accuratePlacement: 0
+    debug:
+      m_Flags: 0
   m_NavMeshData: {fileID: 23800000, guid: 38c88ec8565f873499bdd114ef91dc7f, type: 2}
 --- !u!1 &43048032
 GameObject:
@@ -138,6 +142,7 @@ MeshRenderer:
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
+  m_DynamicOccludee: 1
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
@@ -153,6 +158,7 @@ MeshRenderer:
   m_PreserveUVs: 1
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
+  m_StitchLightmapSeams: 0
   m_SelectedEditorRenderState: 3
   m_MinimumChartSize: 4
   m_AutoUVMaxDistance: 0.5
@@ -252,7 +258,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 105504246}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 76c584b7594d9dd46b7b8c9816beab1b, type: 3}
+  m_Script: {fileID: 11500000, guid: 9af83cd96d4bc4088a966af174446d1b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   maxSteps: 0
@@ -320,18 +326,6 @@ GameObject:
   m_PrefabParentObject: {fileID: 1000011914786942, guid: 830458524f2d6cd43b04b6e90025e334,
     type: 2}
   m_PrefabInternal: {fileID: 960031744}
---- !u!114 &318715317
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 943466ab374444748a364f9d6c3e2fe2, type: 3}
-  m_Name: (Clone)(Clone)(Clone)(Clone)(Clone)(Clone)(Clone)(Clone)(Clone)(Clone)
-  m_EditorClassIdentifier: 
-  brain: {fileID: 0}
 --- !u!1 &371147826 stripped
 GameObject:
   m_PrefabParentObject: {fileID: 1000010316499324, guid: 830458524f2d6cd43b04b6e90025e334,
@@ -352,6 +346,18 @@ GameObject:
   m_PrefabParentObject: {fileID: 1000011664443952, guid: 830458524f2d6cd43b04b6e90025e334,
     type: 2}
   m_PrefabInternal: {fileID: 960031744}
+--- !u!114 &492487586
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 35813a1be64e144f887d7d5f15b963fa, type: 3}
+  m_Name: (Clone)(Clone)(Clone)(Clone)(Clone)(Clone)(Clone)(Clone)(Clone)(Clone)(Clone)
+  m_EditorClassIdentifier: 
+  brain: {fileID: 819060371}
 --- !u!1 &554660146 stripped
 GameObject:
   m_PrefabParentObject: {fileID: 100042, guid: 985dabbe3ee9fee4fbe0201494e6f1da, type: 3}
@@ -384,6 +390,21 @@ GameObject:
   m_PrefabParentObject: {fileID: 1000011546037182, guid: 830458524f2d6cd43b04b6e90025e334,
     type: 2}
   m_PrefabInternal: {fileID: 960031744}
+--- !u!54 &615528417
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 615528413}
+  serializedVersion: 2
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_UseGravity: 1
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
 --- !u!114 &806649709 stripped
 MonoBehaviour:
   m_PrefabParentObject: {fileID: 114000012333535040, guid: 0602dbe6f741a6b4d8544fa4a649720b,
@@ -455,10 +476,10 @@ MonoBehaviour:
     stateSpaceType: 1
   brainType: 0
   CoreBrains:
-  - {fileID: 1811425642}
-  - {fileID: 318715317}
-  - {fileID: 1771470211}
-  instanceID: 10904
+  - {fileID: 1707383053}
+  - {fileID: 1129358176}
+  - {fileID: 492487586}
+  instanceID: 11298
 --- !u!1 &866003614
 GameObject:
   m_ObjectHideFlags: 0
@@ -646,7 +667,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 960031746}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e58b2baf5cd8bb347b5ce640337071ad, type: 3}
+  m_Script: {fileID: 11500000, guid: 33bb739f1138d40798114d667776a1d6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   brain: {fileID: 819060371}
@@ -663,6 +684,7 @@ MonoBehaviour:
   id: 0
   Move: {fileID: 960031760}
   Arms: {fileID: 806649709}
+  example: {fileID: 0}
   leftWheel: 0
   rightWheel: 0
   leftShoulderX: 0
@@ -688,159 +710,157 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a645ec248bc436e4c919efc8c57f2710, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  agentParameters:
-    InUse: []
   components:
-  - PartName: 
+  - PartName: Axle
     gameObject: {fileID: 1234118918}
-    Movable: 1
+    Movable: 0
     Type: 0
-    Dimensions: {x: 0, y: 0, z: 0}
-    InputIndeces: 
-  - PartName: 
+    DimensionMultipliers: {x: 0, y: 0, z: 0}
+    ActionIndeces: 
+  - PartName: Body
     gameObject: {fileID: 298049156}
-    Movable: 1
+    Movable: 0
     Type: 0
-    Dimensions: {x: 0, y: 0, z: 0}
-    InputIndeces: 
-  - PartName: 
+    DimensionMultipliers: {x: 0, y: 0, z: 0}
+    ActionIndeces: 
+  - PartName: LArm
     gameObject: {fileID: 1148174324}
-    Movable: 1
+    Movable: 0
     Type: 0
-    Dimensions: {x: 0, y: 0, z: 0}
-    InputIndeces: 
-  - PartName: 
+    DimensionMultipliers: {x: 0, y: 0, z: 0}
+    ActionIndeces: 
+  - PartName: LForeArm
     gameObject: {fileID: 1640682394}
     Movable: 1
     Type: 0
-    Dimensions: {x: 0, y: 0, z: 0}
-    InputIndeces: 
-  - PartName: 
+    DimensionMultipliers: {x: 0, y: 1, z: 1}
+    ActionIndeces: 
+  - PartName: LHand
     gameObject: {fileID: 1155602948}
     Movable: 1
     Type: 0
-    Dimensions: {x: 0, y: 0, z: 0}
-    InputIndeces: 
-  - PartName: 
+    DimensionMultipliers: {x: 0, y: 0, z: 0}
+    ActionIndeces: 
+  - PartName: LUpperArm
     gameObject: {fileID: 1318185398}
     Movable: 1
     Type: 0
-    Dimensions: {x: 0, y: 0, z: 0}
-    InputIndeces: 
-  - PartName: 
+    DimensionMultipliers: {x: 0, y: 0, z: 0}
+    ActionIndeces: 
+  - PartName: LMiddleJoint
     gameObject: {fileID: 197511335}
     Movable: 1
     Type: 0
-    Dimensions: {x: 0, y: 0, z: 0}
-    InputIndeces: 
-  - PartName: 
+    DimensionMultipliers: {x: 0, y: 0, z: 0}
+    ActionIndeces: 
+  - PartName: LUpperJoint
     gameObject: {fileID: 615528413}
     Movable: 1
     Type: 0
-    Dimensions: {x: 0, y: 0, z: 0}
-    InputIndeces: 
-  - PartName: 
+    DimensionMultipliers: {x: 0, y: 0, z: 0}
+    ActionIndeces: 
+  - PartName: RArm
     gameObject: {fileID: 1123614816}
     Movable: 1
     Type: 0
-    Dimensions: {x: 0, y: 0, z: 0}
-    InputIndeces: 
-  - PartName: 
+    DimensionMultipliers: {x: 0, y: 0, z: 0}
+    ActionIndeces: 
+  - PartName: RForeArm
     gameObject: {fileID: 446427480}
     Movable: 1
     Type: 0
-    Dimensions: {x: 0, y: 0, z: 0}
-    InputIndeces: 
-  - PartName: 
+    DimensionMultipliers: {x: 0, y: 0, z: 0}
+    ActionIndeces: 
+  - PartName: RHand
     gameObject: {fileID: 152361437}
     Movable: 1
     Type: 0
-    Dimensions: {x: 0, y: 0, z: 0}
-    InputIndeces: 
-  - PartName: 
+    DimensionMultipliers: {x: 0, y: 0, z: 0}
+    ActionIndeces: 
+  - PartName: RUpperArm
     gameObject: {fileID: 111935602}
     Movable: 1
     Type: 0
-    Dimensions: {x: 0, y: 0, z: 0}
-    InputIndeces: 
-  - PartName: 
+    DimensionMultipliers: {x: 0, y: 0, z: 0}
+    ActionIndeces: 
+  - PartName: RMiddleJoint
     gameObject: {fileID: 112967731}
     Movable: 1
     Type: 0
-    Dimensions: {x: 0, y: 0, z: 0}
-    InputIndeces: 
-  - PartName: 
+    DimensionMultipliers: {x: 0, y: 0, z: 0}
+    ActionIndeces: 
+  - PartName: RUpperJoint
     gameObject: {fileID: 372286866}
     Movable: 1
     Type: 0
-    Dimensions: {x: 0, y: 0, z: 0}
-    InputIndeces: 
-  - PartName: 
+    DimensionMultipliers: {x: 0, y: 0, z: 0}
+    ActionIndeces: 
+  - PartName: Head
     gameObject: {fileID: 1830457788}
     Movable: 1
     Type: 0
-    Dimensions: {x: 0, y: 0, z: 0}
-    InputIndeces: 
-  - PartName: 
+    DimensionMultipliers: {x: 0, y: 0, z: 0}
+    ActionIndeces: 
+  - PartName: Eyes
     gameObject: {fileID: 371147826}
     Movable: 1
     Type: 0
-    Dimensions: {x: 0, y: 0, z: 0}
-    InputIndeces: 
-  - PartName: 
+    DimensionMultipliers: {x: 0, y: 0, z: 0}
+    ActionIndeces: 
+  - PartName: LEyebrow
     gameObject: {fileID: 2125413695}
     Movable: 1
     Type: 0
-    Dimensions: {x: 0, y: 0, z: 0}
-    InputIndeces: 
-  - PartName: 
+    DimensionMultipliers: {x: 0, y: 0, z: 0}
+    ActionIndeces: 
+  - PartName: MouthDummy
     gameObject: {fileID: 1854707662}
     Movable: 1
     Type: 0
-    Dimensions: {x: 0, y: 0, z: 0}
-    InputIndeces: 
-  - PartName: 
+    DimensionMultipliers: {x: 0, y: 0, z: 0}
+    ActionIndeces: 
+  - PartName: REyebrow
     gameObject: {fileID: 310232470}
     Movable: 1
     Type: 0
-    Dimensions: {x: 0, y: 0, z: 0}
-    InputIndeces: 
-  - PartName: 
+    DimensionMultipliers: {x: 0, y: 0, z: 0}
+    ActionIndeces: 
+  - PartName: Neck
     gameObject: {fileID: 415568807}
     Movable: 1
     Type: 0
-    Dimensions: {x: 0, y: 0, z: 0}
-    InputIndeces: 
-  - PartName: 
+    DimensionMultipliers: {x: 0, y: 0, z: 0}
+    ActionIndeces: 
+  - PartName: Wheels
     gameObject: {fileID: 1404373348}
     Movable: 1
     Type: 0
-    Dimensions: {x: 0, y: 0, z: 0}
-    InputIndeces: 
-  - PartName: 
+    DimensionMultipliers: {x: 0, y: 0, z: 0}
+    ActionIndeces: 
+  - PartName: LWheelHitbox
     gameObject: {fileID: 1195894152}
     Movable: 1
     Type: 0
-    Dimensions: {x: 0, y: 0, z: 0}
-    InputIndeces: 
-  - PartName: 
+    DimensionMultipliers: {x: 0, y: 0, z: 0}
+    ActionIndeces: 
+  - PartName: LWheelMesh
     gameObject: {fileID: 2121164206}
     Movable: 1
     Type: 0
-    Dimensions: {x: 0, y: 0, z: 0}
-    InputIndeces: 
-  - PartName: 
+    DimensionMultipliers: {x: 0, y: 0, z: 0}
+    ActionIndeces: 
+  - PartName: RWheelHitbox
     gameObject: {fileID: 91366038}
     Movable: 1
     Type: 0
-    Dimensions: {x: 0, y: 0, z: 0}
-    InputIndeces: 
-  - PartName: 
+    DimensionMultipliers: {x: 1, y: 1, z: 1}
+    ActionIndeces: 000000000000000000000000
+  - PartName: RWheelMesh
     gameObject: {fileID: 1673714957}
     Movable: 1
     Type: 0
-    Dimensions: {x: 0, y: 0, z: 0}
-    InputIndeces: 
+    DimensionMultipliers: {x: 0, y: 0, z: 0}
+    ActionIndeces: 
 --- !u!114 &960031760 stripped
 MonoBehaviour:
   m_PrefabParentObject: {fileID: 114000012433315386, guid: 830458524f2d6cd43b04b6e90025e334,
@@ -928,6 +948,18 @@ GameObject:
   m_PrefabParentObject: {fileID: 1000013246173614, guid: 830458524f2d6cd43b04b6e90025e334,
     type: 2}
   m_PrefabInternal: {fileID: 960031744}
+--- !u!114 &1129358176
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 943466ab374444748a364f9d6c3e2fe2, type: 3}
+  m_Name: (Clone)(Clone)(Clone)(Clone)(Clone)(Clone)(Clone)(Clone)(Clone)(Clone)(Clone)
+  m_EditorClassIdentifier: 
+  brain: {fileID: 0}
 --- !u!1 &1148174324 stripped
 GameObject:
   m_PrefabParentObject: {fileID: 1000013478112940, guid: 830458524f2d6cd43b04b6e90025e334,
@@ -1271,7 +1303,6 @@ Camera:
   m_OcclusionCulling: 1
   m_StereoConvergence: 10
   m_StereoSeparation: 0.022
-  m_StereoMirrorMode: 0
 --- !u!4 &1661831489
 Transform:
   m_ObjectHideFlags: 0
@@ -1365,7 +1396,6 @@ Camera:
   m_OcclusionCulling: 1
   m_StereoConvergence: 10
   m_StereoSeparation: 0.022
-  m_StereoMirrorMode: 0
 --- !u!4 &1675260785
 Transform:
   m_ObjectHideFlags: 0
@@ -1379,19 +1409,7 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 35, y: 135, z: 0}
---- !u!114 &1771470211
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 35813a1be64e144f887d7d5f15b963fa, type: 3}
-  m_Name: (Clone)(Clone)(Clone)(Clone)(Clone)(Clone)(Clone)(Clone)(Clone)(Clone)
-  m_EditorClassIdentifier: 
-  brain: {fileID: 819060371}
---- !u!114 &1811425642
+--- !u!114 &1707383053
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
@@ -1400,7 +1418,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 41e9bda8f3cf1492fa74926a530f6f70, type: 3}
-  m_Name: (Clone)(Clone)(Clone)(Clone)(Clone)(Clone)(Clone)(Clone)(Clone)(Clone)
+  m_Name: (Clone)(Clone)(Clone)(Clone)(Clone)(Clone)(Clone)(Clone)(Clone)(Clone)(Clone)
   m_EditorClassIdentifier: 
   continuousPlayerActions:
   - key: 113
@@ -1416,28 +1434,28 @@ MonoBehaviour:
     index: 1
     value: -10
   - key: 100
-    index: 1
+    index: 2
     value: -10
   - key: 100
-    index: 1
+    index: 2
     value: -10
   - key: 100
-    index: 1
+    index: 3
     value: -10
   - key: 100
-    index: 1
+    index: 3
     value: -10
   - key: 100
-    index: 1
+    index: 4
     value: -10
   - key: 100
-    index: 1
+    index: 4
     value: -10
   - key: 100
-    index: 1
+    index: 5
     value: -10
   - key: 100
-    index: 1
+    index: 5
     value: -10
   - key: 100
     index: 1
@@ -1519,6 +1537,7 @@ MeshRenderer:
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
+  m_DynamicOccludee: 1
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
@@ -1534,6 +1553,7 @@ MeshRenderer:
   m_PreserveUVs: 1
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
+  m_StitchLightmapSeams: 0
   m_SelectedEditorRenderState: 3
   m_MinimumChartSize: 4
   m_AutoUVMaxDistance: 0.5
