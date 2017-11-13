@@ -6,30 +6,32 @@ using UnityEditor;
 #endif
 
 
-[System.Serializable]
-public struct Component
-{
-    public string PartName;
-    public GameObject gameObject;
-    public bool Movable;
-    public enum Type_
-    {
-        Joint,
-        Wheel
-    }
-    public Type_ Type;
-    public Vector3 DimensionMultipliers;
-    public int[] ActionIndeces;
-}
 
-[System.Serializable]
-public struct AgentParameters
-{
-    //public GameObject[] InUse;
-
-}
 
 public abstract class AgentParser : MonoBehaviour {
+
+    [System.Serializable]
+    public struct Component
+    {
+        public string PartName;
+        public GameObject gameObject;
+        public bool Movable;
+        public enum Type_
+        {
+            Joint,
+            Wheel
+        }
+        public Type_ Type;
+        public Vector3 DimensionMultipliers;
+        public int[] ActionIndeces;
+    }
+
+    [System.Serializable]
+    public struct AgentParameters
+    {
+        //public GameObject[] InUse;
+
+    }
 
     // Use this for initialization
     public AgentParameters agentParameters;
@@ -45,6 +47,19 @@ public abstract class AgentParser : MonoBehaviour {
         return components;
     }
     
+    public Component GetComponentByName(string name)
+    {
+        Component result = new Component();
+        foreach(Component component in components)
+        {
+            if (component.PartName == name)
+            {
+                return component;
+            }
+        }
+        Debug.LogError("No component exists by given name");
+        return result;
+    }
 
     public Dictionary<int, List<Component>> CollectComponents()
     {
