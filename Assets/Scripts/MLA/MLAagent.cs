@@ -31,24 +31,63 @@ public class MLAagent : Agent {
     public float rightElbowZ;
     private Vector3 shoulderForce;
 
-    private Rigidbody exampleRB;
-    private Transform tf;
+    private Rigidbody LUpperArm_RB;
 
-    public void MoveArm(Rigidbody rb, Transform tf, float force)
+    private Transform LUpperArm_tf;
+
+    private Rigidbody leftWheel_RB;
+    private Transform leftWheel_tf;
+
+    private Rigidbody rightWheel_RB;
+    private Transform rightWheel_tf;
+
+
+    public void MoveArm(Rigidbody rb, Transform tf, float force, string axel)
     {
+        switch (axel)
+        {
+            case "x":
+                rb.AddRelativeForce(Vector3.right * force);
+                break;
+            case "y":
+                rb.AddRelativeForce(Vector3.up * force);
+                break;
+            case "z":
+                rb.AddRelativeForce(Vector3.forward * force);
+                break;
+        }
+        
+          
+    //    rb.AddTorque(tf.up * force * 20f);
+    
+        }
 
-        rb.AddTorque(tf.up * force * 20f);
+    public void Wheel(Rigidbody rb,Transform tf, float force)
+    {
+        rb.AddTorque(tf.right * force);
     }
+
 
     private void Start()
     {
+        
         AgentProto AgentProto = this.gameObject.GetComponent<AgentProto>();
-        List<AgentParser.Component> components = AgentProto.GetComponents(); //All components of the robot
-        AgentProto.Component obj = AgentProto.GetComponentByName("LUpperArm"); //One AgentParser.Component
+        List<AgentProto.Component> components = AgentProto.GetComponents(); //All components of the robot
+        AgentProto.Component LUpperArm = AgentProto.GetComponentByName("LUpperArm"); //One AgentParser.Component
+        AgentProto.Component leftWheel = AgentProto.GetComponentByName("LWheelHitbox"); //One AgentParser.Component
+        AgentProto.Component rightWheel = AgentProto.GetComponentByName("RWheelHitbox"); //One AgentParser.Component
+
         //AgentProto.Component obj = components[8];
-        exampleRB = obj.gameObject.GetComponent<Rigidbody>(); //AgentParser.Component.gameObject contains the UnityEngine.GameObject
-        tf = obj.gameObject.GetComponent<Transform>();
-        exampleRB.maxAngularVelocity = 100f;
+        LUpperArm_RB = LUpperArm.gameObject.GetComponent<Rigidbody>(); //AgentParser.Component.gameObject contains the UnityEngine.GameObject
+        LUpperArm_tf = LUpperArm.gameObject.GetComponent<Transform>();
+
+        leftWheel_RB = leftWheel.gameObject.GetComponent<Rigidbody>(); //AgentParser.Component.gameObject contains the UnityEngine.GameObject
+        leftWheel_tf = leftWheel.gameObject.GetComponent<Transform>();
+
+        rightWheel_RB = rightWheel.gameObject.GetComponent<Rigidbody>(); //AgentParser.Component.gameObject contains the UnityEngine.GameObject
+        rightWheel_tf = rightWheel.gameObject.GetComponent<Transform>();
+
+        LUpperArm_RB.maxAngularVelocity = 1000f;
         Vector3 shoulderForce = new Vector3(leftShoulderX, leftShoulderY, leftShoulderZ);
         
 
@@ -68,31 +107,20 @@ public class MLAagent : Agent {
     //Currently only works if brain is set to discrete. 
     public override void AgentStep(float[] act)
     {
-        leftWheel = act[0];
-        rightWheel = act[1];
-        //WIP
-        leftShoulderX = act[2];
-        leftShoulderY = act[3];
-        leftShoulderZ = act[4];
-
-        rightShoulderX = act[5];
-        rightShoulderY = act[6];
-        rightShoulderZ = act[7];
-
-        leftElbowX = act[8];
-        leftElbowY = act[9];
-        leftElbowZ = act[10];
-
-        rightEbowX = act[11];
-        rightElbowY = act[12];
-        rightElbowZ = act[13];
+    
 
         //move the wheels using controls from Movementcontrols script
         //Move.RotateWheel("left",act[0]);
         //Move.RotateWheel("right", act[1]);
         
         
-        MoveArm(exampleRB, tf, act[0]);
+        MoveArm(LUpperArm_RB, LUpperArm_tf, act[0], "x");
+        MoveArm(LUpperArm_RB, LUpperArm_tf, act[1], "y");
+        MoveArm(LUpperArm_RB, LUpperArm_tf, act[2], "z");
+
+        Wheel(leftWheel_RB, leftWheel_tf, act[3]);
+        Wheel(rightWheel_RB, rightWheel_tf, act[4]);
+
         reward =+ 1f;
         if(act[0] >9 || act[1] >9)
         {
