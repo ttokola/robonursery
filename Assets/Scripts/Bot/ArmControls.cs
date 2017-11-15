@@ -92,6 +92,10 @@ public class ArmControls : MonoBehaviour
             lAngles = new float[] {90, -40, 0, 0};
             rAngles = new float[] {-90, 40, 0, 0};
             break;
+        case "forwardCarry":
+            lAngles = new float[] { 90, 0, 45, 0 };
+            rAngles = new float[] { -90, 0, -45, 0 };
+            break;
         case "back":
             lAngles = new float[] {-90, 0, 0, 0};
             rAngles = new float[] {90, 0, 0, 0};
