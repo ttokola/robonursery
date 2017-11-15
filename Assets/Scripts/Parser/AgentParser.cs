@@ -1,6 +1,10 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+
+//Need to find other way to get the movementcontrols to this script
+using LilBotNamespace;
+
 #if UNITY_EDITOR
 using UnityEditor;
 #endif
@@ -9,6 +13,8 @@ using UnityEditor;
 
 
 public abstract class AgentParser : MonoBehaviour {
+
+    
 
     [System.Serializable]
     public struct Component
@@ -22,7 +28,7 @@ public abstract class AgentParser : MonoBehaviour {
             Wheel
         }
         public Type_ Type;
-        public Vector3 DimensionMultipliers;
+        public float[] DimensionMultipliers;
         public int[] ActionIndeces;
     }
 
@@ -34,6 +40,10 @@ public abstract class AgentParser : MonoBehaviour {
     }
 
     // Use this for initialization
+    private MovementControls motor;
+    
+   
+
     public AgentParameters agentParameters;
 
     public Dictionary<int, Agent> agents = new Dictionary<int, Agent>();
@@ -72,7 +82,7 @@ public abstract class AgentParser : MonoBehaviour {
                 var component = new Component();
                 component.PartName = child.name;
                 component.gameObject = child.gameObject;
-                component.Movable = true;
+                component.Movable = false;
                 components.Add(component);
             }
         }
@@ -87,6 +97,9 @@ public abstract class AgentParser : MonoBehaviour {
     [ContextMenu("Initialize AgentProto")]
     void InitializeParser()
     {
+        //
+        
+
         components.Clear();
         Transform[] allChildren = GetComponentsInChildren<Transform>();
         foreach (Transform child in allChildren)
@@ -96,10 +109,54 @@ public abstract class AgentParser : MonoBehaviour {
                 var component = new Component();
                 component.PartName = child.name;
                 component.gameObject = child.gameObject;
-                component.Movable = true;
+                component.Movable = false;
+
+                component.ActionIndeces = new int[3];
+                component.DimensionMultipliers = new float[3];
                 components.Add(component);
             }
         }
     }
+
+    public void MoveMovableParts(float[] act)
+    {
+
+        motor = this.gameObject.GetComponent<MovementControls>();
+        foreach (Component component in GetComponents())
+        {
+            if(component.Movable == true)
+            {
+                switch (component.Type)
+                {
+
+                    case Component.Type_.Wheel: {
+                            motor.Wheel(component.gameObject.GetComponent<Rigidbody>(), component.gameObject.GetComponent<Transform>(), act[component.ActionIndeces[0]]);
+                            break;
+                        }
+                    
+                    case Component.Type_.Joint:
+                        {
+                            for(int i=0; i<component.DimensionMultipliers.Length; i++)
+                            {
+                                if (component.DimensionMultipliers[i] != 0)
+                                {
+                                    motor.Joint(component.gameObject.GetComponent<Rigidbody>(), component.gameObject.GetComponent<Transform>(), act[component.ActionIndeces[i]]*component.DimensionMultipliers[i],i);
+
+                                }
+                            }
+                            
+                         //   motor.Joint(component.gameObject.GetComponent<Rigidbody>(), component.gameObject.GetComponent<Transform>(),);
+                            break;
+                        }
+
+                }
+
+
+            }
+        }
+    }
+
+
+
 	
 }

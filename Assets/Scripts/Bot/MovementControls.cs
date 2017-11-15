@@ -204,19 +204,23 @@ public class MovementControls : MonoBehaviour
         //api2017 
         //Motor controls
        // check if hingejoint motor is better?
-        public void MoveArm(Rigidbody rb, Transform tf, float force, string axel)
+        public void Joint(Rigidbody rb, Transform tf, float force, int axel)
         {
             switch (axel)
             {
-                case "x":
+
+
+                case 0:
                     rb.AddRelativeForce(Vector3.right * force);
                     break;
-                case "y":
+                case 1:
                     rb.AddRelativeForce(Vector3.up * force);
                     break;
-                case "z":
+                case 2:
                     rb.AddRelativeForce(Vector3.forward * force);
                     break;
+
+
             }
 
         }

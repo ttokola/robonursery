@@ -4,8 +4,8 @@ using UnityEngine;
 using LilBotNamespace;
 
 public class MLAagent : Agent {
-
-
+    AgentProto proto;
+    /*
     private Vector3 shoulderForce;
 
     private Rigidbody LUpperArm_RB;
@@ -19,12 +19,16 @@ public class MLAagent : Agent {
     private Transform rightWheel_tf;
 
     private MovementControls motor;
+    */
+    
 
 
 
     private void Start()
     {
-       motor = this.gameObject.GetComponent<MovementControls>();
+        proto = this.gameObject.GetComponent<AgentProto>();
+        /*
+        motor = this.gameObject.GetComponent<MovementControls>();
 
 
         AgentProto AgentProto = this.gameObject.GetComponent<AgentProto>();
@@ -45,8 +49,8 @@ public class MLAagent : Agent {
         rightWheel_RB = rightWheel.gameObject.GetComponent<Rigidbody>(); //AgentParser.Component.gameObject contains the UnityEngine.GameObject
         rightWheel_tf = rightWheel.gameObject.GetComponent<Transform>();
 
-        
-        
+        */
+
 
     }
 
@@ -64,16 +68,16 @@ public class MLAagent : Agent {
     //Currently only works if brain is set to discrete. 
     public override void AgentStep(float[] act)
     {
-    
 
+        /*
         //move the wheels using controls from Movementcontrols script
         //Move.RotateWheel("left",act[0]);
         //Move.RotateWheel("right", act[1]);
         
         
-        motor.MoveArm(LUpperArm_RB, LUpperArm_tf, act[0], "x");
-        motor.MoveArm(LUpperArm_RB, LUpperArm_tf, act[1], "y");
-        motor.MoveArm(LUpperArm_RB, LUpperArm_tf, act[2], "z");
+        motor.Joint(LUpperArm_RB, LUpperArm_tf, act[0], 0);
+        motor.Joint(LUpperArm_RB, LUpperArm_tf, act[1], 1);
+        motor.Joint(LUpperArm_RB, LUpperArm_tf, act[2], 2);
 
         motor.Wheel(leftWheel_RB, leftWheel_tf, act[3]);
         motor.Wheel(rightWheel_RB, rightWheel_tf, act[4]);
@@ -84,8 +88,9 @@ public class MLAagent : Agent {
             reward =+ 2f;
         }
 
-
-
+    */
+        
+        proto.MoveMovableParts(act);
     }
 
 	public override void AgentReset()
