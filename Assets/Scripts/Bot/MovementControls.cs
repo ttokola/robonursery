@@ -109,7 +109,7 @@ public class MovementControls : MonoBehaviour
 	}
 	
 	public int DriveTo(Vector3 target, bool enablePathfinding,
-                       Collider other=null, float distanceThreshold=0.5f)
+                       Collider other=null, float distanceThreshold=1.0f)
 	/* 
         Drive near a position until distance threshold is reached.
         
