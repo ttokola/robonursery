@@ -40,8 +40,8 @@ public class MovementControls : MonoBehaviour
     private Vector3? prevTarget;  // The ? creates this as nullable, need
                                   // because first target might be 0,0,0 which
                                   // will mess up the pathfinding
-	//changed to public api2017
-	public void RotateWheel(string wheel, float torque)
+	
+	private void RotateWheel(string wheel, float torque)
     // Rotate the given wheel and deplete battery
 	{
 		if (battery.normLevel <= 0)
@@ -201,6 +201,32 @@ public class MovementControls : MonoBehaviour
 	{
 		return DriveTo(target, false);
 	}
-}
+        //api2017 
+        //Motor controls
+       // check if hingejoint motor is better?
+        public void MoveArm(Rigidbody rb, Transform tf, float force, string axel)
+        {
+            switch (axel)
+            {
+                case "x":
+                    rb.AddRelativeForce(Vector3.right * force);
+                    break;
+                case "y":
+                    rb.AddRelativeForce(Vector3.up * force);
+                    break;
+                case "z":
+                    rb.AddRelativeForce(Vector3.forward * force);
+                    break;
+            }
+
+        }
+
+        public void Wheel(Rigidbody rb, Transform tf, float force)
+        {
+            rb.AddTorque(tf.right * force);
+        }
+
+        //
+    }
 
 } // End namespace

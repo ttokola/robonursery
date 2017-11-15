@@ -5,29 +5,7 @@ using LilBotNamespace;
 
 public class MLAagent : Agent {
 
-    
 
-    public MovementControls Move;
-    public BallJoint Arms;
-
-    public float leftWheel;
-    public float rightWheel;
-
-    public float leftShoulderX;
-    public float leftShoulderY;
-    public float leftShoulderZ;
-
-    public float rightShoulderX;
-    public float rightShoulderY;
-    public float rightShoulderZ;
-
-    public float leftElbowX;
-    public float leftElbowY;
-    public float leftElbowZ;
-
-    public float rightEbowX;
-    public float rightElbowY;
-    public float rightElbowZ;
     private Vector3 shoulderForce;
 
     private Rigidbody LUpperArm_RB;
@@ -40,36 +18,15 @@ public class MLAagent : Agent {
     private Rigidbody rightWheel_RB;
     private Transform rightWheel_tf;
 
+    private MovementControls motor;
 
-    public void MoveArm(Rigidbody rb, Transform tf, float force, string axel)
-    {
-        switch (axel)
-        {
-            case "x":
-                rb.AddRelativeForce(Vector3.right * force);
-                break;
-            case "y":
-                rb.AddRelativeForce(Vector3.up * force);
-                break;
-            case "z":
-                rb.AddRelativeForce(Vector3.forward * force);
-                break;
-        }
-        
-          
-    //    rb.AddTorque(tf.up * force * 20f);
-    
-        }
-
-    public void Wheel(Rigidbody rb,Transform tf, float force)
-    {
-        rb.AddTorque(tf.right * force);
-    }
 
 
     private void Start()
     {
-        
+       motor = this.gameObject.GetComponent<MovementControls>();
+
+
         AgentProto AgentProto = this.gameObject.GetComponent<AgentProto>();
         List<AgentProto.Component> components = AgentProto.GetComponents(); //All components of the robot
 
@@ -88,8 +45,7 @@ public class MLAagent : Agent {
         rightWheel_RB = rightWheel.gameObject.GetComponent<Rigidbody>(); //AgentParser.Component.gameObject contains the UnityEngine.GameObject
         rightWheel_tf = rightWheel.gameObject.GetComponent<Transform>();
 
-        LUpperArm_RB.maxAngularVelocity = 1000f;
-        Vector3 shoulderForce = new Vector3(leftShoulderX, leftShoulderY, leftShoulderZ);
+        
         
 
     }
@@ -115,12 +71,12 @@ public class MLAagent : Agent {
         //Move.RotateWheel("right", act[1]);
         
         
-        MoveArm(LUpperArm_RB, LUpperArm_tf, act[0], "x");
-        MoveArm(LUpperArm_RB, LUpperArm_tf, act[1], "y");
-        MoveArm(LUpperArm_RB, LUpperArm_tf, act[2], "z");
+        motor.MoveArm(LUpperArm_RB, LUpperArm_tf, act[0], "x");
+        motor.MoveArm(LUpperArm_RB, LUpperArm_tf, act[1], "y");
+        motor.MoveArm(LUpperArm_RB, LUpperArm_tf, act[2], "z");
 
-        Wheel(leftWheel_RB, leftWheel_tf, act[3]);
-        Wheel(rightWheel_RB, rightWheel_tf, act[4]);
+        motor.Wheel(leftWheel_RB, leftWheel_tf, act[3]);
+        motor.Wheel(rightWheel_RB, rightWheel_tf, act[4]);
 
         reward =+ 1f;
         if(act[0] >9 || act[1] >9)
