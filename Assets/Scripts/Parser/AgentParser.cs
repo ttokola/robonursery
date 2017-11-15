@@ -52,6 +52,24 @@ public abstract class AgentParser : MonoBehaviour {
     [SerializeField]
     public List<Component> components = new List<Component>();
 
+
+    void Start()
+    {
+        Debug.Log("Start run");
+        foreach (Component component in components)
+        {
+            if (component.gameObject.GetComponent<Rigidbody>() == null && component.Movable)
+            {
+                component.gameObject.AddComponent<Rigidbody>();
+                component.gameObject.AddComponent<BoxCollider>();
+                if (component.Type == Component.Type_.Joint)
+                {
+                    component.gameObject.AddComponent<ConfigurableJoint>();
+                }
+            }
+        }
+    }
+
     public List<Component> GetComponents()
     {
         return components;
