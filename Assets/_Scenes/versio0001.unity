@@ -260,6 +260,24 @@ MonoBehaviour:
     type: 2}
   m_PrefabInternal: {fileID: 1488219333}
   m_Script: {fileID: 11500000, guid: 29509426a80354840b809a08c5d8e2a7, type: 3}
+--- !u!114 &234503850
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 234503835}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f7760490ba61d2c4faec82a9d6a04755, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  armControls: {fileID: 234503844}
+  movementControls: {fileID: 234503848}
+  movementRange: 0
+  helloTarget: {fileID: 0}
+  state: 0
+  waves: 0
+  helloSound: {fileID: 8300000, guid: 5c8768841748b67419c5822c1a613341, type: 3}
 --- !u!1 &504300776
 GameObject:
   m_ObjectHideFlags: 0
@@ -290,6 +308,8 @@ MonoBehaviour:
   targetobj: {fileID: 768303152}
   targettransform: {fileID: 1234899199}
   carryObjScript: {fileID: 234503836}
+  lilbot: {fileID: 768303152}
+  nannybot: {fileID: 234503835}
 --- !u!4 &504300778
 Transform:
   m_ObjectHideFlags: 0
@@ -335,6 +355,36 @@ GameObject:
   m_PrefabParentObject: {fileID: 1000012365612368, guid: 830458524f2d6cd43b04b6e90025e334,
     type: 2}
   m_PrefabInternal: {fileID: 960031744}
+--- !u!114 &768303160 stripped
+MonoBehaviour:
+  m_PrefabParentObject: {fileID: 114000013651806458, guid: 830458524f2d6cd43b04b6e90025e334,
+    type: 2}
+  m_PrefabInternal: {fileID: 960031744}
+  m_Script: {fileID: 11500000, guid: 50011204ff568974cbfca02ce9771a01, type: 3}
+--- !u!114 &768303164 stripped
+MonoBehaviour:
+  m_PrefabParentObject: {fileID: 114000012433315386, guid: 830458524f2d6cd43b04b6e90025e334,
+    type: 2}
+  m_PrefabInternal: {fileID: 960031744}
+  m_Script: {fileID: 11500000, guid: 29509426a80354840b809a08c5d8e2a7, type: 3}
+--- !u!114 &768303166
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 768303152}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f7760490ba61d2c4faec82a9d6a04755, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  armControls: {fileID: 768303160}
+  movementControls: {fileID: 768303164}
+  movementRange: 0
+  helloTarget: {fileID: 0}
+  state: 0
+  waves: 0
+  helloSound: {fileID: 8300000, guid: 5c8768841748b67419c5822c1a613341, type: 3}
 --- !u!1 &866003614
 GameObject:
   m_ObjectHideFlags: 0
