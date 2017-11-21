@@ -39,6 +39,8 @@ public abstract class AgentParser : MonoBehaviour {
 
     // Use this for initialization
     private MovementControls motor;
+    private string motorname1= "Wheel";
+    private string motorname2 = "Joint";
     
    public int WheelMultiplier=1;
    public int JointMultiplier=1;
@@ -130,6 +132,11 @@ public abstract class AgentParser : MonoBehaviour {
 
                 component.ActionIndeces = new int[3];
                 component.DimensionMultipliers = new float[3];
+                //if objects name contains word "Wheel", set default type to wheel
+                if (component.PartName.Contains(motorname1))
+                {
+                    component.Type = Component.Type_.Wheel; 
+                }
                 components.Add(component);
             }
         }
@@ -190,7 +197,7 @@ public abstract class AgentParser : MonoBehaviour {
                 {
 
                     case Component.Type_.Wheel: {
-                            motor.Wheel(component.gameObject.GetComponent<Rigidbody>(), component.gameObject.GetComponent<Transform>(), act[component.ActionIndeces[0]]);
+                            motor.Wheel(component.gameObject.GetComponent<Rigidbody>(), component.gameObject.GetComponent<Transform>(), act[component.ActionIndeces[0]]*component.DimensionMultipliers[0]);
                             break;
                         }
                     
