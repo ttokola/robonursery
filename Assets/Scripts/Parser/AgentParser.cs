@@ -1,8 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
-//Need to find other way to get the movementcontrols to this script
 using LilBotNamespace;
 
 #if UNITY_EDITOR
@@ -42,7 +40,8 @@ public abstract class AgentParser : MonoBehaviour {
     // Use this for initialization
     private MovementControls motor;
     
-   
+   public int WheelMultiplier=1;
+   public int JointMultiplier=1;
 
     public AgentParameters agentParameters;
 
@@ -136,6 +135,49 @@ public abstract class AgentParser : MonoBehaviour {
         }
     }
 
+    [ContextMenu("Auto add action indicies and action multiplier to movable objects")]
+    void AddIndicies()
+    {
+        motor = this.gameObject.GetComponent<MovementControls>();
+        int number = 0;
+        foreach (Component component in GetComponents())
+        {
+            if (component.Movable == true)
+            {
+                switch (component.Type)
+                {
+
+                    case Component.Type_.Wheel:
+                        {
+                            component.DimensionMultipliers[0] = WheelMultiplier;
+                            component.ActionIndeces[0] = number;
+                            number = number + 1;
+                            break;
+                        }
+
+                    case Component.Type_.Joint:
+                        {
+                     
+                            component.DimensionMultipliers[0] = JointMultiplier;
+                            component.DimensionMultipliers[1] = JointMultiplier;
+                            component.DimensionMultipliers[2] = JointMultiplier;
+
+                            component.ActionIndeces[0] = number;
+                            number = number + 1;
+                            component.ActionIndeces[1] = number;
+                            number = number + 1;
+                            component.ActionIndeces[2] = number;
+                            number = number + 1;
+                            break;
+                            }
+
+                }
+
+                        }
+        }
+      }
+
+    //Moves all movable parts
     public void MoveMovableParts(float[] act)
     {
 
