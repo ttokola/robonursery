@@ -108,6 +108,14 @@ public class ArmControls : MonoBehaviour
             lAngles = new float[] {0, -90, 0, 0};
             rAngles = new float[] {0, 90, 0, 0};
             break;
+        case "wavePosition1":
+            lAngles = new float[] { 90, 10, 90, 0 };
+            rAngles = new float[] { 0, 0, 0, 120 };
+            break;
+        case "wavePosition2":
+            lAngles = new float[] { 90, 10, 90, 0 };
+            rAngles = new float[] { 0, 0, 0, 60 };
+            break;
         }
         return SetStaticPosition(lAngles, rAngles);
         
