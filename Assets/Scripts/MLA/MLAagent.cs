@@ -20,37 +20,15 @@ public class MLAagent : Agent {
 
     private MovementControls motor;
     */
-    
+    public GameObject point;
+    private Rigidbody rb;
 
 
 
     private void Start()
     {
         proto = this.gameObject.GetComponent<AgentProto>();
-        /*
-        motor = this.gameObject.GetComponent<MovementControls>();
-
-
-        AgentProto AgentProto = this.gameObject.GetComponent<AgentProto>();
-        List<AgentProto.Component> components = AgentProto.GetComponents(); //All components of the robot
-
-        AgentProto.Component LUpperArm = AgentProto.GetComponentByName("LUpperArm"); //One AgentParser.Component
-        AgentProto.Component leftWheel = AgentProto.GetComponentByName("LWheelHitbox"); //One AgentParser.Component
-        AgentProto.Component rightWheel = AgentProto.GetComponentByName("RWheelHitbox"); //One AgentParser.Component
-
-
-        //AgentProto.Component obj = components[8];
-        LUpperArm_RB = LUpperArm.gameObject.GetComponent<Rigidbody>(); //AgentParser.Component.gameObject contains the UnityEngine.GameObject
-        LUpperArm_tf = LUpperArm.gameObject.GetComponent<Transform>();
-
-        leftWheel_RB = leftWheel.gameObject.GetComponent<Rigidbody>(); //AgentParser.Component.gameObject contains the UnityEngine.GameObject
-        leftWheel_tf = leftWheel.gameObject.GetComponent<Transform>();
-
-        rightWheel_RB = rightWheel.gameObject.GetComponent<Rigidbody>(); //AgentParser.Component.gameObject contains the UnityEngine.GameObject
-        rightWheel_tf = rightWheel.gameObject.GetComponent<Transform>();
-
-        */
-
+        rb = GetComponent<Rigidbody>();
 
     }
 
@@ -61,7 +39,10 @@ public class MLAagent : Agent {
         state.Add(gameObject.transform.position.x);
         state.Add(gameObject.transform.position.y);
         state.Add(gameObject.transform.position.z);
-
+        state.Add(gameObject.transform.GetComponent<Rigidbody>().velocity.x / 5f);
+        state.Add(gameObject.transform.GetComponent<Rigidbody>().velocity.z / 5f);
+        state.Add(point.transform.position.x);
+        state.Add(point.transform.position.z);
         return state;
 	}
     //This is called every frame.
@@ -69,36 +50,30 @@ public class MLAagent : Agent {
     public override void AgentStep(float[] act)
     {
 
-        /*
-        //move the wheels using controls from Movementcontrols script
-        //Move.RotateWheel("left",act[0]);
-        //Move.RotateWheel("right", act[1]);
-        
-        
-        motor.Joint(LUpperArm_RB, LUpperArm_tf, act[0], 0);
-        motor.Joint(LUpperArm_RB, LUpperArm_tf, act[1], 1);
-        motor.Joint(LUpperArm_RB, LUpperArm_tf, act[2], 2);
 
-        motor.Wheel(leftWheel_RB, leftWheel_tf, act[3]);
-        motor.Wheel(rightWheel_RB, rightWheel_tf, act[4]);
-
-        reward =+ 1f;
-        if(act[0] >9 || act[1] >9)
+        if (brain.brainParameters.actionSpaceType == StateType.continuous)
         {
-            reward =+ 2f;
+            proto.MoveMovableParts(act);
         }
 
-    */
-        
-        proto.MoveMovableParts(act);
+        if (Mathf.Abs(point.transform.position.x - gameObject.transform.position.x) < 1f &&
+            Mathf.Abs(point.transform.position.z - gameObject.transform.position.z) < 1f)
+        {
+            done = true;
+            reward = 1f;
+        }
+        if (done == false)
+        {
+            if (rb.velocity.magnitude != 0f) { reward = 0.1f; } else { done = true; reward = -1f; }
+        }
     }
 
 	public override void AgentReset()
 	{
+        gameObject.transform.position = new Vector3(Random.Range(-2f, 2f), 0.5f, Random.Range(-2f, 2f));
+    }
 
-	}
-
-	public override void AgentOnDone()
+    public override void AgentOnDone()
 	{
        
     }
