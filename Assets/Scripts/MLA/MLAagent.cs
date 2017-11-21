@@ -22,13 +22,16 @@ public class MLAagent : Agent {
     */
     public GameObject point;
     private Rigidbody rb;
-
+    private GameObject LHand;
+    private GameObject RHand;
 
 
     private void Start()
     {
         proto = this.gameObject.GetComponent<AgentProto>();
-        rb = GetComponent<Rigidbody>();
+        //rb = GetComponent<Rigidbody>();
+        LHand = proto.GetComponentByName("LHand").gameObject;
+        RHand = proto.GetComponentByName("RHand").gameObject;
 
     }
 
@@ -39,8 +42,8 @@ public class MLAagent : Agent {
         state.Add(gameObject.transform.position.x);
         state.Add(gameObject.transform.position.y);
         state.Add(gameObject.transform.position.z);
-        state.Add(gameObject.transform.GetComponent<Rigidbody>().velocity.x / 5f);
-        state.Add(gameObject.transform.GetComponent<Rigidbody>().velocity.z / 5f);
+        //state.Add(gameObject.transform.GetComponent<Rigidbody>().velocity.x / 5f);
+       //state.Add(gameObject.transform.GetComponent<Rigidbody>().velocity.z / 5f);
         state.Add(point.transform.position.x);
         state.Add(point.transform.position.z);
         return state;
@@ -64,7 +67,7 @@ public class MLAagent : Agent {
         }
         if (done == false)
         {
-            if (rb.velocity.magnitude != 0f) { reward = 0.1f; } else { done = true; reward = -1f; }
+            //if (rb.velocity.magnitude != 0f) { reward = 0.1f; } else { done = true; reward = -1f; }
         }
     }
 
