@@ -2,12 +2,14 @@
 using System.Collections.Generic;
 using UnityEngine;
 using LilBotNamespace;
+using System;
+using Newtonsoft.Json;
 
 #if UNITY_EDITOR
 using UnityEditor;
 #endif
 
-
+using System.IO;
 
 
 public abstract class AgentParser : MonoBehaviour {
@@ -41,7 +43,8 @@ public abstract class AgentParser : MonoBehaviour {
     private MovementControls motor;
     private string motorname1= "Wheel";
     private string motorname2 = "Joint";
-    
+
+    public string ConfigName = "Config"; 
    public int WheelMultiplier=1;
    public int JointMultiplier=1;
 
@@ -183,6 +186,31 @@ public abstract class AgentParser : MonoBehaviour {
                         }
         }
       }
+    [ContextMenu("Export config file")]
+    public void ExportConfig()
+    {
+        components = GetComponents();
+        string data;
+        string path = Environment.CurrentDirectory + @"\Assets\Scripts\Parser\" + ConfigName + ".txt";
+        Debug.Log("Config saved to " + path);
+        //clear file
+        File.WriteAllText(path, String.Empty);
+
+        using (StreamWriter file = new System.IO.StreamWriter(path, true)) {
+            file.WriteLine(WheelMultiplier);
+            file.WriteLine(JointMultiplier);
+
+            foreach (Component component in components) {
+                data = component.PartName + ";" + component.Movable + ";" + component.Type + ";" + component.DimensionMultipliers[0] + ";" + component.DimensionMultipliers[1] + ";" + component.DimensionMultipliers[2] + ";" + component.ActionIndeces[0] + ";" + component.ActionIndeces[1] + ";" + component.ActionIndeces[2] + ";";
+                file.WriteLine(data);
+            }
+            file.Flush();
+        }
+        
+        
+
+    }
+        
 
     //Moves all movable parts
     public void MoveMovableParts(float[] act)
