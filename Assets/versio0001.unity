@@ -505,7 +505,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ConfigName: Snake
   WheelMultiplier: 1
-  JointMultiplier: 10
+  JointMultiplier: 40
   components:
   - PartName: Armature
     gameObject: {fileID: 466838700}
@@ -521,45 +521,45 @@ MonoBehaviour:
     Movable: 1
     Type: 0
     DimensionMultipliers:
-    - 70
-    - 70
-    - 70
+    - 10
+    - 10
+    - 10
     ActionIndeces: 000000000100000002000000
   - PartName: Bone_001
     gameObject: {fileID: 558125069}
     Movable: 1
     Type: 0
     DimensionMultipliers:
-    - 70
-    - 70
-    - 70
+    - 10
+    - 10
+    - 10
     ActionIndeces: 030000000400000005000000
   - PartName: Bone_002
     gameObject: {fileID: 558125072}
     Movable: 1
     Type: 0
     DimensionMultipliers:
-    - 70
-    - 70
-    - 70
+    - 10
+    - 10
+    - 10
     ActionIndeces: 060000000700000008000000
   - PartName: Bone_003
     gameObject: {fileID: 558125075}
     Movable: 1
     Type: 0
     DimensionMultipliers:
-    - 70
-    - 70
-    - 70
+    - 10
+    - 10
+    - 10
     ActionIndeces: 090000000a0000000b000000
   - PartName: Bone_004
     gameObject: {fileID: 558125078}
     Movable: 1
     Type: 0
     DimensionMultipliers:
-    - 70
-    - 70
-    - 70
+    - 10
+    - 10
+    - 10
     ActionIndeces: 0c0000000d0000000e000000
   - PartName: Cube
     gameObject: {fileID: 1827221349}
@@ -660,7 +660,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 400014, guid: 54a038d078ec3d142b953169b0e47ab2, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 2.47
+      value: 3.7
       objectReference: {fileID: 0}
     - target: {fileID: 400014, guid: 54a038d078ec3d142b953169b0e47ab2, type: 3}
       propertyPath: m_LocalRotation.x
@@ -2268,40 +2268,40 @@ MonoBehaviour:
     index: 2
     value: 1
   - key: 119
+    index: 0
+    value: -1
+  - key: 115
+    index: 1
+    value: -1
+  - key: 120
+    index: 2
+    value: -1
+  - key: 101
     index: 3
     value: 1
-  - key: 115
+  - key: 100
     index: 4
     value: 1
-  - key: 120
+  - key: 99
     index: 5
     value: 1
-  - key: 101
+  - key: 114
+    index: 3
+    value: -1
+  - key: 102
+    index: 4
+    value: -1
+  - key: 118
+    index: 5
+    value: -1
+  - key: 116
     index: 6
     value: 1
-  - key: 100
+  - key: 103
     index: 7
     value: 1
-  - key: 99
-    index: 8
-    value: 1
-  - key: 114
-    index: 9
-    value: 1
-  - key: 102
-    index: 10
-    value: 1
-  - key: 118
-    index: 11
-    value: 1
-  - key: 116
-    index: 12
-    value: 1
-  - key: 103
-    index: 13
-    value: 1
   - key: 98
-    index: 14
+    index: 8
     value: 1
   - key: 121
     index: 15
@@ -2697,6 +2697,108 @@ GameObject:
   m_PrefabParentObject: {fileID: 1000013478112940, guid: 830458524f2d6cd43b04b6e90025e334,
     type: 2}
   m_PrefabInternal: {fileID: 960031744}
+--- !u!1 &1735214012
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 1735214018}
+  - component: {fileID: 1735214017}
+  - component: {fileID: 1735214016}
+  - component: {fileID: 1735214015}
+  - component: {fileID: 1735214014}
+  - component: {fileID: 1735214013}
+  m_Layer: 0
+  m_Name: Following_camera3
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1735214013
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1735214012}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 290889b729c6f3f4187852740aec7622, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  robot: {fileID: 466838700}
+--- !u!81 &1735214014
+AudioListener:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1735214012}
+  m_Enabled: 0
+--- !u!92 &1735214015
+Behaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1735214012}
+  m_Enabled: 1
+--- !u!124 &1735214016
+Behaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1735214012}
+  m_Enabled: 1
+--- !u!20 &1735214017
+Camera:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1735214012}
+  m_Enabled: 1
+  serializedVersion: 2
+  m_ClearFlags: 1
+  m_BackGroundColor: {r: 0.19215687, g: 0.3019608, b: 0.4745098, a: 0}
+  m_NormalizedViewPortRect:
+    serializedVersion: 2
+    x: 0
+    y: 0
+    width: 1
+    height: 1
+  near clip plane: 0.3
+  far clip plane: 1000
+  field of view: 60
+  orthographic: 0
+  orthographic size: 5
+  m_Depth: 0
+  m_CullingMask:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_RenderingPath: -1
+  m_TargetTexture: {fileID: 0}
+  m_TargetDisplay: 4
+  m_TargetEye: 3
+  m_HDR: 1
+  m_AllowMSAA: 1
+  m_ForceIntoRT: 0
+  m_OcclusionCulling: 1
+  m_StereoConvergence: 10
+  m_StereoSeparation: 0.022
+  m_StereoMirrorMode: 0
+--- !u!4 &1735214018
+Transform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1735214012}
+  m_LocalRotation: {x: 0.7876698, y: -0, z: -0, w: 0.6160977}
+  m_LocalPosition: {x: -0.41, y: 3.63, z: 4.35}
+  m_LocalScale: {x: 1, y: 1.5225207, z: 1.0996822}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 15
+  m_LocalEulerAnglesHint: {x: 103.93701, y: -0.000015258789, z: -0.000015258789}
 --- !u!1 &1745672016 stripped
 GameObject:
   m_PrefabParentObject: {fileID: 1000011349089356, guid: 830458524f2d6cd43b04b6e90025e334,
