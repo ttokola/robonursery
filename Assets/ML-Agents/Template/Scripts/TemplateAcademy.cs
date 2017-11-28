@@ -6,6 +6,8 @@ public class TemplateAcademy : Academy {
 
     public GameObject lilbot;
     public GameObject body;
+    public GameObject lhand;
+    public GameObject rhand;
     public GameObject axel;
     public GameObject neck;
     public GameObject head;
@@ -19,6 +21,16 @@ public class TemplateAcademy : Academy {
         //Stop forces and movement
         body.GetComponent<Rigidbody>().velocity = new Vector3(0, 0, 0);
         body.GetComponent<Rigidbody>().angularVelocity = new Vector3(0, 0, 0);
+        foreach (Rigidbody rb in lhand.GetComponentsInChildren<Rigidbody>())
+        {
+            rb.velocity = new Vector3(0, 0, 0);
+            rb.angularVelocity = new Vector3(0, 0, 0);
+        }
+        foreach (Rigidbody rb in rhand.GetComponentsInChildren<Rigidbody>())
+        {
+            rb.velocity = new Vector3(0, 0, 0);
+            rb.angularVelocity = new Vector3(0, 0, 0);
+        }
         axel.GetComponent<Rigidbody>().velocity = new Vector3(0, 0, 0);
         axel.GetComponent<Rigidbody>().angularVelocity = new Vector3(0, 0, 0);
         neck.GetComponent<Rigidbody>().velocity = new Vector3(0, 0, 0);
@@ -35,6 +47,10 @@ public class TemplateAcademy : Academy {
         lilbot.transform.rotation = Quaternion.identity;
         body.transform.localPosition = new Vector3(0, 0.75f, 0);
         body.transform.localRotation = Quaternion.identity;
+        lhand.transform.localPosition = new Vector3(-0.3135831f, 0.2848003f, -1.030974e-06f);
+        lhand.transform.localRotation = Quaternion.identity;
+        rhand.transform.localPosition = new Vector3(0.3167462f, 0.2848003f, -1.030974e-06f);
+        rhand.transform.localRotation = Quaternion.identity;
         axel.transform.localPosition = new Vector3(0, 0.4f, 0);
         axel.transform.localRotation = Quaternion.identity;
         neck.transform.localPosition = new Vector3(0, 1.238994f, 0);

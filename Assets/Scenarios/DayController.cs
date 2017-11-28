@@ -24,7 +24,7 @@ public class DayController : MonoBehaviour {
     public string status;
     private int maxRunPoints = 0;
     private int maxDayPoints = 0;
-    private List<string> skills; //Define better value type in the future
+    private List<string> skills = new List<string>(); //Define better value type in the future
 
 
     private float wlintensityday;
@@ -34,6 +34,7 @@ public class DayController : MonoBehaviour {
     private int index;
     private bool nextscript;
     private System.Random rd;
+    private List<int> completed = new List<int>();
 
     private IScenario[] scenarios;
 
@@ -93,6 +94,7 @@ public class DayController : MonoBehaviour {
         status = "Night";
         maxRunPoints += maxDayPoints;
         maxDayPoints = 0;
+        //TODO: Disable lilrobot moving and AI steps!!
         GameObject.FindGameObjectWithTag("Academy").GetComponent<TemplateAcademy>().AcademyReset(); //Reset the environment | maybe create some dayreset and not the whole ML-Agents reset
     }
     public void Deactivate()
@@ -105,33 +107,54 @@ public class DayController : MonoBehaviour {
 
     public void MovetoNextScenario(object scripttype, bool status, string[] learnedskills, int points)
     {
+        //Change index to scenario ID in the future
+        completed.Add(index);
+
         //Add obtained skill and points
         if (status)
         {
-            foreach (string skill in learnedskills)
+            if(learnedskills.Length > 0)
             {
-                skills.Add(skill);
+                Debug.Log("Learnedskills: ");
+                foreach(string t in learnedskills) { Debug.Log(t); }
+                foreach (string skill in learnedskills)
+                {
+                    skills.Add(skill);
+                }
             }
             maxDayPoints += points;
+            
         }
 
         scenarios[index].EnableScenario(false);
     SELECT_SCENARIO:
         int next = rd.Next(0, scenarios.Length);
-        index = next != index ? next : index++;
-        if(index >= scenarios.Length)
+        index = next;
+        //Check if already done for this day
+        if (completed.Contains(index))
         {
-            Activate();
-            index = 0;
-        }
-        foreach (string skill in scenarios[index].GetRequirements())
-        {
-            if(!skills.Contains(skill))
+            if (completed.Count == scenarios.Length)
             {
-                //Doesn't have required skill yet, go back
+                Activate();
+                index = 0;
+            }
+            else
                 goto SELECT_SCENARIO;
+        }
+        Debug.Log(next);
+        Debug.Log(index);
+        if(scenarios[index].GetRequirements().Length >0)
+        {
+            foreach (string skill in scenarios[index].GetRequirements())
+            {
+                if (!skills.Contains(skill))
+                {
+                    //Doesn't have required skill yet, go back
+                    goto SELECT_SCENARIO;
+                }
             }
         }
+        Debug.Log(index);
         nextscript = true;
     }
 

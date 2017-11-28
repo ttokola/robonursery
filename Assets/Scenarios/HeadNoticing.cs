@@ -15,6 +15,9 @@ public class HeadNoticing : MonoBehaviour, IScenario {
     private string[] requirements;
     private string[] newskills;
 
+    private float startTime;
+    private float endTime;
+
     private void Awake()
     {
         requirements = new string[] { };
@@ -25,6 +28,20 @@ public class HeadNoticing : MonoBehaviour, IScenario {
     // Update is called once per frame
     void Update ()
     {
+        if (Time.time > endTime && !done)
+        {
+            // Lilrobot didn't reach the objective of the scenario in given time
+            // so end it and move to next scenario.
+            Debug.Log("Scenario failed, move to next one.");
+
+            Destroy(ball);
+
+            //Add functionality for moving to next scenarion by DayController
+            GameObject.FindGameObjectWithTag("GameController").GetComponent<DayController>().MovetoNextScenario(this.GetType(), false, new string[] { }, 0);
+            done = true;
+            killcall = true;
+        }
+
         orgPosition = lilrobotHead.transform.position;
         lilbotRay = new Ray(orgPosition, lilrobotHead.transform.forward);
 
@@ -46,6 +63,7 @@ public class HeadNoticing : MonoBehaviour, IScenario {
                     if (!killcall)
                     {
                         StartCoroutine(EndWait());
+                        Destroy(ball);
                         killcall = true;
                     }
                 }
@@ -64,15 +82,14 @@ public class HeadNoticing : MonoBehaviour, IScenario {
     {
         yield return new WaitForSeconds(5);
         InstantiateBall();
+        
     }
 
     IEnumerator EndWait()
     {
         yield return new WaitForSeconds(5);
 
-        Destroy(ball);
-
-        //Add functionality for moving to next scenarion by DayController
+        //Add functionality for moving to next scenario by DayController
         GameObject.FindGameObjectWithTag("GameController").GetComponent<DayController>().MovetoNextScenario(this.GetType(), true, newskills, 100);
     }
 
@@ -87,6 +104,8 @@ public class HeadNoticing : MonoBehaviour, IScenario {
         Debug.Log(this.GetType() + " started");
         done = false;
         StartCoroutine(StartWait());
+        startTime = Time.time;
+        endTime = startTime + 60 * 1;
     }
 
     public string[] GetRequirements()
