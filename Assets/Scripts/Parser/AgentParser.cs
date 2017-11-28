@@ -51,6 +51,7 @@ public abstract class AgentParser : MonoBehaviour {
    public int JointMultiplier=1;
 
     //Parser flags
+    public Boolean Run;
     public Boolean AddColliders;
     public Boolean Link;
     public Boolean Action_Indicies;
@@ -67,6 +68,11 @@ public abstract class AgentParser : MonoBehaviour {
 
     void Start()
     {
+
+        if(Run == true)
+        {
+            AddIndicies();
+        }
         /*
         Debug.Log("Start run");
         foreach (Component component in components)
@@ -158,6 +164,7 @@ public abstract class AgentParser : MonoBehaviour {
     [ContextMenu("Auto add action indicies and action multiplier to movable objects")]
     void AddIndicies()
     {
+        Debug.Log("AddIndicies");
         motor = this.gameObject.GetComponent<MovementControls>();
         int number = 0;
         foreach (Component component in GetComponents())
