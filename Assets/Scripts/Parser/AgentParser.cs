@@ -21,6 +21,7 @@ public abstract class AgentParser : MonoBehaviour {
     {
         public string PartName;
         public GameObject gameObject;
+        public bool Link;
         public bool Movable;
         public enum Type_
         {
@@ -47,6 +48,11 @@ public abstract class AgentParser : MonoBehaviour {
     public string ConfigName = "Config"; 
    public int WheelMultiplier=1;
    public int JointMultiplier=1;
+
+    //Parser flags
+    public Boolean Link;
+    public Boolean Action_Indicies;
+    public Boolean Multipliers; 
 
     public AgentParameters agentParameters;
 
@@ -154,36 +160,57 @@ public abstract class AgentParser : MonoBehaviour {
         {
             if (component.Movable == true)
             {
+
+                //add rigidbody if it doesn't exist
+                if (component.gameObject.GetComponent<Rigidbody>() == null)
+                {
+                    component.gameObject.AddComponent<Rigidbody>();
+                }
+
                 switch (component.Type)
                 {
 
                     case Component.Type_.Wheel:
                         {
-                            component.DimensionMultipliers[0] = WheelMultiplier;
-                            component.ActionIndeces[0] = number;
-                            number = number + 1;
+                            if (Multipliers == true)
+                            {
+                                component.DimensionMultipliers[0] = WheelMultiplier;
+                            }
+                            if (Action_Indicies == true)
+                            { 
+                                component.ActionIndeces[0] = number;
+                                number = number + 1;
+                            }
                             break;
                         }
 
                     case Component.Type_.Joint:
                         {
-                     
-                            component.DimensionMultipliers[0] = JointMultiplier;
-                            component.DimensionMultipliers[1] = JointMultiplier;
-                            component.DimensionMultipliers[2] = JointMultiplier;
-
-                            component.ActionIndeces[0] = number;
-                            number = number + 1;
-                            component.ActionIndeces[1] = number;
-                            number = number + 1;
-                            component.ActionIndeces[2] = number;
-                            number = number + 1;
+                            if (Multipliers == true)
+                            {
+                                component.DimensionMultipliers[0] = JointMultiplier;
+                                component.DimensionMultipliers[1] = JointMultiplier;
+                                component.DimensionMultipliers[2] = JointMultiplier;
+                            }
+                    if (Action_Indicies == true)
+                    {
+                        component.ActionIndeces[0] = number;
+                        number = number + 1;
+                        component.ActionIndeces[1] = number;
+                        number = number + 1;
+                        component.ActionIndeces[2] = number;
+                        number = number + 1;
+                    }
                             break;
                             }
 
                 }
 
-                        }
+             }
+            if (component.Link == true && Link == true)
+            {
+                LinkWithBallJoints(component);
+            }
         }
       }
     [ContextMenu("Export config file")]
@@ -221,6 +248,7 @@ public abstract class AgentParser : MonoBehaviour {
         {
             if(component.Movable == true)
             {
+                
                 switch (component.Type)
                 {
 
@@ -245,13 +273,60 @@ public abstract class AgentParser : MonoBehaviour {
                         }
 
                 }
-
-
+             
             }
         }
     }
 
+    void LinkWithBallJoints(Component component)
+    {
+        if (component.gameObject.GetComponent<BallJoint>() == null)
+        {
+            component.gameObject.AddComponent<BallJoint>();
+        }
+        BallJoint joint = component.gameObject.GetComponent<BallJoint>();
+        //Add rigidbody to parent if it doesn't have it
+        if (component.gameObject.transform.parent.GetComponent<Rigidbody>() == null)
+        {
+            component.gameObject.transform.parent.gameObject.AddComponent<Rigidbody>();
+        }
+        joint.connected = component.gameObject.transform.parent.GetComponent<Rigidbody>();
+        //give balljoint script some default values
+        joint.maxVerticalForce = 550;
+        joint.maxHorizontalForce = 550;
+        joint.angleLimit = 175;
+        joint.errorThreshold = 5;
+    }
 
 
-	
+    //pointless
+    [ContextMenu("Link marked part with its child")]
+    void LinkWithBallJoints2()
+    {
+        foreach (Component component in GetComponents())
+        {
+            if (component.Link == true)// && component.gameObject.transform.childCount != 0)
+            {
+                if (component.gameObject.GetComponent<BallJoint>() == null)
+                {
+                    component.gameObject.AddComponent<BallJoint>();
+                }
+                BallJoint joint = component.gameObject.GetComponent<BallJoint>();
+                joint.connected = component.gameObject.transform.parent.GetComponent<Rigidbody>();
+                //give balljoint script some default values
+                joint.maxVerticalForce = 550;
+                joint.maxHorizontalForce = 550;
+                joint.angleLimit = 175;
+                joint.errorThreshold = 5;
+            }
+
+
+
+        }
+
+    }
+
+
+
+
 }
