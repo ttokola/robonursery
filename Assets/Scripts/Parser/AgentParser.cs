@@ -19,9 +19,10 @@ public abstract class AgentParser : MonoBehaviour {
     [System.Serializable]
     public struct Component
     {
+        public bool Link;
         public string PartName;
         public GameObject gameObject;
-        public bool Link;
+        
         public bool Movable;
         public enum Type_
         {
@@ -50,6 +51,7 @@ public abstract class AgentParser : MonoBehaviour {
    public int JointMultiplier=1;
 
     //Parser flags
+    public Boolean AddColliders;
     public Boolean Link;
     public Boolean Action_Indicies;
     public Boolean Multipliers; 
@@ -65,6 +67,7 @@ public abstract class AgentParser : MonoBehaviour {
 
     void Start()
     {
+        /*
         Debug.Log("Start run");
         foreach (Component component in components)
         {
@@ -78,6 +81,7 @@ public abstract class AgentParser : MonoBehaviour {
                 }
             }
         }
+        */
     }
 
     public List<Component> GetComponents()
@@ -160,12 +164,8 @@ public abstract class AgentParser : MonoBehaviour {
         {
             if (component.Movable == true)
             {
-
-                //add rigidbody if it doesn't exist
-                if (component.gameObject.GetComponent<Rigidbody>() == null)
-                {
-                    component.gameObject.AddComponent<Rigidbody>();
-                }
+                
+                CheckRigidbody(component.gameObject);
 
                 switch (component.Type)
                 {
@@ -286,10 +286,8 @@ public abstract class AgentParser : MonoBehaviour {
         }
         BallJoint joint = component.gameObject.GetComponent<BallJoint>();
         //Add rigidbody to parent if it doesn't have it
-        if (component.gameObject.transform.parent.GetComponent<Rigidbody>() == null)
-        {
-            component.gameObject.transform.parent.gameObject.AddComponent<Rigidbody>();
-        }
+        CheckRigidbody(component.gameObject.transform.parent.gameObject);
+
         joint.connected = component.gameObject.transform.parent.GetComponent<Rigidbody>();
         //give balljoint script some default values
         joint.maxVerticalForce = 550;
@@ -299,32 +297,29 @@ public abstract class AgentParser : MonoBehaviour {
     }
 
 
-    //pointless
-    [ContextMenu("Link marked part with its child")]
-    void LinkWithBallJoints2()
+   void CheckRigidbody(GameObject component)
     {
-        foreach (Component component in GetComponents())
+        if (component.GetComponent<Rigidbody>() == null)
         {
-            if (component.Link == true)// && component.gameObject.transform.childCount != 0)
-            {
-                if (component.gameObject.GetComponent<BallJoint>() == null)
-                {
-                    component.gameObject.AddComponent<BallJoint>();
-                }
-                BallJoint joint = component.gameObject.GetComponent<BallJoint>();
-                joint.connected = component.gameObject.transform.parent.GetComponent<Rigidbody>();
-                //give balljoint script some default values
-                joint.maxVerticalForce = 550;
-                joint.maxHorizontalForce = 550;
-                joint.angleLimit = 175;
-                joint.errorThreshold = 5;
-            }
-
-
-
+            component.AddComponent<Rigidbody>();
         }
 
-    }
+        if (AddColliders == true && component.GetComponent<BoxCollider>() == null && component.GetComponent<SphereCollider>() == null && component.GetComponent<MeshCollider>() == null)
+        {
+            Debug.Log("AddingCollider to" + component.name);
+            component.AddComponent<BoxCollider>();
+            //get colliders size from Renderer
+            if (component.GetComponent<Renderer>() != null) {
+                component.GetComponent<BoxCollider>().size = component.GetComponent<Renderer>().bounds.size;
+                }
+            //set default small values if renderer does not exist. For example in case of bones
+            else 
+            {
+                Vector3 vector = new Vector3 (0.5f, 0.5f, 0.5f);
+                component.GetComponent<BoxCollider>().size = vector; 
+            }
+        }
+    } 
 
 
 
