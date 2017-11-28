@@ -12,10 +12,18 @@ public class HeadNoticing : MonoBehaviour, IScenario {
     private RaycastHit hit;
     private bool done;
     private bool killcall = false;
+    private string[] requirements;
+    private string[] newskills;
 
-	
-	// Update is called once per frame
-	void Update ()
+    private void Awake()
+    {
+        requirements = new string[] { };
+        newskills = new string[] { " Head moving" };
+    }
+
+
+    // Update is called once per frame
+    void Update ()
     {
         orgPosition = lilrobotHead.transform.position;
         lilbotRay = new Ray(orgPosition, lilrobotHead.transform.forward);
@@ -65,7 +73,7 @@ public class HeadNoticing : MonoBehaviour, IScenario {
         Destroy(ball);
 
         //Add functionality for moving to next scenarion by DayController
-        GameObject.FindGameObjectWithTag("GameController").GetComponent<DayController>().MovetoNextScenario(this.GetType(), true);
+        GameObject.FindGameObjectWithTag("GameController").GetComponent<DayController>().MovetoNextScenario(this.GetType(), true, newskills, 100);
     }
 
     public void EnableScenario(bool enabled)
@@ -80,4 +88,10 @@ public class HeadNoticing : MonoBehaviour, IScenario {
         done = false;
         StartCoroutine(StartWait());
     }
+
+    public string[] GetRequirements()
+    {
+        return requirements;
+    }
+
 }

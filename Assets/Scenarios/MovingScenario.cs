@@ -9,10 +9,17 @@ public class MovingScenario : MonoBehaviour, IScenario {
     private GameObject ball;
     private bool done;
     private bool killcall = false;
+    private string[] requirements;
+    private string[] newskills;
 
-	
-	// Update is called once per frame
-	void Update ()
+    private void Awake()
+    {
+        requirements = new string[] { };
+        newskills = new string[] { "Moving" };
+    }
+
+    // Update is called once per frame
+    void Update ()
     {
         if(ball != null)
         {
@@ -20,7 +27,8 @@ public class MovingScenario : MonoBehaviour, IScenario {
             {
                 if (!done)
                 {
-                    lilrobotBody.GetComponentInParent<TemplateAgent>().AddReward(100);
+                    //In the future don't add the reward straight to the ML-Agents but through GameMananger
+                    lilrobotBody.GetComponentInParent<TemplateAgent>().AddReward(100); 
                     done = true;
                 }
                 else
@@ -56,7 +64,7 @@ public class MovingScenario : MonoBehaviour, IScenario {
         Destroy(ball);
 
         //Add functionality for moving to next scenarion by DayController
-        GameObject.FindGameObjectWithTag("GameController").GetComponent<DayController>().MovetoNextScenario(this.GetType(), true);
+        GameObject.FindGameObjectWithTag("GameController").GetComponent<DayController>().MovetoNextScenario(this.GetType(), true, newskills, 100);
     }
 
     public void EnableScenario(bool enabled)
@@ -70,5 +78,10 @@ public class MovingScenario : MonoBehaviour, IScenario {
         Debug.Log(this.GetType() + " started");
         done = false;
         StartCoroutine(StartWait());
+    }
+
+    public string[] GetRequirements()
+    {
+        return requirements;
     }
 }

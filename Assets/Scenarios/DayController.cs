@@ -1,7 +1,16 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+/*
+ * Using this kind of One SUPER game controller isn't the best solution
+ * in the lonf run but during this early development good enough.
+ * 
+ * Day is controlled by the amount of scenarios and each day runs all of them. 
+ * No time based days. 
+ * 
+ * Scenarios are picked to run randomly. 
+ * 
+ */
 public class DayController : MonoBehaviour {
 
     public Light worldLight;
@@ -13,6 +22,9 @@ public class DayController : MonoBehaviour {
     public float nightLength = 20f;
 
     public string status;
+    private int maxRunPoints = 0;
+    private int maxDayPoints = 0;
+    private List<string> skills; //Define better value type in the future
 
 
     private float wlintensityday;
@@ -21,6 +33,7 @@ public class DayController : MonoBehaviour {
     private float startTime;
     private int index;
     private bool nextscript;
+    private System.Random rd;
 
     private IScenario[] scenarios;
 
@@ -34,6 +47,8 @@ public class DayController : MonoBehaviour {
         activate = false;
         index = 0;
         nextscript = true;
+        rd = new System.Random();
+        
         Initialize();
 	}
 	
@@ -76,7 +91,9 @@ public class DayController : MonoBehaviour {
         activate = true;
         startTime = Time.time;
         status = "Night";
-        GameObject.FindGameObjectWithTag("Academy").GetComponent<TemplateAcademy>().AcademyReset(); //Reset the environment
+        maxRunPoints += maxDayPoints;
+        maxDayPoints = 0;
+        GameObject.FindGameObjectWithTag("Academy").GetComponent<TemplateAcademy>().AcademyReset(); //Reset the environment | maybe create some dayreset and not the whole ML-Agents reset
     }
     public void Deactivate()
     {
@@ -86,18 +103,44 @@ public class DayController : MonoBehaviour {
         index = 0;
     }
 
-    public void MovetoNextScenario(object scripttype, bool status)
+    public void MovetoNextScenario(object scripttype, bool status, string[] learnedskills, int points)
     {
+        //Add obtained skill and points
+        if (status)
+        {
+            foreach (string skill in learnedskills)
+            {
+                skills.Add(skill);
+            }
+            maxDayPoints += points;
+        }
+
         scenarios[index].EnableScenario(false);
-        index++;
-        Debug.Log(index);
-        Debug.Log(scenarios.Length);
+    SELECT_SCENARIO:
+        int next = rd.Next(0, scenarios.Length);
+        index = next != index ? next : index++;
         if(index >= scenarios.Length)
         {
-            Debug.Log("Should not go here");
             Activate();
             index = 0;
         }
+        foreach (string skill in scenarios[index].GetRequirements())
+        {
+            if(!skills.Contains(skill))
+            {
+                //Doesn't have required skill yet, go back
+                goto SELECT_SCENARIO;
+            }
+        }
         nextscript = true;
+    }
+
+    public int GetMaxDayPoints()
+    {
+        return maxDayPoints;
+    }
+    public int GetMaxRunPoints()
+    {
+        return maxRunPoints;
     }
 }

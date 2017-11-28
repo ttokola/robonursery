@@ -6,4 +6,6 @@ public interface IScenario
 {
     void EnableScenario(bool enabled);
     void ResetScenario();
+    string[] GetRequirements();
+
 }
