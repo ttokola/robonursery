@@ -14,11 +14,37 @@ from baselines.a2c.utils import EpisodeStats
 from baselines.a2c.utils import get_by_index, check_shape, avg_norm, gradient_add, q_explained_variance
 from baselines.acer.buffer import Buffer
 
+def batch_to_seq(h, nbatch, nsteps, flat=False):
+    if flat:
+        h = tf.reshape(h, [nbatch, nsteps])
+    else:
+        h = tf.reshape(h, [nbatch, nsteps, -1])
+    return [tf.squeeze(v, [1]) for v in tf.split(axis=1, num_or_size_splits=nsteps, value=h)]
+
+def seq_to_batch(h, flat = False):
+    shape = h[0].get_shape().as_list()
+    if not flat:
+        assert(len(shape) > 1)
+        nh = h[0].get_shape()[-1].value
+        return tf.reshape(tf.concat(axis=1, values=h), [-1, nh])
+    else:
+        return tf.reshape(tf.stack(values=h, axis=1), [-1])
+
 
 # remove last step
 def strip(var, nenvs, nsteps, flat = False):
     vars = batch_to_seq(var, nenvs, nsteps + 1, flat)
     return seq_to_batch(vars[:-1], flat)
+
+def avg_norm(t):
+    return tf.reduce_mean(tf.sqrt(tf.reduce_sum(tf.square(t), axis=-1)))
+
+def q_explained_variance(qpred, q):
+    _, vary = tf.nn.moments(q, axes=[0, 1])
+    _, varpred = tf.nn.moments(q - qpred, axes=[0, 1])
+    check_shape([vary, varpred], [[]] * 2)
+    return 1.0 - (varpred / vary)
+
 
 def q_retrace(R, D, q_i, v, rho_i, nenvs, nsteps, gamma):
     """
@@ -49,7 +75,10 @@ def q_retrace(R, D, q_i, v, rho_i, nenvs, nsteps, gamma):
     return qret
 
 
-def create_agent_model(env, lr=1e-4, h_size=128, epsilon=0.2, beta=1e-3, max_step=5e6, trust_region=True):
+def create_agent_model(env, lr=1e-4, h_size=128, 
+    rmsprop_epsilon=1e-5, rmsprop_alpha=0.99, 
+    epsilon=0.2, alpha=0.99, beta=1e-3, delta=1, gamma=0.99,
+     max_step=5e6, trust_region=True):
     """
     Takes a Unity environment and model-specific hyper-parameters and returns the
     appropriate PPO agent model for the environment.
@@ -64,10 +93,14 @@ def create_agent_model(env, lr=1e-4, h_size=128, epsilon=0.2, beta=1e-3, max_ste
     brain_name = env.brain_names[0]
     brain = env.brains[brain_name]
     if brain.action_space_type == "continuous":
-        return ContinuousControlModel(lr, brain, h_size, epsilon, max_step, trust_region)
-    if brain.action_space_type == "discrete":
-        return DiscreteControlModel(lr, brain, h_size, epsilon, beta, max_step)
+        return ContinuousControlModel(lr, brain, h_size,
+            rmsprop_epsilon, rmsprop_alpha,
+            epsilon=epsilon, alpha=alpha, delta=delta, gamma=gamma,
+            max_step=max_step, trust_region=trust_region)
 
+    if brain.action_space_type == "discrete":
+        #return DiscreteControlModel(lr, brain, h_size, epsilon, beta, max_step)
+        pass
 
 def save_model(sess, saver, model_path="./", steps=0):
     """
@@ -162,21 +195,33 @@ class ACERModel(object):
             streams.append(hidden)
         return streams
 
-    def create_acer_optimizer(self, trust_region, probs, old_probs, value, entropy, beta, epsilon, lr, max_step):
+    def create_acer_optimizer(self, trust_region,
+                probs,
+                old_probs,
+                loss_policy,
+                entropy,
+                beta,
+                f_pol,
+                rmsprop_epsilon,
+                lr,
+                nsteps,
+                max_step,
+                ent_coef=0.01):
         """
         Creates training-specific Tensorflow ops for PPO models.
         :param trust_region: bool: Whether to use trust region
         :param probs: Current policy probabilities
         :param old_probs: Past policy probabilities
-        :param value: Current value estimate
+        :param loss_policy: Current value estimate
         :param beta: Entropy regularization strength
         :param entropy: Current policy entropy
         :param epsilon: Value for policy-divergence threshold
         :param lr: Learning rate
         :param max_step: Total number of training steps.
+        :param ent_coef: entropy coefficient, 0.01 in openAI implementation
         """
         if trust_region:
-            g = tf.gradients(- (loss_policy - ent_coef * entropy) * max_step*1.1 * nenvs, f) #[nenvs * nsteps, nact]
+            g = tf.gradients(- (loss_policy - ent_coef * entropy) * nsteps*1.1 * nenvs, f) #[nenvs * nsteps, nact]
             # k = tf.gradients(KL(f_pol || f), f)
             k = - f_pol / (f + eps) #[nenvs * nsteps, nact] # Directly computed gradient of KL divergence wrt f
             k_dot_g = tf.reduce_sum(k * g, axis=-1)
@@ -188,7 +233,7 @@ class ACERModel(object):
             avg_norm_k_dot_g = tf.reduce_mean(tf.abs(k_dot_g))
             avg_norm_adj = tf.reduce_mean(tf.abs(adj))
 
-            g = g - tf.reshape(adj, [nenvs * nsteps, 1]) * k
+            g = g - tf.reshape(adj, [nenvs * max_step, 1]) * k
             grads_f = -g/(nenvs*nsteps) # These are turst region adjusted gradients wrt f ie statistics of policy pi
             grads_policy = tf.gradients(f, params, grads_f)
             grads_q = tf.gradients(loss_q * q_coef, params)
@@ -201,15 +246,64 @@ class ACERModel(object):
             grads = tf.gradients(loss, params)
 
         if max_grad_norm is not None:
-            grads, norm_grads = tf.clip_by_global_norm(grads, max_grad_norm)
-        grads = list(zip(grads, params))
-        trainer = tf.train.RMSPropOptimizer(learning_rate=LR, decay=rprop_alpha, epsilon=rprop_epsilon)
-        _opt_op = trainer.apply_gradients(grads)
+            grads, self.norm_grads = tf.clip_by_global_norm(grads, max_grad_norm)
+        self.grads = list(zip(grads, params))
+        self.global_step = tf.Variable(0, trainable=False, name='global_step', dtype=tf.int32)
+        self.optimizer = tf.train.RMSPropOptimizer(learning_rate=LR, decay=rprop_alpha, epsilon=rmsprop_epsilon)
+        self.grads_and_vars = self.optimizer.compute_gradients(self.loss) 
+        self.opt_op = optimizer.apply_gradients(self.grads)
 
         # so when you call _train, you first do the gradient step, then you apply ema
-        with tf.control_dependencies([_opt_op]):
-            _train = tf.group(ema_apply_op)
-        self.increment
+        with tf.control_dependencies([self.opt_op]):
+            self.train = tf.group(ema_apply_op)
+        self.increment_step = tf.assign(self.global_step, self.global_step + 1)
+
+    def create_acer_loss(self, actions,
+                        f, q, v, f_pol, qret, rho_i, f_i, rho,
+                        q_coef, ent_coef, epsilon=1e-6,
+                        a_size, nsteps, nenvs):
+        # Get pi and q values for actions taken
+        f_i = get_by_index(f, actiions)
+        q_i = get_by_index(q, actions)
+
+        # Compute ratios for importance truncation
+        rho = f / (MU + eps)
+        rho_i = get_by_index(rho, actions)
+
+        # Calculate Q_retrace targets
+        qret = q_retrace(R, D, q_i, v, rho_i, nenvs, nsteps, gamma)
+        # Calculate losses
+        # Entropy
+        #entropy = tf.reduce_mean(cat_entropy_softmax(f))
+        self.entropy = tf.reduce_sum(0.5 * tf.log(2 * np.pi * np.e * self.sigma_sq))
+        # Policy Graident loss, with truncated importance sampling & bias correction
+        v = strip(v, nenvs, nsteps, True)
+        check_shape([qret, v, rho_i, f_i], [[nenvs * nsteps]] * 4)
+        check_shape([rho, f, q], [[nenvs * nsteps, nact]] * 2)
+
+        # Truncated importance sampling
+        adv = qret - v
+        logf = tf.log(f_i + epsilon)
+        gain_f = logf * tf.stop_gradient(adv * tf.minimum(c, rho_i))  # [nenvs * nsteps]
+        self.loss_f = -tf.reduce_mean(gain_f)
+
+        # Bias correction for the truncation
+        adv_bc = (q - tf.reshape(v, [nenvs * nsteps, 1]))  # [nenvs * nsteps, nact]
+        logf_bc = tf.log(f + epsilon) # / (f_old + eps)
+        check_shape([adv_bc, logf_bc], [[nenvs * nsteps, nact]]*2)
+        gain_bc = tf.reduce_sum(logf_bc * tf.stop_gradient(adv_bc * tf.nn.relu(1.0 - (c / (rho + epsilon))) * f), axis = 1) #IMP: This is sum, as expectation wrt f
+        self.loss_bc= -tf.reduce_mean(gain_bc)
+
+        self.loss_policy = loss_f + loss_bc
+
+        # Value/Q function loss, and explained variance
+        check_shape([qret, q_i], [[nenvs * nsteps]]*2)
+        self.ev = q_explained_variance(tf.reshape(q_i, [nenvs, nsteps]), tf.reshape(qret, [nenvs, nsteps]))
+        self.loss_q = tf.reduce_mean(tf.square(tf.stop_gradient(qret) - q_i)*0.5)
+
+        # Net loss
+        check_shape([self.loss_policy, self.loss_q, self.entropy], [[]] * 3)
+        self.loss = self.loss_policy + q_coef * self.loss_q - ent_coef * self.entropy
 
 class AcerCnnPolicy(object):
     def __init__(self, hidden_policy, a_size, max_steps, reuse=False):
@@ -224,13 +318,17 @@ class AcerCnnPolicy(object):
         self.q = q
 
 class ContinuousControlModel(ACERModel):
-    def __init__(self, lr, brain, h_size, epsilon, alpha, delta, gamma, max_step, trust_region ):
+    def __init__(self, lr, brain, h_size, 
+        rmsprop_epsilon, rmsprop_alpha, 
+        epsilon, alpha, delta, gamma, max_step,
+        nsteps, trust_region ):
         """
         Creates Continuous Control Actor-Critic model.
         :param brain: State-space size
         :param h_size: Hidden layer size
         :param trust_region: bool: Whether to use trust region
         :param alpha: for ExponentialMovingAverage
+        :param nsteps: updates performed every nsteps steps
         """
         s_size = brain.state_space_size
         a_size = brain.action_space_size
@@ -288,17 +386,6 @@ class ContinuousControlModel(ACERModel):
 
         # strip off last step
         f, f_pol, q = map(lambda var: strip(var, 1, max_step), [train_model.pi, polyak_model.pi, train_model.q])
-        # Get pi and q values for actions taken
-        f_i = get_by_index(f, A)
-        q_i = get_by_index(q, A)
-
-        # Compute ratios for importance truncation
-        rho = f / (MU + eps)
-        rho_i = get_by_index(rho, A)
-
-        # Calculate Q_retrace targets
-        qret = q_retrace(R, D, q_i, v, rho_i, nenvs, nsteps, gamma)
-        
 
         #self.mu = tf.layers.dense(hidden_policy, a_size, activation=None, use_bias=False,
         #                    kernel_initizer=c_layers.variance_scaling_initializer(factor=0.1))
@@ -319,82 +406,17 @@ class ContinuousControlModel(ACERModel):
         #self.value = tf.layers.dense(hidden_value, 1, activation=None, use_bias=False)
 
         #self.old_probs = tf.placeholder(shape=[None, a_size], dtype=tf.float32, name='old_probabilities')
-        self.log_sigma_sq = tf.Variable(tf.zeros([a_size]))
-        self.sigma_sq = tf.exp(self.log_sigma_sq)
+        #self.log_sigma_sq = tf.Variable(tf.zeros([a_size]))
+        #self.sigma_sq = tf.exp(self.log_sigma_sq)
 
-        self.entropy = tf.reduce_sum(0.5 * tf.log(2 * np.pi * np.e * self.sigma_sq))
-        self.create_acer_optimizer(self.probs, self.old_probs, self.value, self.entropy, 0.0, epsilon, lr, max_step)
+        #self.entropy = tf.reduce_sum(0.5 * tf.log(2 * np.pi * np.e * self.sigma_sq))
+        self.create_acer_loss()
+        self.create_acer_optimizer(self.probs, self.old_probs, loss_policy, self.entropy, 0.0, epsilon, lr, max_step)
         
-
-
-        # Policy Graident loss, with truncated importance sampling & bias correction
-        v = strip(v, nenvs, nsteps, True)
-        check_shape([qret, v, rho_i, f_i], [[nenvs * nsteps]] * 4)
-        check_shape([rho, f, q], [[nenvs * nsteps, nact]] * 2)
-
-        # Truncated importance sampling
-        adv = qret - v
-        logf = tf.log(f_i + eps)
-        gain_f = logf * tf.stop_gradient(adv * tf.minimum(c, rho_i))  # [nenvs * nsteps]
-        loss_f = -tf.reduce_mean(gain_f)
-
-        # Bias correction for the truncation
-        adv_bc = (q - tf.reshape(v, [nenvs * nsteps, 1]))  # [nenvs * nsteps, nact]
-        logf_bc = tf.log(f + eps) # / (f_old + eps)
-        check_shape([adv_bc, logf_bc], [[nenvs * nsteps, nact]]*2)
-        gain_bc = tf.reduce_sum(logf_bc * tf.stop_gradient(adv_bc * tf.nn.relu(1.0 - (c / (rho + eps))) * f), axis = 1) #IMP: This is sum, as expectation wrt f
-        loss_bc= -tf.reduce_mean(gain_bc)
-
-        loss_policy = loss_f + loss_bc
-
-        # Value/Q function loss, and explained variance
-        check_shape([qret, q_i], [[nenvs * nsteps]]*2)
-        ev = q_explained_variance(tf.reshape(q_i, [nenvs, nsteps]), tf.reshape(qret, [nenvs, nsteps]))
-        loss_q = tf.reduce_mean(tf.square(tf.stop_gradient(qret) - q_i)*0.5)
-
-        # Net loss
-        check_shape([loss_policy, loss_q, entropy], [[]] * 3)
-        loss = loss_policy + q_coef * loss_q - ent_coef * entropy
-
-        if trust_region:
-            g = tf.gradients(- (loss_policy - ent_coef * entropy) * nsteps * nenvs, f) #[nenvs * nsteps, nact]
-            # k = tf.gradients(KL(f_pol || f), f)
-            k = - f_pol / (f + eps) #[nenvs * nsteps, nact] # Directly computed gradient of KL divergence wrt f
-            k_dot_g = tf.reduce_sum(k * g, axis=-1)
-            adj = tf.maximum(0.0, (tf.reduce_sum(k * g, axis=-1) - delta) / (tf.reduce_sum(tf.square(k), axis=-1) + eps)) #[nenvs * nsteps]
-
-            # Calculate stats (before doing adjustment) for logging.
-            avg_norm_k = avg_norm(k)
-            avg_norm_g = avg_norm(g)
-            avg_norm_k_dot_g = tf.reduce_mean(tf.abs(k_dot_g))
-            avg_norm_adj = tf.reduce_mean(tf.abs(adj))
-
-            g = g - tf.reshape(adj, [nenvs * nsteps, 1]) * k
-            grads_f = -g/(nenvs*nsteps) # These are turst region adjusted gradients wrt f ie statistics of policy pi
-            grads_policy = tf.gradients(f, params, grads_f)
-            grads_q = tf.gradients(loss_q * q_coef, params)
-            grads = [gradient_add(g1, g2, param) for (g1, g2, param) in zip(grads_policy, grads_q, params)]
-
-            avg_norm_grads_f = avg_norm(grads_f) * (nsteps * nenvs)
-            norm_grads_q = tf.global_norm(grads_q)
-            norm_grads_policy = tf.global_norm(grads_policy)
-        else:
-            grads = tf.gradients(loss, params)
-
-        if max_grad_norm is not None:
-            grads, norm_grads = tf.clip_by_global_norm(grads, max_grad_norm)
-        grads = list(zip(grads, params))
-        trainer = tf.train.RMSPropOptimizer(learning_rate=LR, decay=rprop_alpha, epsilon=rprop_epsilon)
-        _opt_op = trainer.apply_gradients(grads)
-
-        # so when you call _train, you first do the gradient step, then you apply ema
-        with tf.control_dependencies([_opt_op]):
-            _train = tf.group(ema_apply_op)
-
         lr = Scheduler(v=lr, nvalues=total_timesteps, schedule=lrschedule)
 
         # Ops/Summaries to run, and their names for logging
-        run_ops = [_train, loss, loss_q, entropy, loss_policy, loss_f, loss_bc, ev, norm_grads]
+        run_ops = [self.train, self.loss, self.loss_q, self.entropy, self.loss_policy, self.loss_f, self.loss_bc, self.ev, self.norm_grads]
         names_ops = ['loss', 'loss_q', 'entropy', 'loss_policy', 'loss_f', 'loss_bc', 'explained_variance',
                      'norm_grads']
         if trust_region:
