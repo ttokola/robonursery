@@ -14,7 +14,7 @@ using System.IO;
 
 public abstract class AgentParser : MonoBehaviour {
 
-    
+
 
     [System.Serializable]
     public struct Component
@@ -22,7 +22,7 @@ public abstract class AgentParser : MonoBehaviour {
         public bool Link;
         public string PartName;
         public GameObject gameObject;
-        
+
         public bool Movable;
         public enum Type_
         {
@@ -32,6 +32,7 @@ public abstract class AgentParser : MonoBehaviour {
         public Type_ Type;
         public float[] DimensionMultipliers;
         public int[] ActionIndeces;
+        public bool Mesh_collider;
     }
 
     [System.Serializable]
@@ -43,19 +44,20 @@ public abstract class AgentParser : MonoBehaviour {
 
     // Use this for initialization
     private MovementControls motor;
-    private string motorname1= "Wheel";
+    private string motorname1 = "Wheel";
     private string motorname2 = "Joint";
 
-    public string ConfigName = "Config"; 
-   public int WheelMultiplier=1;
-   public int JointMultiplier=1;
+    public string ConfigName = "Config";
+    public int WheelMultiplier = 1;
+    public int JointMultiplier = 1;
 
     //Parser flags
     public Boolean Run;
     public Boolean AddColliders;
     public Boolean Link;
     public Boolean Action_Indicies;
-    public Boolean Multipliers; 
+    public Boolean Multipliers;
+    public Boolean Link_grandparent;
 
     public AgentParameters agentParameters;
 
@@ -69,7 +71,7 @@ public abstract class AgentParser : MonoBehaviour {
     void Start()
     {
 
-        if(Run == true)
+        if (Run == true)
         {
             AddIndicies();
         }
@@ -94,11 +96,11 @@ public abstract class AgentParser : MonoBehaviour {
     {
         return components;
     }
-    
+
     public Component GetComponentByName(string name)
     {
         Component result = new Component();
-        foreach(Component component in components)
+        foreach (Component component in components)
         {
             if (component.PartName == name)
             {
@@ -126,7 +128,7 @@ public abstract class AgentParser : MonoBehaviour {
         }
         return result;
     }
-	void OnEnable()
+    void OnEnable()
     {
         //id = gameObject.GetInstanceID();
 
@@ -136,9 +138,12 @@ public abstract class AgentParser : MonoBehaviour {
     void InitializeParser()
     {
         //
-        
+
 
         components.Clear();
+
+
+
         Transform[] allChildren = GetComponentsInChildren<Transform>();
         foreach (Transform child in allChildren)
         {
@@ -152,16 +157,16 @@ public abstract class AgentParser : MonoBehaviour {
                 component.ActionIndeces = new int[3];
                 component.DimensionMultipliers = new float[3];
                 //if objects name contains word "Wheel", set default type to wheel
-                if (component.PartName.Contains(motorname1))
+                if (component.PartName.Contains(motorname1) || component.PartName.Contains("Axle"))
                 {
-                    component.Type = Component.Type_.Wheel; 
+                    component.Type = Component.Type_.Wheel;
                 }
                 components.Add(component);
             }
         }
     }
 
-    [ContextMenu("Auto add action indicies and action multiplier to movable objects")]
+    [ContextMenu("Run the flagged operations")]
     void AddIndicies()
     {
         Debug.Log("AddIndicies");
@@ -171,8 +176,12 @@ public abstract class AgentParser : MonoBehaviour {
         {
             if (component.Movable == true)
             {
-                
-                CheckRigidbody(component.gameObject);
+                if (component.Mesh_collider== true) {
+                    CheckRigidbody(component.gameObject, 1);
+                    }
+                else{
+                    CheckRigidbody(component.gameObject, 0);
+                }
 
                 switch (component.Type)
                 {
@@ -216,7 +225,13 @@ public abstract class AgentParser : MonoBehaviour {
              }
             if (component.Link == true && Link == true)
             {
-                LinkWithBallJoints(component);
+                if (component.Type == Component.Type_.Joint) {
+                    LinkWithBallJoints(component);
+                    }
+                else if (component.Type == Component.Type_.Wheel)
+                {
+                    LinkWithHingeJoints(component);
+                }
             }
         }
       }
@@ -292,38 +307,91 @@ public abstract class AgentParser : MonoBehaviour {
             component.gameObject.AddComponent<BallJoint>();
         }
         BallJoint joint = component.gameObject.GetComponent<BallJoint>();
-        //Add rigidbody to parent if it doesn't have it
-        CheckRigidbody(component.gameObject.transform.parent.gameObject);
-
-        joint.connected = component.gameObject.transform.parent.GetComponent<Rigidbody>();
         //give balljoint script some default values
         joint.maxVerticalForce = 550;
         joint.maxHorizontalForce = 550;
         joint.angleLimit = 175;
         joint.errorThreshold = 5;
+        //Add rigidbody to parent if it doesn't have it
+
+        if (Link_grandparent == true && component.gameObject.transform.parent.parent.gameObject != this.gameObject)
+        {
+            CheckRigidbody(component.gameObject.transform.parent.parent.gameObject,0);
+            joint.connected = component.gameObject.transform.parent.parent.GetComponent<Rigidbody>();
+        }
+        else {
+            CheckRigidbody(component.gameObject.transform.parent.gameObject,0);
+            joint.connected = component.gameObject.transform.parent.GetComponent<Rigidbody>();
+        
+            }
     }
 
+    void LinkWithHingeJoints(Component component)
+    {
+        if (component.Mesh_collider == true) {
+            
+            CheckRigidbody(component.gameObject, 1);
+            }
+        else
+        {
+            CheckRigidbody(component.gameObject, 0);
+        }
+        if (component.gameObject.GetComponent<HingeJoint>() == null)
+        {
+            component.gameObject.AddComponent<HingeJoint>();
+        }
+        HingeJoint joint = component.gameObject.GetComponent<HingeJoint>();
+        
+        //Add rigidbody to parent if it doesn't have it
 
-   void CheckRigidbody(GameObject component)
+        if (Link_grandparent == true && component.gameObject.transform.parent.parent.gameObject != this.gameObject)
+        {
+            
+            CheckRigidbody(component.gameObject.transform.parent.parent.gameObject,0);
+            joint.connectedBody = component.gameObject.transform.parent.parent.GetComponent<Rigidbody>();
+            joint.connectedAnchor = component.gameObject.transform.position;
+        }
+        else
+        {
+            CheckRigidbody(component.gameObject.transform.parent.gameObject,0);
+            joint.connectedBody = component.gameObject.transform.parent.GetComponent<Rigidbody>();
+            joint.connectedAnchor = component.gameObject.transform.position;
+
+        }
+    }
+
+    void CheckRigidbody(GameObject component, int collider)
     {
         if (component.GetComponent<Rigidbody>() == null)
         {
             component.AddComponent<Rigidbody>();
         }
-
+        
+       
         if (AddColliders == true && component.GetComponent<BoxCollider>() == null && component.GetComponent<SphereCollider>() == null && component.GetComponent<MeshCollider>() == null)
         {
             Debug.Log("AddingCollider to" + component.name);
-            component.AddComponent<BoxCollider>();
-            //get colliders size from Renderer
-            if (component.GetComponent<Renderer>() != null) {
-                component.GetComponent<BoxCollider>().size = component.GetComponent<Renderer>().bounds.size;
-                }
-            //set default small values if renderer does not exist. For example in case of bones
-            else 
+
+            if (collider == 1)
             {
-                Vector3 vector = new Vector3 (0.5f, 0.5f, 0.5f);
-                component.GetComponent<BoxCollider>().size = vector; 
+                MeshCollider mesh = component.AddComponent<MeshCollider>();
+                mesh.convex = true;
+                
+            }
+            else {
+                component.AddComponent<BoxCollider>();
+                //get colliders size from Renderer
+                if (component.GetComponent<Renderer>() != null) {
+                    //component.GetComponent<BoxCollider>().size = component.GetComponent<Renderer>().bounds.size;
+
+                    Debug.Log(component.name + component.GetComponent<Renderer>().bounds.size);
+                }
+                //set default small values if renderer does not exist. For example in case of bones
+                else
+                {
+                    Vector3 vector = new Vector3(0.5f, 0.5f, 0.5f);
+                    component.GetComponent<BoxCollider>().size = vector;
+                }
             }
         }
     } 
