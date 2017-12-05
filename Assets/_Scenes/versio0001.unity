@@ -278,6 +278,27 @@ MonoBehaviour:
   state: 0
   waves: 0
   helloSound: {fileID: 8300000, guid: 5c8768841748b67419c5822c1a613341, type: 3}
+--- !u!114 &234503851
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 234503835}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: eced8110bcdcc9e449b01143221b4d59, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  leftHand: {fileID: 1801394152}
+  rightHand: {fileID: 1373910649}
+  armControls: {fileID: 234503844}
+  movementControls: {fileID: 234503848}
+  movementRange: 0
+  grabOffset: {x: 0, y: 0, z: 0}
+  carryObject: {fileID: 0}
+  carryTarget: {fileID: 0}
+  throwTarget: {fileID: 0}
+  state: 0
 --- !u!1 &504300776
 GameObject:
   m_ObjectHideFlags: 0
@@ -306,10 +327,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   targetobj: {fileID: 768303152}
-  targettransform: {fileID: 1234899199}
+  targettransform: {fileID: 1849898480}
+  throwtargettransform: {fileID: 768303165}
   carryObjScript: {fileID: 234503836}
   lilbot: {fileID: 768303152}
   nannybot: {fileID: 234503835}
+  ballobject: {fileID: 2102673093}
 --- !u!4 &504300778
 Transform:
   m_ObjectHideFlags: 0
@@ -367,6 +390,11 @@ MonoBehaviour:
     type: 2}
   m_PrefabInternal: {fileID: 960031744}
   m_Script: {fileID: 11500000, guid: 29509426a80354840b809a08c5d8e2a7, type: 3}
+--- !u!4 &768303165 stripped
+Transform:
+  m_PrefabParentObject: {fileID: 4000013188543768, guid: 830458524f2d6cd43b04b6e90025e334,
+    type: 2}
+  m_PrefabInternal: {fileID: 960031744}
 --- !u!114 &768303166
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1034,6 +1062,34 @@ Transform:
   m_PrefabParentObject: {fileID: 4000010987306206, guid: 0602dbe6f741a6b4d8544fa4a649720b,
     type: 2}
   m_PrefabInternal: {fileID: 1488219333}
+--- !u!1 &1849898479
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 1849898480}
+  m_Layer: 0
+  m_Name: TestTransform
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1849898480
+Transform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1849898479}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 10.02, y: -0.35, z: 1.29}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 11
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1877743473 stripped
 GameObject:
   m_PrefabParentObject: {fileID: 100046, guid: 985dabbe3ee9fee4fbe0201494e6f1da, type: 3}
@@ -1138,7 +1194,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 2102673093}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -16.078125, y: 2.1230469, z: -2.1152344}
+  m_LocalPosition: {x: 2.74, y: 2.1230469, z: -5.34}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
