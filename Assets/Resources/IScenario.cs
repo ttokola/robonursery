@@ -9,3 +9,4 @@ public interface IScenario
     string[] GetRequirements();
 
 }
+

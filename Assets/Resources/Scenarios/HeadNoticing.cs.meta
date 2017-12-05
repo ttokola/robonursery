@@ -1,5 +1,7 @@
 fileFormatVersion: 2
 guid: 40780e95262b4774c9ff42f802ed8f1f
+labels:
+- Scenario
 timeCreated: 1508309462
 licenseType: Free
 MonoImporter:

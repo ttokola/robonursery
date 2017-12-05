@@ -14,43 +14,59 @@ public class HandMovingScenario : MonoBehaviour, IScenario {
     private bool start = false;
     private bool reached = false;
     private bool killcall = false;
+    private bool callNany = false;
     private string[] requirements;
     private string[] newskills;
 
+    private Vector3 target = new Vector3(0,0,0);
+
     private float startTime;
-    private float endTime;
+    private float endTime = 0.0f;
 
     private void Awake()
     {
         requirements = new string[] { };
-        newskills = new string[] { "Hand moving" };
+        newskills = new string[] { this.name };
     }
 	
 	// Update is called once per frame
 	void Update ()
     {
-        if(Time.time > endTime && !done)
-        {
-            // Lilrobot didn't reach the objective of the scenario in given time
-            // so end it and move to next scenario.
-            Debug.Log("Scenario failed, move to next one.");
-            nanyrobot.GetComponent<SayHello>().state = 0;
-            nanyrobot.GetComponent<SayHello>().enabled = false;
-            GameObject.FindGameObjectWithTag("GameController").GetComponent<DayController>().MovetoNextScenario(this.GetType(), false, new string[] { }, 0);
-            done = true;
-            killcall = true;
-            start = false;
-        }
+
         if (start)
         {
-            Vector3 target = lilrobotbody.transform.position + new Vector3(4, 0, 0);
-            if (!reached) state = nanyrobot.GetComponent<LilBotNamespace.MovementControls>().DriveTo(target, true);
+            if(target.x == 0) target = lilrobotbody.transform.position + new Vector3(4, 0, 0);
+            if (!reached)
+            {
+                state = nanyrobot.GetComponent<LilBotNamespace.MovementControls>().DriveTo(target, true);
+                Debug.Log("State: " + state);
+            }
             if (state == 0 || reached)
             {
+                if (endTime == 0.0f) endTime = Time.time + 90 * 1;
+                if (Time.time > endTime && !done)
+                {
+                    // Lilrobot didn't reach the objective of the scenario in given time
+                    // so end it and move to next scenario.
+                    Debug.Log("Scenario failed, move to next one.");
+                    nanyrobot.GetComponent<SayHello>().state = 0;
+                    nanyrobot.GetComponent<SayHello>().enabled = false;
+                    nanyrobot.SetActive(false);
+                    GameObject.FindGameObjectWithTag("GameController").GetComponent<DayController>().MovetoNextScenario(this.GetType(), false, new string[] { }, 0);
+                    done = true;
+                    killcall = true;
+                    start = false;
+                }
+                Debug.Log("Target reached");
                 reached = true;
-                nanyrobot.GetComponent<SayHello>().enabled = true;
-                nanyrobot.GetComponent<SayHello>().setTask(lilrobotbody, 3, false);
+                if (!callNany)
+                {
+                    nanyrobot.GetComponent<SayHello>().enabled = true;
+                    nanyrobot.GetComponent<SayHello>().setTask(lilrobotbody, 1, false);
+                    callNany = true;
+                }
 
+                Debug.Log(nanyrobot.GetComponent<SayHello>().state);
 
                 //Not the best solution but need to be refactored when proper hand movement is available
                 if (lilrobotlefthand.gameObject.transform.position.z > 0 || lilrobotrighthand.gameObject.transform.position.z > 0)
@@ -78,6 +94,10 @@ public class HandMovingScenario : MonoBehaviour, IScenario {
     IEnumerator StartWait()
     {
         yield return new WaitForSeconds(1);
+        start = true;
+        //startTime = Time.time;
+        //endTime = startTime + 60 * 3;
+        Debug.Log("Indside StartWait");
 
     }
 
@@ -103,10 +123,10 @@ public class HandMovingScenario : MonoBehaviour, IScenario {
         Debug.Log(this.GetType() + " started");
         done = false;
         start = false;
+        endTime = 0.0f;
+        nanyrobot.SetActive(true);
         StartCoroutine(StartWait());
-        start = true;
-        startTime = Time.time;
-        endTime = startTime + 60 * 1;
+
     }
 
     public string[] GetRequirements()

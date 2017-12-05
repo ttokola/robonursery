@@ -21,7 +21,11 @@ public class DayController : MonoBehaviour {
     public float lerpPercent = 0.2f;
     public float nightLength = 20f;
 
+    public int numOfScenarios = 10;
+
     public string status;
+    public bool capture = false;
+
     private int maxRunPoints = 0;
     private int maxDayPoints = 0;
     private List<string> skills = new List<string>(); //Define better value type in the future
@@ -36,12 +40,13 @@ public class DayController : MonoBehaviour {
     private System.Random rd;
     private List<int> completed = new List<int>();
 
-    private IScenario[] scenarios;
+    private List<string> scenarioslist = new List<string>();
+    private IScenario[] dayscenarios;
 
 	// Use this for initialization
 	void Start ()
     {
- 
+        DontDestroyOnLoad(this.transform.gameObject);
         wlintensityday = worldLight.intensity;
         clintensityday = ceilingLight.intensity;
         status = "Day";
@@ -49,7 +54,10 @@ public class DayController : MonoBehaviour {
         index = 0;
         nextscript = true;
         rd = new System.Random();
-        
+
+        //Video Capture
+        //RockVR.Video.VideoCaptureCtrl.instance.StartCapture();
+
         Initialize();
 	}
 	
@@ -72,18 +80,71 @@ public class DayController : MonoBehaviour {
             if (nextscript)
             {
                 Debug.Log("Scenario setactive called");
-                scenarios[index].EnableScenario(true);
-                scenarios[index].ResetScenario();
+                dayscenarios[index].EnableScenario(true);
+                dayscenarios[index].ResetScenario();
                 nextscript = false;
             }
+        }
+        if (capture)
+        {
+            RockVR.Video.VideoCaptureCtrl.instance.StopCapture();
+            capture = false;
         }
 	}
 
     void Initialize()
     {
-        scenarios = transform.Find("Scenarios").GetComponents<IScenario>();
+        Object[] objects = Resources.LoadAll("Scenarios");
+        
+        foreach (Object obj in objects)
+        {
+            Debug.Log(obj.name);
+            scenarioslist.Add(obj.name);
+        }
+        Resources.UnloadUnusedAssets();
+
+        int num = scenarioslist.Count;
+        Debug.Log("Number of IScenario files: " + num);
+        LoadScenarios();
         Debug.Log("Initialization done");
-        Debug.Log("Scenarios len: " + scenarios.Length);
+        Debug.Log("DayScenarios len: " + dayscenarios.Length);
+    }
+
+    void LoadScenarios()
+    {
+        int count = 0;
+        bool flag = false;
+        for (int i=0; count < numOfScenarios; i++)
+        {
+            flag = false;
+            try
+            {
+                var list = scenarioslist.ToArray();
+                Debug.Log(System.Type.GetType(list[i]));
+                if (skills.Contains(list[i])) continue;
+                transform.Find("Scenarios").gameObject.AddComponent(System.Type.GetType(list[i]));
+                var reqs = ((IScenario)transform.Find("Scenarios").GetComponent(System.Type.GetType(list[i]))).GetRequirements();
+                if (reqs.Length < 1) { count++; continue; }
+                foreach (string req in reqs) { if (!skills.Contains(req)) { Destroy(transform.Find("Scenarios").GetComponent(System.Type.GetType(list[i]))); flag = true; break;  } }
+                if (flag) continue;
+                count++;
+                //In the future check if Unity scene needs to be changed
+                //change with ChangeUnityScene(number);
+            }
+            catch (System.IndexOutOfRangeException e)
+            {
+                //Number of implemented scenarios is smaller than number of required scenarios for one day
+                break;
+            }
+        }
+        dayscenarios = transform.Find("Scenarios").GetComponents<IScenario>();
+    }
+
+    //Remove previous days scenarios
+    void RemoveScenarios()
+    {
+        var sces = transform.Find("Scenarios").GetComponents<IScenario>();
+        foreach(Object sce in sces) { Destroy(sce); }
     }
 
     public void Activate()
@@ -99,6 +160,8 @@ public class DayController : MonoBehaviour {
     }
     public void Deactivate()
     {
+        RemoveScenarios();
+        LoadScenarios();
         activate = false;
         status = "Day";
         nextscript = true;
@@ -126,14 +189,14 @@ public class DayController : MonoBehaviour {
             
         }
 
-        scenarios[index].EnableScenario(false);
+        dayscenarios[index].EnableScenario(false);
     SELECT_SCENARIO:
-        int next = rd.Next(0, scenarios.Length);
+        int next = rd.Next(0, dayscenarios.Length);
         index = next;
         //Check if already done for this day
         if (completed.Contains(index))
         {
-            if (completed.Count == scenarios.Length)
+            if (completed.Count == dayscenarios.Length)
             {
                 Activate();
                 index = 0;
@@ -143,9 +206,9 @@ public class DayController : MonoBehaviour {
         }
         Debug.Log(next);
         Debug.Log(index);
-        if(scenarios[index].GetRequirements().Length >0)
+        if(dayscenarios[index].GetRequirements().Length >0)
         {
-            foreach (string skill in scenarios[index].GetRequirements())
+            foreach (string skill in dayscenarios[index].GetRequirements())
             {
                 if (!skills.Contains(skill))
                 {
@@ -158,6 +221,14 @@ public class DayController : MonoBehaviour {
         nextscript = true;
     }
 
+    //For future if environment is needed to change for scenario
+    //(this) GameMananger doesn't destroy on change 
+    void ChangeUnityScene(int number)
+    {
+        UnityEngine.SceneManagement.SceneManager.LoadScene(number);
+    }
+
+    //Use these as a wrapper to give points to ML-Agents
     public int GetMaxDayPoints()
     {
         return maxDayPoints;

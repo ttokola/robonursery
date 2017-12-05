@@ -2,11 +2,14 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class MovingScenario : MonoBehaviour, IScenario {
+public class HeadNoticing : MonoBehaviour, IScenario {
 
-    public GameObject lilrobotBody;
+    public GameObject lilrobotHead;
 
+    private Vector3 orgPosition;
     private GameObject ball;
+    private Ray lilbotRay;
+    private RaycastHit hit;
     private bool done;
     private bool killcall = false;
     private string[] requirements;
@@ -18,13 +21,14 @@ public class MovingScenario : MonoBehaviour, IScenario {
     private void Awake()
     {
         requirements = new string[] { };
-        newskills = new string[] { "Moving" };
+        newskills = new string[] { this.name };
     }
+
 
     // Update is called once per frame
     void Update ()
     {
-        if(Time.time > endTime && !done)
+        if (Time.time > endTime && !done)
         {
             // Lilrobot didn't reach the objective of the scenario in given time
             // so end it and move to next scenario.
@@ -38,14 +42,20 @@ public class MovingScenario : MonoBehaviour, IScenario {
             killcall = true;
         }
 
-        if(ball != null)
+        orgPosition = lilrobotHead.transform.position;
+        lilbotRay = new Ray(orgPosition, lilrobotHead.transform.forward);
+
+        Debug.DrawRay(orgPosition, lilrobotHead.transform.forward * 10);
+
+		if(Physics.Raycast(lilbotRay, out hit, 10f))
         {
-            if (Vector3.Distance(lilrobotBody.transform.position, ball.transform.position) < 2)
+            Debug.Log("Raycast hit "+hit.collider.name);
+            if(hit.collider.tag == "TargetBall")
             {
                 if (!done)
                 {
-                    //In the future don't add the reward straight to the ML-Agents but through GameMananger
-                    lilrobotBody.GetComponentInParent<TemplateAgent>().AddReward(100); 
+                    lilrobotHead.GetComponentInParent<TemplateAgent>().AddReward(100);
+                    Debug.Log("Reward earned!");
                     done = true;
                 }
                 else
@@ -54,10 +64,8 @@ public class MovingScenario : MonoBehaviour, IScenario {
                     {
                         StartCoroutine(EndWait());
                         Destroy(ball);
-
                         killcall = true;
                     }
-                    
                 }
             }
         }
@@ -66,7 +74,7 @@ public class MovingScenario : MonoBehaviour, IScenario {
     void InstantiateBall()
     {
         ball = GameObject.CreatePrimitive(PrimitiveType.Sphere);
-        ball.transform.position = new Vector3(4.14f, 0.5f, 1.78f);
+        ball.transform.position = new Vector3(4.14f, 1.38f, 1.78f);
         ball.tag = "TargetBall";
     }
 
@@ -74,15 +82,15 @@ public class MovingScenario : MonoBehaviour, IScenario {
     {
         yield return new WaitForSeconds(5);
         InstantiateBall();
+        
     }
 
     IEnumerator EndWait()
     {
         yield return new WaitForSeconds(5);
 
-        //Add functionality for moving to next scenarion by DayController
+        //Add functionality for moving to next scenario by DayController
         GameObject.FindGameObjectWithTag("GameController").GetComponent<DayController>().MovetoNextScenario(this.GetType(), true, newskills, 100);
-
     }
 
     public void EnableScenario(bool enabled)
@@ -104,4 +112,5 @@ public class MovingScenario : MonoBehaviour, IScenario {
     {
         return requirements;
     }
+
 }

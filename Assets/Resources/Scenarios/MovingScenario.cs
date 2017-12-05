@@ -2,14 +2,11 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class HeadNoticing : MonoBehaviour, IScenario {
+public class MovingScenario : MonoBehaviour, IScenario {
 
-    public GameObject lilrobotHead;
+    public GameObject lilrobotBody;
 
-    private Vector3 orgPosition;
     private GameObject ball;
-    private Ray lilbotRay;
-    private RaycastHit hit;
     private bool done;
     private bool killcall = false;
     private string[] requirements;
@@ -21,14 +18,13 @@ public class HeadNoticing : MonoBehaviour, IScenario {
     private void Awake()
     {
         requirements = new string[] { };
-        newskills = new string[] { " Head moving" };
+        newskills = new string[] { this.name };
     }
-
 
     // Update is called once per frame
     void Update ()
     {
-        if (Time.time > endTime && !done)
+        if(Time.time > endTime && !done)
         {
             // Lilrobot didn't reach the objective of the scenario in given time
             // so end it and move to next scenario.
@@ -42,20 +38,14 @@ public class HeadNoticing : MonoBehaviour, IScenario {
             killcall = true;
         }
 
-        orgPosition = lilrobotHead.transform.position;
-        lilbotRay = new Ray(orgPosition, lilrobotHead.transform.forward);
-
-        Debug.DrawRay(orgPosition, lilrobotHead.transform.forward * 10);
-
-		if(Physics.Raycast(lilbotRay, out hit, 10f))
+        if(ball != null)
         {
-            Debug.Log("Raycast hit "+hit.collider.name);
-            if(hit.collider.tag == "TargetBall")
+            if (Vector3.Distance(lilrobotBody.transform.position, ball.transform.position) < 2)
             {
                 if (!done)
                 {
-                    lilrobotHead.GetComponentInParent<TemplateAgent>().AddReward(100);
-                    Debug.Log("Reward earned!");
+                    //In the future don't add the reward straight to the ML-Agents but through GameMananger
+                    lilrobotBody.GetComponentInParent<TemplateAgent>().AddReward(100); 
                     done = true;
                 }
                 else
@@ -64,8 +54,10 @@ public class HeadNoticing : MonoBehaviour, IScenario {
                     {
                         StartCoroutine(EndWait());
                         Destroy(ball);
+
                         killcall = true;
                     }
+                    
                 }
             }
         }
@@ -74,7 +66,7 @@ public class HeadNoticing : MonoBehaviour, IScenario {
     void InstantiateBall()
     {
         ball = GameObject.CreatePrimitive(PrimitiveType.Sphere);
-        ball.transform.position = new Vector3(4.14f, 1.38f, 1.78f);
+        ball.transform.position = new Vector3(4.14f, 0.5f, 1.78f);
         ball.tag = "TargetBall";
     }
 
@@ -82,15 +74,15 @@ public class HeadNoticing : MonoBehaviour, IScenario {
     {
         yield return new WaitForSeconds(5);
         InstantiateBall();
-        
     }
 
     IEnumerator EndWait()
     {
         yield return new WaitForSeconds(5);
 
-        //Add functionality for moving to next scenario by DayController
+        //Add functionality for moving to next scenarion by DayController
         GameObject.FindGameObjectWithTag("GameController").GetComponent<DayController>().MovetoNextScenario(this.GetType(), true, newskills, 100);
+
     }
 
     public void EnableScenario(bool enabled)
@@ -112,5 +104,6 @@ public class HeadNoticing : MonoBehaviour, IScenario {
     {
         return requirements;
     }
-
 }
+
+
