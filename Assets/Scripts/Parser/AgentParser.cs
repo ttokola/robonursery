@@ -19,20 +19,30 @@ public abstract class AgentParser : MonoBehaviour {
     [System.Serializable]
     public struct Component
     {
+        [Tooltip("Link this object to its parent when parser is run with Link flag")]
         public bool Link;
+        [Tooltip("Name of the gameobject")]
         public string PartName;
+        [Tooltip("Link to the gameobject")]
         public GameObject gameObject;
-
+        [Tooltip("Set this to be a movable part. ")]
         public bool Movable;
+     
         public enum Type_
         {
             Joint,
             Wheel
         }
+        [Tooltip("Sets the motor type of the object. See documentation for details")]
         public Type_ Type;
+        [Tooltip("Add multiplier to X,Y,Z movement.")]
         public float[] DimensionMultipliers;
+        [Tooltip("Set what action from the AI corresponds to which above movements")]
         public int[] ActionIndeces;
+        [Tooltip("When adding box colliders, instead add a mesh collider")]
         public bool Mesh_collider;
+        [Tooltip("When this is set with link flag, links the object to its grandparent")]
+        public bool Link_to_grandparent;
     }
 
     [System.Serializable]
@@ -46,17 +56,25 @@ public abstract class AgentParser : MonoBehaviour {
     private MovementControls motor;
     private string motorname1 = "Wheel";
     private string motorname2 = "Joint";
-
+    [Tooltip("When script export config is run from context menu it creates a text file with this name")]
     public string ConfigName = "Config";
+    [Tooltip("When dimension multiplier flag active, add this value to object with wheel motor ")]
     public int WheelMultiplier = 1;
+    [Tooltip("When dimension multiplier flag active, add this value to object with Joint motor ")]
     public int JointMultiplier = 1;
 
     //Parser flags
+    [Tooltip("Check to run checked attributes on start. With this you dont have to run the script from context menu. All the joint, colliders etc also disappear when session is stopped")]
     public Boolean Run;
+    [Tooltip("Adds colliders to checked objects")]
     public Boolean AddColliders;
+    [Tooltip("Links compponents which link attribute is true to their parent")]
     public Boolean Link;
+    [Tooltip("Automatically assigns autoindicies to movable objects")]
     public Boolean Action_Indicies;
+    [Tooltip("Automatically assign dimension multiplier to movable objects")]
     public Boolean Multipliers;
+    [Tooltip("Instead of linking the components with link attribute true to their parents, instead link them to their grand parent")]
     public Boolean Link_grandparent;
 
     public AgentParameters agentParameters;
@@ -75,21 +93,7 @@ public abstract class AgentParser : MonoBehaviour {
         {
             AddIndicies();
         }
-        /*
-        Debug.Log("Start run");
-        foreach (Component component in components)
-        {
-            if (component.gameObject.GetComponent<Rigidbody>() == null && component.Movable)
-            {
-                component.gameObject.AddComponent<Rigidbody>();
-                component.gameObject.AddComponent<BoxCollider>();
-                if (component.Type == Component.Type_.Joint)
-                {
-                    component.gameObject.AddComponent<ConfigurableJoint>();
-                }
-            }
-        }
-        */
+   
     }
 
     public List<Component> GetComponents()
@@ -169,7 +173,7 @@ public abstract class AgentParser : MonoBehaviour {
     [ContextMenu("Run the flagged operations")]
     void AddIndicies()
     {
-        Debug.Log("AddIndicies");
+        //check if irrelevant
         motor = this.gameObject.GetComponent<MovementControls>();
         int number = 0;
         foreach (Component component in GetComponents())
@@ -264,7 +268,10 @@ public abstract class AgentParser : MonoBehaviour {
     //Moves all movable parts
     public void MoveMovableParts(float[] act)
     {
-
+        if(this.gameObject.GetComponent<MovementControls>() == null)
+        {
+            this.gameObject.AddComponent<MovementControls>();
+        }
         motor = this.gameObject.GetComponent<MovementControls>();
         foreach (Component component in GetComponents())
         {
@@ -314,7 +321,7 @@ public abstract class AgentParser : MonoBehaviour {
         joint.errorThreshold = 5;
         //Add rigidbody to parent if it doesn't have it
 
-        if (Link_grandparent == true && component.gameObject.transform.parent.parent.gameObject != this.gameObject)
+        if ((Link_grandparent == true || component.Link_to_grandparent == true) && component.gameObject.transform.parent.parent.gameObject != this.gameObject)
         {
             CheckRigidbody(component.gameObject.transform.parent.parent.gameObject,0);
             joint.connected = component.gameObject.transform.parent.parent.GetComponent<Rigidbody>();
@@ -344,7 +351,7 @@ public abstract class AgentParser : MonoBehaviour {
         
         //Add rigidbody to parent if it doesn't have it
 
-        if (Link_grandparent == true && component.gameObject.transform.parent.parent.gameObject != this.gameObject)
+        if ((Link_grandparent == true || component.Link_to_grandparent == true )&& component.gameObject.transform.parent.parent.gameObject != this.gameObject)
         {
             
             CheckRigidbody(component.gameObject.transform.parent.parent.gameObject,0);
