@@ -28,9 +28,16 @@ public class testscript : MonoBehaviour {
 
         //sh.setTask(lilbot, 3, true);
 
-        ThrowObject to = nannybot.GetComponent<ThrowObject>();
+        //ThrowObject to = nannybot.GetComponent<ThrowObject>();
 
-        to.setTask(ballobject, targettransform, throwtargettransform, 0.0f, new Vector3(0.2f, 0.1f, 0.3f));
+        //to.setTask(ballobject, targettransform, throwtargettransform, 0.0f, new Vector3(0.2f, 0.1f, 0.3f));
+
+        ClapHands ch = nannybot.GetComponent<ClapHands>();
+
+        ch.setTask(targettransform, 5);
+
+
+
 	}
 	
 	// Update is called once per frame
