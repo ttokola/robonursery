@@ -116,6 +116,15 @@ public class ArmControls : MonoBehaviour
             lAngles = new float[] { 90, 10, 90, 0 };
             rAngles = new float[] { 0, 0, 0, 60 };
             break;
+        case "clapPosition1":
+            lAngles = new float[] {90, 40, 0, -90};
+            rAngles = new float[] {-90, -40, 0, 90};
+            break;
+        case "clapPosition2":
+            lAngles = new float[] {90, 40, 90, -55};
+            rAngles = new float[] {-90, -40, -90, 55};
+            break;
+
         }
         return SetStaticPosition(lAngles, rAngles);
         
