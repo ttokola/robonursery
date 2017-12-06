@@ -19,6 +19,8 @@ public class ThrowObject : MonoBehaviour {
 
     public int state;
 
+    private float stopCounter;
+
     // Use this for initialization
     void Start()
     {
@@ -82,7 +84,12 @@ public class ThrowObject : MonoBehaviour {
                 break;
 
             case 6:
+                stopCounter -= Time.deltaTime;
 
+                if (stopCounter < 0)
+                {
+                    state = 7;
+                }
                 if (armControls.SetStaticPosition("up") == 0)
                 {
                     state = 7;
@@ -105,6 +112,7 @@ public class ThrowObject : MonoBehaviour {
         throwTarget = tt;
         grabOffset = go;
         state = 1;
+        stopCounter = 0.3f;
         return 0;
     }
 
