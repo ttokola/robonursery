@@ -1,0 +1,176 @@
+fileFormatVersion: 2
+guid: 7287ddc86c8ddf74881fffaf5b56a5c4
+timeCreated: 1512479932
+licenseType: Free
+ModelImporter:
+  serializedVersion: 21
+  fileIDToRecycleName:
+    100000: Axle
+    100002: Body
+    100004: Head
+    100006: LForeArm
+    100008: LHand
+    100010: LMiddleJoint
+    100012: LUpperArm
+    100014: LUpperJoint
+    100016: LWheel
+    100018: LWheelMesh
+    100020: Neck
+    100022: RForeArm
+    100024: RHand
+    100026: RMiddleJoint
+    100028: RUpperArm
+    100030: RUpperJoint
+    100032: //RootNode
+    100034: RWheel
+    100036: RWheelMesh
+    100038: Wheels
+    400000: Axle
+    400002: Body
+    400004: Head
+    400006: LForeArm
+    400008: LHand
+    400010: LMiddleJoint
+    400012: LUpperArm
+    400014: LUpperJoint
+    400016: LWheel
+    400018: LWheelMesh
+    400020: Neck
+    400022: RForeArm
+    400024: RHand
+    400026: RMiddleJoint
+    400028: RUpperArm
+    400030: RUpperJoint
+    400032: //RootNode
+    400034: RWheel
+    400036: RWheelMesh
+    400038: Wheels
+    2300000: Axle
+    2300002: Body
+    2300004: Head
+    2300006: LForeArm
+    2300008: LHand
+    2300010: LMiddleJoint
+    2300012: LUpperArm
+    2300014: LUpperJoint
+    2300016: LWheel
+    2300018: LWheelMesh
+    2300020: Neck
+    2300022: RForeArm
+    2300024: RHand
+    2300026: RMiddleJoint
+    2300028: RUpperArm
+    2300030: RUpperJoint
+    2300032: RWheel
+    2300034: RWheelMesh
+    3300000: Axle
+    3300002: Body
+    3300004: Head
+    3300006: LForeArm
+    3300008: LHand
+    3300010: LMiddleJoint
+    3300012: LUpperArm
+    3300014: LUpperJoint
+    3300016: LWheel
+    3300018: LWheelMesh
+    3300020: Neck
+    3300022: RForeArm
+    3300024: RHand
+    3300026: RMiddleJoint
+    3300028: RUpperArm
+    3300030: RUpperJoint
+    3300032: RWheel
+    3300034: RWheelMesh
+    4300000: Body
+    4300002: LUpperJoint
+    4300004: LUpperArm
+    4300006: LMiddleJoint
+    4300008: LForeArm
+    4300010: LHand
+    4300012: Axle
+    4300014: LWheel
+    4300016: LWheelMesh
+    4300018: RWheel
+    4300020: RWheelMesh
+    4300022: RUpperJoint
+    4300024: RUpperArm
+    4300026: RMiddleJoint
+    4300028: RForeArm
+    4300030: RHand
+    4300032: Neck
+    4300034: Head
+  materials:
+    importMaterials: 1
+    materialName: 0
+    materialSearch: 1
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    resampleCurves: 1
+    optimizeGameObjects: 0
+    motionNodeName: 
+    rigImportErrors: 
+    rigImportWarnings: 
+    animationImportErrors: 
+    animationImportWarnings: 
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
+    animationCompression: 1
+    animationRotationError: 0.5
+    animationPositionError: 0.5
+    animationScaleError: 0.5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    extraUserProperties: []
+    clipAnimations: []
+    isReadable: 1
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 1
+    meshCompression: 0
+    addColliders: 0
+    importVisibility: 1
+    importBlendShapes: 1
+    importCameras: 1
+    importLights: 1
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    optimizeMeshForGPU: 1
+    keepQuads: 0
+    weldVertices: 1
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVPackMargin: 4
+    useFileScale: 1
+  tangentSpace:
+    normalSmoothAngle: 60
+    normalImportMode: 0
+    tangentImportMode: 3
+    normalCalculationMode: 4
+  importAnimation: 1
+  copyAvatar: 0
+  humanDescription:
+    serializedVersion: 2
+    human: []
+    skeleton: []
+    armTwist: 0.5
+    foreArmTwist: 0.5
+    upperLegTwist: 0.5
+    legTwist: 0.5
+    armStretch: 0.05
+    legStretch: 0.05
+    feetSpacing: 0
+    rootMotionBoneName: 
+    rootMotionBoneRotation: {x: 0, y: 0, z: 0, w: 1}
+    hasTranslationDoF: 0
+    hasExtraRoot: 0
+    skeletonHasParents: 1
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  animationType: 0
+  humanoidOversampling: 1
+  additionalBone: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
