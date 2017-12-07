@@ -293,53 +293,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 10
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &144261822
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 41e9bda8f3cf1492fa74926a530f6f70, type: 3}
-  m_Name: (Clone)(Clone)
-  m_EditorClassIdentifier: 
-  continuousPlayerActions: []
-  discretePlayerActions:
-  - key: 273
-    value: 0
-  - key: 274
-    value: 1
-  - key: 275
-    value: 2
-  - key: 276
-    value: 3
-  defaultAction: -1
-  brain: {fileID: 1814424832}
---- !u!114 &290908359
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 943466ab374444748a364f9d6c3e2fe2, type: 3}
-  m_Name: (Clone)(Clone)
-  m_EditorClassIdentifier: 
-  brain: {fileID: 0}
---- !u!114 &335811573
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 35813a1be64e144f887d7d5f15b963fa, type: 3}
-  m_Name: (Clone)(Clone)
-  m_EditorClassIdentifier: 
-  brain: {fileID: 0}
 --- !u!1 &554660146 stripped
 GameObject:
   m_PrefabParentObject: {fileID: 100042, guid: 985dabbe3ee9fee4fbe0201494e6f1da, type: 3}
@@ -664,6 +617,7 @@ GameObject:
   m_Component:
   - component: {fileID: 975235539}
   - component: {fileID: 975235538}
+  - component: {fileID: 975235540}
   m_Layer: 0
   m_Name: GameController
   m_TagString: GameController
@@ -677,7 +631,7 @@ MonoBehaviour:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 975235537}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: aa9cc790789eb2a44a3cd4907b71755d, type: 3}
   m_Name: 
@@ -689,7 +643,6 @@ MonoBehaviour:
   lerpPercent: 0.2
   nightLength: 10
   status: 
-  stopCapture: 0
 --- !u!4 &975235539
 Transform:
   m_ObjectHideFlags: 0
@@ -704,6 +657,17 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &975235540
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 975235537}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8bc75a7e88129fd48b6dfa9d894d9427, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1042820826
 GameObject:
   m_ObjectHideFlags: 0
@@ -900,24 +864,24 @@ MonoBehaviour:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1418163912}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 807b36ab30b4b424f8edc37a72a1c7fc, type: 3}
+  m_Script: {fileID: 11500000, guid: b827534bd41a8ce4fb8ec47da0f049de, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  lilrobotBody: {fileID: 960808165}
+  head: {fileID: 960808162}
 --- !u!114 &1418163915
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1418163912}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 40780e95262b4774c9ff42f802ed8f1f, type: 3}
+  m_Script: {fileID: 11500000, guid: 211cd2d8370646147852134bb1729093, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  lilrobotHead: {fileID: 960808162}
+  head: {fileID: 960808162}
 --- !u!1001 &1488219333
 Prefab:
   m_ObjectHideFlags: 0
@@ -1322,9 +1286,9 @@ MonoBehaviour:
     stateSpaceType: 1
   brainType: 0
   CoreBrains:
-  - {fileID: 144261822}
-  - {fileID: 290908359}
-  - {fileID: 335811573}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
   instanceID: 11036
 --- !u!1 &1877743473 stripped
 GameObject:
