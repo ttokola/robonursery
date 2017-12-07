@@ -2,19 +2,19 @@
 {
     public class Sequence : Composite
     {
-        public override Status Tick()
+        protected override Status Update()
         {
-            foreach (var node in GetChildren())
+            foreach (var child in GetChildren())
             {
-                Status status = node.Tick();
+                Status status = child.Tick();
 
-                if (status != Status.SUCCESS)
+                if (status != Status.Success)
                 {
                     return status;
                 }
             }
 
-            return Status.SUCCESS;
+            return Status.Success;
         }
     }
 }

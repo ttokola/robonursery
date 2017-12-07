@@ -1,6 +1,6 @@
 ﻿namespace BT
 {
-    public class Condition : INode
+    public class Condition : Node
     {
         public delegate bool ConditionDelegate();
 
@@ -29,15 +29,15 @@
             }
         }
 
-        public Status Tick()
+        protected override Status Update()
         {
             if (Evaluate())
             {
-                return Status.SUCCESS;
+                return Status.Success;
             }
             else
             {
-                return Status.FAILURE;
+                return Status.Failure;
             }
         }
     }

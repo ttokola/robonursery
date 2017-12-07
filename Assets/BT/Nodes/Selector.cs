@@ -2,19 +2,19 @@
 {
     public class Selector : Composite
     {
-        public override Status Tick()
+        protected override Status Update()
         {
-            foreach (var node in GetChildren())
+            foreach (var child in GetChildren())
             {
-                Status status = node.Tick();
+                Status status = child.Tick();
 
-                if (status != Status.FAILURE)
+                if (status != Status.Failure)
                 {
                     return status;
                 }
             }
 
-            return Status.FAILURE;
+            return Status.Failure;
         }
     }
 }

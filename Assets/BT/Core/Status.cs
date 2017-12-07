@@ -2,8 +2,8 @@
 {
     public enum Status
     {
-        SUCCESS,
-        FAILURE,
-        RUNNING
+        Success,
+        Failure,
+        Running
     }
 }

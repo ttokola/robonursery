@@ -1,6 +1,6 @@
 ﻿namespace BT
 {
-    public class Action : INode
+    public class Action : Node
     {
         public delegate Status ActionDelegate();
 
@@ -25,11 +25,11 @@
             }
             else
             {
-                return Status.FAILURE;
+                return Status.Failure;
             }
         }
 
-        public Status Tick()
+        protected override Status Update()
         {
             return Execute();
         }
