@@ -142,10 +142,13 @@ public abstract class AgentParser : MonoBehaviour {
     void InitializeParser()
     {
         //
-
+        if(this.gameObject.GetComponent<MovementControls>() == null)
+        {
+            this.gameObject.AddComponent<MovementControls>();
+        }
 
         components.Clear();
-
+        
 
 
         Transform[] allChildren = GetComponentsInChildren<Transform>();
