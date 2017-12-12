@@ -4,23 +4,27 @@ using UnityEngine;
 
 public class MLAAgent : Agent
 {
-
+    AgentProto proto;
     public GameObject point;
     public float speed;
-    private Rigidbody rb;
-
-    void Start()
+    //private Rigidbody rb;
+    private Rigidbody body;
+    
+    private void Start()
     {
-        rb = GetComponent<Rigidbody>();
-    }
+        proto = this.gameObject.GetComponent<AgentProto>();
+        body = proto.GetComponentByName("Body").gameObject.GetComponent<Rigidbody>();
+        //rb = GetComponent<Rigidbody>();
+        
 
+    }
     public override List<float> CollectState()
     {
         List<float> state = new List<float>();
         state.Add(gameObject.transform.position.x);
         state.Add(gameObject.transform.position.z);
-        state.Add(gameObject.transform.GetComponent<Rigidbody>().velocity.x / 5f);
-        state.Add(gameObject.transform.GetComponent<Rigidbody>().velocity.z / 5f);
+        state.Add(body.velocity.x);
+        state.Add(body.velocity.z);
         state.Add(point.transform.position.x);
         state.Add(point.transform.position.z);
         return state;
@@ -30,10 +34,11 @@ public class MLAAgent : Agent
     {
         if (brain.brainParameters.actionSpaceType == StateType.continuous)
         {
-            float moveHorizontal = act[0];
+            proto.MoveMovableParts(act);
+            /*float moveHorizontal = act[0];
             float moveVertical = act[1];
             Vector3 movement = new Vector3(moveHorizontal, 0.0f, moveVertical);
-            rb.AddForce(movement * speed);
+            rb.AddForce(movement * speed);*/
         }
         
         if (Mathf.Abs(point.transform.position.x - gameObject.transform.position.x)<1f &&
@@ -44,7 +49,8 @@ public class MLAAgent : Agent
         }
         if (done == false)
         {
-            if (rb.velocity.magnitude != 0f) { reward = 0.001f; } // else { done = true; reward = -0.1f; }
+            if (body.velocity.magnitude >= 1f && gameObject.transform.position.y < 2f) { reward = 0.001f; } // else { done = true; reward = -0.1f; }
+            if (gameObject.transform.position.y >= 2f) { done = true; reward = -1f; };
         }
        
     }
