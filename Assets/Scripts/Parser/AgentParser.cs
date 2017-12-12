@@ -161,8 +161,10 @@ public abstract class AgentParser : MonoBehaviour {
                 component.gameObject = child.gameObject;
                 component.Movable = false;
 
-                component.ActionIndeces = new int[3];
-                component.DimensionMultipliers = new float[3];
+                //component.ActionIndeces = new int[3];
+                component.ActionIndeces = new int[2];
+                component.DimensionMultipliers = new float[2];
+                //component.DimensionMultipliers = new float[3];
                 //if objects name contains word "Wheel", set default type to wheel
                 if (component.PartName.Contains(motorname1) || component.PartName.Contains("Axle"))
                 {
@@ -176,7 +178,7 @@ public abstract class AgentParser : MonoBehaviour {
     [ContextMenu("Run the flagged operations")]
     void AddIndicies()
     {
-        //check if irrelevant
+        
         motor = this.gameObject.GetComponent<MovementControls>();
         int number = 0;
         foreach (Component component in GetComponents())
@@ -211,18 +213,20 @@ public abstract class AgentParser : MonoBehaviour {
                         {
                             if (Multipliers == true)
                             {
-                                component.DimensionMultipliers[0] = JointMultiplier;
-                                component.DimensionMultipliers[1] = JointMultiplier;
-                                component.DimensionMultipliers[2] = JointMultiplier;
+                                for (int i = 0; i < component.DimensionMultipliers.Length; i++) {
+                                    component.DimensionMultipliers[i] = JointMultiplier;
+                                }
+                                    //component.DimensionMultipliers[0] = JointMultiplier;
+                                //component.DimensionMultipliers[1] = JointMultiplier;
+                                //component.DimensionMultipliers[2] = JointMultiplier;
                             }
                     if (Action_Indicies == true)
                     {
-                        component.ActionIndeces[0] = number;
-                        number = number + 1;
-                        component.ActionIndeces[1] = number;
-                        number = number + 1;
-                        component.ActionIndeces[2] = number;
-                        number = number + 1;
+                                for (int i = 0; i < component.ActionIndeces.Length; i++) {
+                                    component.ActionIndeces[i] = number;
+                                    number = number + 1;
+                                    }
+                        
                     }
                             break;
                             }
@@ -368,6 +372,9 @@ public abstract class AgentParser : MonoBehaviour {
             joint.connectedAnchor = component.gameObject.transform.position;
 
         }
+        joint.anchor.Set(0f,0f,0f);
+        joint.axis.Set(1f, 0f, 0f);
+
     }
 
     void CheckRigidbody(GameObject component, int collider)
