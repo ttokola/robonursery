@@ -1,0 +1,4 @@
+sceneSetups:
+- path: rollaball.unity
+  isLoaded: 1
+  isActive: 1
