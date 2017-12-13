@@ -168,7 +168,7 @@ public abstract class AgentParser : MonoBehaviour {
                 component.PartName = child.name;
                 component.gameObject = child.gameObject;
                 ///
-                //// stuff below are optional. Boolean variables set themselves to false as default 
+                //// stuff below are optional. Boolean variables set themselves to false as default- It is preferred to keep 
                 ///
                 //if components name contains string "_movable" set objects movable variable to true
                 if (component.PartName.Contains("_movable"))
@@ -183,8 +183,7 @@ public abstract class AgentParser : MonoBehaviour {
                 {
                     component.Mesh_collider = true;
                 }
-                //Set default size of ActionIndeces to 2. Indice 0 corresponds to Y movement and indice 1 to Z movement. If third value is added
-                // it corresponds to X movement     
+                     
                 component.ActionIndeces = new int[2];
                 //set default values to -1
                 for (int i = 0; i < component.ActionIndeces.Length; i++)
@@ -370,7 +369,7 @@ public abstract class AgentParser : MonoBehaviour {
             CheckRigidbody(component.gameObject.transform.parent.parent.gameObject, 0);
             joint.connected = component.gameObject.transform.parent.parent.GetComponent<Rigidbody>();
         }
-        else if (component.Link_parent == true)
+        else if ((component.Link_parent == true || Link_grandparent == false)&& component.gameObject.transform.parent.parent.gameObject != this.gameObject)
         {
             CheckRigidbody(component.gameObject.transform.parent.gameObject, 0);
             joint.connected = component.gameObject.transform.parent.GetComponent<Rigidbody>();
@@ -409,7 +408,7 @@ public abstract class AgentParser : MonoBehaviour {
             joint.connectedBody = component.gameObject.transform.parent.parent.GetComponent<Rigidbody>();
             joint.connectedAnchor = component.gameObject.transform.position;
         }
-        else if (component.Link_parent == true)
+        else if ((component.Link_parent == true || Link_grandparent == false)&& component.gameObject.transform.parent.gameObject != this.gameObject)
         {
             CheckRigidbody(component.gameObject.transform.parent.gameObject, 0);
             joint.connectedBody = component.gameObject.transform.parent.GetComponent<Rigidbody>();
@@ -419,10 +418,10 @@ public abstract class AgentParser : MonoBehaviour {
         else
         {
             Debug.Log("There seems to be a issue with linking in object " + component.PartName + " Check if you have both link_parent and link_to_grandparent active");
-            Debug.Log("Linking with parents as a default");
-            CheckRigidbody(component.gameObject.transform.parent.gameObject, 0);
-            joint.connectedBody = component.gameObject.transform.parent.GetComponent<Rigidbody>();
-            joint.connectedAnchor = component.gameObject.transform.position;
+            //Debug.Log("Linking with parents as a default");
+           // CheckRigidbody(component.gameObject.transform.parent.gameObject, 0);
+            //joint.connectedBody = component.gameObject.transform.parent.GetComponent<Rigidbody>();
+            //joint.connectedAnchor = component.gameObject.transform.position;
         }
         }
 
@@ -442,6 +441,8 @@ public abstract class AgentParser : MonoBehaviour {
             {
                 MeshCollider mesh = component.AddComponent<MeshCollider>();
                 mesh.convex = true;
+                //Mesh colliders sometimes don't appear without this. Remove/add when needed 
+                mesh.inflateMesh = true;
                 
             }
             else {
