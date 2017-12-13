@@ -369,7 +369,7 @@ public abstract class AgentParser : MonoBehaviour {
             CheckRigidbody(component.gameObject.transform.parent.parent.gameObject, 0);
             joint.connected = component.gameObject.transform.parent.parent.GetComponent<Rigidbody>();
         }
-        else if ((component.Link_parent == true || Link_grandparent == false)&& component.gameObject.transform.parent.parent.gameObject != this.gameObject)
+        else if ((component.Link_parent == true || Link_grandparent == false)&& component.gameObject.transform.parent.gameObject != this.gameObject)
         {
             CheckRigidbody(component.gameObject.transform.parent.gameObject, 0);
             joint.connected = component.gameObject.transform.parent.GetComponent<Rigidbody>();
@@ -378,8 +378,8 @@ public abstract class AgentParser : MonoBehaviour {
         {
             Debug.Log("There seems to be a issue with linking in object " + component.PartName + " Check if you have both link_parent and link_to_grandparent active");
             Debug.Log("Linking with parents as a default");
-            CheckRigidbody(component.gameObject.transform.parent.gameObject, 0);
-            joint.connected = component.gameObject.transform.parent.GetComponent<Rigidbody>();
+            //CheckRigidbody(component.gameObject.transform.parent.gameObject, 0);
+            //joint.connected = component.gameObject.transform.parent.GetComponent<Rigidbody>();
         }
     }
 
