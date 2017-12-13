@@ -50,15 +50,21 @@ public class MLAAgent : Agent
         if (done == false)
         {
             if (body.velocity.magnitude >= 1f && gameObject.transform.position.y < 2f) { reward = 0.001f; } // else { done = true; reward = -0.1f; }
-            if (gameObject.transform.position.y >= 2f) { done = true; reward = -1f; };
+            if (Mathf.Abs(gameObject.transform.position.y) >= 2f) { done = true; reward = -1f; };
         }
        
     }
 
     public override void AgentReset()
     {
-        gameObject.transform.position = new Vector3(Random.Range(-2f, 2f), 0.5f, Random.Range(-2f, 2f));
-
+        //
+        //Instantiate(brick, new Vector3(x, y, 0), Quaternion.identity);
+        //Instantiate(gameObject.transform, new Vector3(Random.Range(-2f, 2f), 1.0f, Random.Range(-2f, 2f)), Quaternion.identity);
+        //https://docs.unity3d.com/ScriptReference/Rigidbody-isKinematic.html otherwise the child rigidbodies will prevent teleportation
+        //body.isKinematic = true;
+        //gameObject.transform.position = new Vector3(Random.Range(-2f, 2f), 1.0f, Random.Range(-2f, 2f));
+        body.MovePosition(new Vector3(Random.Range(-2f, 2f), 1.0f, Random.Range(-2f, 2f)));
+        //body.isKinematic = false;
     }
-    
+
 }
