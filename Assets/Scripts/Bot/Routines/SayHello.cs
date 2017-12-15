@@ -1,18 +1,25 @@
-﻿using System.Collections;
+﻿/*
+    Turn to object, say hello to it and wave your hand, and possibly send request to wave back if opponent is actor bot
+    
+    Use setTask method to give task to actor bot
+*/
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using LilBotNamespace;
 
 public class SayHello : MonoBehaviour {
 
+    [Tooltip("Drag the ArmControls script attached to the robot here")]
     public ArmControls armControls;
+    [Tooltip("Drag the MovementControls script attached to the robot here")]
     public MovementControls movementControls;
 
-    public float movementRange;
-    public GameObject helloTarget;
+    private float movementRange;
+    private GameObject helloTarget;
 
     public int state;
-    public int waves;
+    private int waves;
     private int wavecounter;
 
     private bool askResponse;
@@ -20,14 +27,16 @@ public class SayHello : MonoBehaviour {
     private AudioSource helloVoiceSource;
     public AudioClip helloSound;
 
-	// Use this for initialization
-	void Start () {
+	void Start ()
+    {
         helloVoiceSource = GetComponentInChildren<AudioSource>();
-
 	}
 	
-	// Update is called once per frame
-	void Update () {
+	void Update ()
+        /* Task execution working as state machine
+         * If state is 0 then execution does not happen
+         */
+    {
         switch (state)
         {
             case 0:
@@ -81,6 +90,11 @@ public class SayHello : MonoBehaviour {
 	}
 
     public int setTask(GameObject ht, int w, bool ar)
+        /*
+         * Set greeting task for robot 
+         * 
+         * Set target, number of waves, and triggering target robots sayHello script
+         */
     {
         helloTarget = ht;
         waves = w;
@@ -88,5 +102,17 @@ public class SayHello : MonoBehaviour {
         askResponse = ar;
         state = 1;
         return 0;
+    }
+
+
+    public int getState()
+    {
+        return state;
+    }
+
+    public void cancelTask()
+    // Stop executing task
+    {
+        state = 0;
     }
 }
