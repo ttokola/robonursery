@@ -1,45 +1,54 @@
-﻿using System.Collections;
+﻿/*
+ * Grab object and carry it to the defined position and throw it to defined target
+ * Set throwind task for robot by using setTask function
+ */
+
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using LilBotNamespace;
 
 public class ThrowObject : MonoBehaviour {
 
+    [Tooltip("Drag the Transform of left hand of robot here")]
     public Transform leftHand;
+    [Tooltip("Drag the Transform of right hand of robot here")]
     public Transform rightHand;
 
+    [Tooltip("Drag the ArmControls script attached to the robot here")]
     public ArmControls armControls;
+
+    [Tooltip("Drag the MovementControls script attached to the robot here")]
     public MovementControls movementControls;
 
-    public float movementRange;
-    public Vector3 grabOffset;
-    public GameObject carryObject;
-    public Transform carryTarget;
-    public Transform throwTarget;
+    private float movementRange;
+    private Vector3 grabOffset;
+    private GameObject carryObject;
+    private Transform carryTarget;
+    private Transform throwTarget;
 
     public int state;
 
     private float stopCounter;
 
-    // Use this for initialization
     void Start()
     {
 
     }
 
-    // Update is called once per frame
     void Update()
+    /* Task execution working as state machine
+     * If state is 0 then execution does not happen
+     */
     {
         switch (state)
         {
             case 0:
                 break;
             case 1:
-                //jostain syystä en onnistu mitenkään laittamaan defaulttiparametrejä
                 if (movementControls.DriveTo(carryObject.transform, true) == 0)
                 {
                     state = 2;
-
                 }
                 break;
             case 2:
@@ -106,6 +115,11 @@ public class ThrowObject : MonoBehaviour {
 
 
     public int setTask(GameObject co, Transform ct, Transform tt, float mr, Vector3 go)
+    /*
+    * Set throwing task for robot 
+    * 
+    * Set target object, target location where object is to be carried, and target location to which direction object is to be thrown and offset vector for carrying object
+    */
     {
         carryObject = co;
         carryTarget = ct;
@@ -117,6 +131,7 @@ public class ThrowObject : MonoBehaviour {
     }
 
     private int setKinematic()
+    //Sets carried object (including child objects) to be kinematic
     {
         Component[] rbs;
         rbs = carryObject.GetComponentsInChildren(typeof(Rigidbody));
@@ -137,6 +152,7 @@ public class ThrowObject : MonoBehaviour {
     }
 
     private int setNormal()
+    //Sets carried object (including child objects) to be normal
     {
         Component[] rbs;
         rbs = carryObject.GetComponentsInChildren(typeof(Rigidbody));
@@ -157,9 +173,25 @@ public class ThrowObject : MonoBehaviour {
     }
 
     private int attachTargetToHand()
+    // Attach object to hand by adding offset vector to robots hand transform
     {
-        //carryObject.transform.position = leftHand.position + grabOffset;
         carryObject.transform.position = leftHand.TransformPoint(grabOffset);
         return 0;
+    }
+
+    public int getState()
+    {
+        return state;
+    }
+
+    public void cancelTask()
+    // Stop executing task
+    {
+        if (state != 0)
+        {
+            setNormal();
+        }
+        state = 0;
+
     }
 }

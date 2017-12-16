@@ -1,10 +1,14 @@
-﻿using System.Collections;
+﻿// Turn to direction of target transform and then clap hands
+
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using LilBotNamespace;
 
 public class ClapHands : MonoBehaviour {
+    [Tooltip("Drag the ArmControls script attached to the robot here")]
     public ArmControls armControls;
+    [Tooltip("Drag the MovementControls script attached to the robot here")]
     public MovementControls movementControls;
 
     public float movementRange;
@@ -22,7 +26,11 @@ public class ClapHands : MonoBehaviour {
 	}
 	
 	// Update is called once per frame
-	void Update () {
+	void Update ()
+    /* Task execution working as state machine
+     * If state is 0 then execution does not happen
+     */
+    {
         switch (state)
         {
             case 0:
@@ -32,7 +40,6 @@ public class ClapHands : MonoBehaviour {
                 if (movementControls.TurnTo(clapTarget) == 0)
                 {
                     state = 2;
-                    //helloVoiceSource.PlayOneShot(helloSound);
                 }
                 break;
 
@@ -67,11 +74,27 @@ public class ClapHands : MonoBehaviour {
 	}
 
     public int setTask(Transform ct, int c)
+    /*
+     * Set hand clap task for robot 
+     * 
+     * Set clapping target transform and number of claps
+     */
     {
         clapTarget = ct;
         claps = c;
         clapcounter = 0;
         state = 1;
         return 0;
+    }
+
+    public int getState()
+    {
+        return state;
+    }
+
+    public void cancelTask()
+    // Stop executing task
+    {
+        state = 0;
     }
 }
