@@ -1,4 +1,0 @@
-sceneSetups:
-- path: F:/google drive/Yliopisto/software_project/robonursery/RollABall/rollaball.unity
-  isLoaded: 1
-  isActive: 1

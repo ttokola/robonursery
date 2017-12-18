@@ -52,12 +52,14 @@ public class MLAAgent : Agent
         {
             //if (body.velocity.magnitude >= 1f && gameObject.transform.position.y < 2f) { reward = 0.1f; } else { done = true; reward = -0.1f; }
             reward = body.velocity.magnitude * 0.001f + Mathf.Abs(90-Mathf.Abs(body.transform.rotation.x)) * 0.0005f + Mathf.Abs(90 - Mathf.Abs(body.transform.rotation.z)) * 0.0005f - Mathf.Sqrt(Mathf.Pow(body.transform.rotation.x, 2));
+            Monitor.Log("reward", reward, MonitorType.text);
+            Monitor.Log("Act", act, MonitorType.hist);
             //if (Mathf.Abs(gameObject.transform.position.y) >= 2f) { done = true; reward = -1f; };
-            if (Mathf.Abs(body.transform.rotation.x) >= 75f || Mathf.Abs(body.transform.rotation.z) >= 25f || body.velocity.magnitude <= 0.1f)
+            /*if (Mathf.Abs(body.transform.rotation.x) >= 75f || Mathf.Abs(body.transform.rotation.z) >= 25f || body.velocity.magnitude <= 0.1f)
             {
                 reward = -1f;
                 done = true;
-            }
+            }*/
 
         }
        
