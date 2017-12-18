@@ -45,13 +45,13 @@ public class MLAAgent : Agent
         if (Mathf.Abs(point.transform.position.x - gameObject.transform.position.x)<1f &&
             Mathf.Abs(point.transform.position.z - gameObject.transform.position.z)<1f)
         {
-            done = true;
+            point.transform.position = new Vector3(Random.Range(-20f, 20f), 0.5f, Random.Range(-20f, 20f));
             reward = 1f;
         }
         if (done == false)
         {
             //if (body.velocity.magnitude >= 1f && gameObject.transform.position.y < 2f) { reward = 0.1f; } else { done = true; reward = -0.1f; }
-            reward = body.velocity.magnitude * 10f - Mathf.Abs(body.transform.rotation.x) * 0.005f - Mathf.Abs(body.transform.rotation.z) * 0.005f;
+            reward = body.velocity.magnitude * 0.001f + Mathf.Abs(90-Mathf.Abs(body.transform.rotation.x)) * 0.0005f + Mathf.Abs(90 - Mathf.Abs(body.transform.rotation.z)) * 0.0005f - Mathf.Sqrt(Mathf.Pow(body.transform.rotation.x, 2));
             //if (Mathf.Abs(gameObject.transform.position.y) >= 2f) { done = true; reward = -1f; };
             if (Mathf.Abs(body.transform.rotation.x) >= 75f || Mathf.Abs(body.transform.rotation.z) >= 25f || body.velocity.magnitude <= 0.1f)
             {
@@ -73,7 +73,7 @@ public class MLAAgent : Agent
         //gameObject.transform.position = new Vector3(Random.Range(-2f, 2f), 1.0f, Random.Range(-2f, 2f));
         //body.MovePosition(new Vector3(Random.Range(-2f, 2f), 1.0f, Random.Range(-2f, 2f)));
         //body.isKinematic = false;
-        proto.ResetAgentPose(new Vector3(Random.Range(-2f, 2f), 1.0f, Random.Range(-2f, 2f)));
+        proto.ResetAgentPose(new Vector3(Random.Range(-2f, 2f), 0.01f, Random.Range(-2f, 2f)));
     }
 
 }
