@@ -33,6 +33,8 @@ public abstract class AgentParser : MonoBehaviour {
             Joint,
             Wheel
         }
+        public Vector3 transformsPosition;
+        public Quaternion transformsRotation;
         [Tooltip("Sets the motor type of the object. See documentation for details")]
         public Type_ Type;
         [Tooltip("Add multiplier to X,Y,Z movement.")]
@@ -45,6 +47,7 @@ public abstract class AgentParser : MonoBehaviour {
         public bool Link_to_grandparent;
         [Tooltip("If you have Link_grandparents active but want to link specific objects to their parents instead")]
         public Boolean Link_parent;
+        
     }
 
     [System.Serializable]
@@ -83,10 +86,12 @@ public abstract class AgentParser : MonoBehaviour {
     public AgentParameters agentParameters;
 
     public Dictionary<int, Agent> agents = new Dictionary<int, Agent>();
-    /**< \brief Keeps track of the agents which subscribe to this proto*/
+    /**< \brief Keeps track of the agents which subscribe to this proto. NOT IN USE*/
 
     [SerializeField]
     public List<Component> components = new List<Component>();
+
+    
 
 
     void Start()
@@ -118,7 +123,7 @@ public abstract class AgentParser : MonoBehaviour {
         return result;
     }
 
-    public Dictionary<int, List<Component>> CollectComponents()
+    private Dictionary<int, List<Component>> CollectComponents()
     {
         Dictionary<int, List<Component>> result = new Dictionary<int, List<Component>>();
         Transform[] allChildren = GetComponentsInChildren<Transform>();
@@ -165,8 +170,11 @@ public abstract class AgentParser : MonoBehaviour {
                 ///This can be a handly way to speed up the process of deploying new robots. GameObjects name can be obtained from PartName.Contains(string name) see below for example.
                 ///////See below for examples 
                 var component = new Component();
+                
                 component.PartName = child.name;
                 component.gameObject = child.gameObject;
+                component.transformsPosition = child.position;
+                component.transformsRotation = child.rotation;
                 ///
                 //// stuff below are optional. Boolean variables set themselves to false as default- It is preferred to keep 
                 ///
@@ -350,8 +358,9 @@ public abstract class AgentParser : MonoBehaviour {
         }
     }
 
-    void LinkWithBallJoints(Component component)
+    private void LinkWithBallJoints(Component component)
     {
+        /*
         if (component.gameObject.GetComponent<BallJoint>() == null)
         {
             component.gameObject.AddComponent<BallJoint>();
@@ -362,28 +371,40 @@ public abstract class AgentParser : MonoBehaviour {
         joint.maxHorizontalForce = 550;
         joint.angleLimit = 175;
         joint.errorThreshold = 5;
+        */
+        if (component.gameObject.GetComponent<ConfigurableJoint>()== null)
+        {
+            component.gameObject.AddComponent<ConfigurableJoint>();
+        }
+        ConfigurableJoint joint = component.gameObject.GetComponent<ConfigurableJoint>();
+        joint.xMotion = joint.yMotion = joint.zMotion = ConfigurableJointMotion.Locked;
+        
+
+        
         //Add rigidbody and colliders + connects the object to its parent/grandparent
 
         if (((Link_grandparent == true && component.Link_parent == false) || component.Link_to_grandparent == true) && component.gameObject.transform.parent.parent.gameObject != this.gameObject)
         {
             CheckRigidbody(component.gameObject.transform.parent.parent.gameObject, 0);
-            joint.connected = component.gameObject.transform.parent.parent.GetComponent<Rigidbody>();
+            joint.connectedBody = component.gameObject.transform.parent.parent.GetComponent<Rigidbody>();
+           // joint.connected = component.gameObject.transform.parent.parent.GetComponent<Rigidbody>();
         }
-        else if ((component.Link_parent == true || Link_grandparent == false)&& component.gameObject.transform.parent.parent.gameObject != this.gameObject)
+        else if ((component.Link_parent == true || Link_grandparent == false)&& component.gameObject.transform.parent.gameObject != this.gameObject)
         {
             CheckRigidbody(component.gameObject.transform.parent.gameObject, 0);
-            joint.connected = component.gameObject.transform.parent.GetComponent<Rigidbody>();
+            joint.connectedBody = component.gameObject.transform.parent.GetComponent<Rigidbody>();
+            //joint.connected = component.gameObject.transform.parent.GetComponent<Rigidbody>();
         }
         else
         {
             Debug.Log("There seems to be a issue with linking in object " + component.PartName + " Check if you have both link_parent and link_to_grandparent active");
             Debug.Log("Linking with parents as a default");
-            CheckRigidbody(component.gameObject.transform.parent.gameObject, 0);
-            joint.connected = component.gameObject.transform.parent.GetComponent<Rigidbody>();
+            //CheckRigidbody(component.gameObject.transform.parent.gameObject, 0);
+            //joint.connected = component.gameObject.transform.parent.GetComponent<Rigidbody>();
         }
     }
 
-    void LinkWithHingeJoints(Component component)
+    private void LinkWithHingeJoints(Component component)
     {
         if (component.Mesh_collider == true) {
 
@@ -398,7 +419,7 @@ public abstract class AgentParser : MonoBehaviour {
             component.gameObject.AddComponent<HingeJoint>();
         }
         HingeJoint joint = component.gameObject.GetComponent<HingeJoint>();
-
+        
         //Add rigidbody to parent if it doesn't have it
 
         if (((Link_grandparent == true && component.Link_parent == false) || component.Link_to_grandparent == true) && component.gameObject.transform.parent.parent.gameObject != this.gameObject)
@@ -425,7 +446,7 @@ public abstract class AgentParser : MonoBehaviour {
         }
         }
 
-    void CheckRigidbody(GameObject component, int collider)
+    private void CheckRigidbody(GameObject component, int collider)
     {
         if (component.GetComponent<Rigidbody>() == null)
         {
@@ -463,7 +484,18 @@ public abstract class AgentParser : MonoBehaviour {
         }
     } 
 
-
+    public void ResetAgentPose(){
+        Transform[] allChildren = GetComponentsInChildren<Transform>();
+        foreach ( Component component in components) {
+            component.gameObject.transform.position = component.transformsPosition;
+            component.gameObject.transform.rotation = component. transformsRotation;
+            if (component.Movable){
+                component.gameObject.GetComponent<Rigidbody>().velocity = default(Vector3);
+                component.gameObject.GetComponent<Rigidbody>().angularVelocity = default(Vector3);
+            }
+            
+        } 
+    } 
 
 
 }
