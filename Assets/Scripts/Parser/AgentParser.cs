@@ -33,8 +33,8 @@ public abstract class AgentParser : MonoBehaviour {
             Joint,
             Wheel
         }
-        private Vector3 transformsPosition;
-        private Quaternion transformsRotation;
+        public Vector3 transformsPosition;
+        public Quaternion transformsRotation;
         [Tooltip("Sets the motor type of the object. See documentation for details")]
         public Type_ Type;
         [Tooltip("Add multiplier to X,Y,Z movement.")]
@@ -476,8 +476,11 @@ public abstract class AgentParser : MonoBehaviour {
         foreach ( Component component in components) {
             component.gameObject.transform.position = component.transformsPosition;
             component.gameObject.transform.rotation = component. transformsRotation;
-            component.gameObject.GetComponent<Rigidbody>().velocity = default(Vector3);
-            component.gameObject.GetComponent<Rigidbody>().angularVelocity = default(Vector3);
+            if (component.Movable){
+                component.gameObject.GetComponent<Rigidbody>().velocity = default(Vector3);
+                component.gameObject.GetComponent<Rigidbody>().angularVelocity = default(Vector3);
+            }
+            
         } 
     } 
 
