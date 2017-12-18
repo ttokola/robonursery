@@ -83,7 +83,7 @@ public abstract class AgentParser : MonoBehaviour {
     public AgentParameters agentParameters;
 
     public Dictionary<int, Agent> agents = new Dictionary<int, Agent>();
-    /**< \brief Keeps track of the agents which subscribe to this proto*/
+    /**< \brief Keeps track of the agents which subscribe to this proto. NOT IN USE*/
 
     [SerializeField]
     public List<Component> components = new List<Component>();
@@ -118,7 +118,7 @@ public abstract class AgentParser : MonoBehaviour {
         return result;
     }
 
-    public Dictionary<int, List<Component>> CollectComponents()
+    private Dictionary<int, List<Component>> CollectComponents()
     {
         Dictionary<int, List<Component>> result = new Dictionary<int, List<Component>>();
         Transform[] allChildren = GetComponentsInChildren<Transform>();
@@ -350,7 +350,7 @@ public abstract class AgentParser : MonoBehaviour {
         }
     }
 
-    void LinkWithBallJoints(Component component)
+    private void LinkWithBallJoints(Component component)
     {
         if (component.gameObject.GetComponent<BallJoint>() == null)
         {
@@ -383,7 +383,7 @@ public abstract class AgentParser : MonoBehaviour {
         }
     }
 
-    void LinkWithHingeJoints(Component component)
+    private void LinkWithHingeJoints(Component component)
     {
         if (component.Mesh_collider == true) {
 
@@ -425,7 +425,7 @@ public abstract class AgentParser : MonoBehaviour {
         }
         }
 
-    void CheckRigidbody(GameObject component, int collider)
+    private void CheckRigidbody(GameObject component, int collider)
     {
         if (component.GetComponent<Rigidbody>() == null)
         {
