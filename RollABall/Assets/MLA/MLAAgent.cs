@@ -9,11 +9,12 @@ public class MLAAgent : Agent
     public float speed;
     //private Rigidbody rb;
     private Rigidbody body;
-    
+    private GameObject head;
     private void Start()
     {
         proto = this.gameObject.GetComponent<AgentProto>();
         body = proto.GetComponentByName("Body").gameObject.GetComponent<Rigidbody>();
+        head = proto.GetComponentByName("Head").gameObject;
         //rb = GetComponent<Rigidbody>();
         
 
@@ -49,8 +50,15 @@ public class MLAAgent : Agent
         }
         if (done == false)
         {
-            if (body.velocity.magnitude >= 1f && gameObject.transform.position.y < 2f) { reward = 0.001f; } // else { done = true; reward = -0.1f; }
-            if (Mathf.Abs(gameObject.transform.position.y) >= 2f) { done = true; reward = -1f; };
+            //if (body.velocity.magnitude >= 1f && gameObject.transform.position.y < 2f) { reward = 0.1f; } else { done = true; reward = -0.1f; }
+            reward = body.velocity.magnitude * 10f - Mathf.Abs(body.transform.rotation.x) * 0.005f - Mathf.Abs(body.transform.rotation.z) * 0.005f;
+            //if (Mathf.Abs(gameObject.transform.position.y) >= 2f) { done = true; reward = -1f; };
+            if (Mathf.Abs(body.transform.rotation.x) >= 75f || Mathf.Abs(body.transform.rotation.z) >= 25f || body.velocity.magnitude <= 0.1f)
+            {
+                reward = -1f;
+                done = true;
+            }
+
         }
        
     }
