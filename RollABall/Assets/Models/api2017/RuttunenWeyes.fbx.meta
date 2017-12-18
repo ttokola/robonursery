@@ -58,6 +58,7 @@ ModelImporter:
     100100: Tooth5.001
     100102: Wheels
     100104: Wheels.001
+    100106: Camera
     400000: Axle
     400002: Axle.001
     400004: Body
@@ -111,6 +112,8 @@ ModelImporter:
     400100: Tooth5.001
     400102: Wheels
     400104: Wheels.001
+    400106: Camera
+    2000000: Camera
     2300000: Axle
     2300002: Axle.001
     2300004: Body
