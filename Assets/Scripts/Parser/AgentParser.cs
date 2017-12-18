@@ -17,7 +17,7 @@ public abstract class AgentParser : MonoBehaviour {
 
 
     [System.Serializable]
-    public struct Component
+    public class Component
     {
         [Tooltip("Link this object to its parent when parser is run with Link flag")]
         public bool Link;
@@ -99,6 +99,10 @@ public abstract class AgentParser : MonoBehaviour {
 
         if (Run == true)
         {
+            foreach(Component component in components){
+                component.transformsPosition = component.gameObject.transform.position;
+                component.transformsRotation = component.gameObject.transform.rotation;
+            }
             AddIndicies();
         }
 
@@ -485,18 +489,36 @@ public abstract class AgentParser : MonoBehaviour {
         }
     } 
 
-    public void ResetAgentPose(){
+    public void ResetAgentPose(Vector3 position)
+    {
         Transform[] allChildren = GetComponentsInChildren<Transform>();
-        foreach ( Component component in components) {
-            component.gameObject.transform.position = component.transformsPosition;
-            component.gameObject.transform.rotation = component. transformsRotation;
-            if (component.Movable){
+        foreach (Component component in components)
+        {
+            component.gameObject.transform.position = component.transformsPosition+position;
+            component.gameObject.transform.rotation = component.transformsRotation;
+            if (component.Movable)
+            {
                 component.gameObject.GetComponent<Rigidbody>().velocity = default(Vector3);
                 component.gameObject.GetComponent<Rigidbody>().angularVelocity = default(Vector3);
             }
-            
-        } 
-    } 
 
+        }
+    }
+
+    public void ResetAgentPose()
+    {
+        Transform[] allChildren = GetComponentsInChildren<Transform>();
+        foreach (Component component in components)
+        {
+            component.gameObject.transform.position = component.transformsPosition;
+            component.gameObject.transform.rotation = component.transformsRotation;
+            if (component.Movable)
+            {
+                component.gameObject.GetComponent<Rigidbody>().velocity = default(Vector3);
+                component.gameObject.GetComponent<Rigidbody>().angularVelocity = default(Vector3);
+            }
+
+        }
+    }
 
 }

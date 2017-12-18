@@ -23,8 +23,8 @@ public class MLAAgent : Agent
         List<float> state = new List<float>();
         state.Add(gameObject.transform.position.x);
         state.Add(gameObject.transform.position.z);
-        state.Add(gameObject.transform.GetComponent<Rigidbody>().velocity.x / 5f);
-        state.Add(gameObject.transform.GetComponent<Rigidbody>().velocity.z / 5f);
+        state.Add(body.velocity.x / 5f);
+        state.Add(body.velocity.z / 5f);
         state.Add(point.transform.position.x);
         state.Add(point.transform.position.z);
         return state;
@@ -56,8 +56,8 @@ public class MLAAgent : Agent
 
     public override void AgentReset()
     {
-        gameObject.transform.position = new Vector3(Random.Range(-2f, 2f), 0.5f, Random.Range(-2f, 2f));
-
+        //gameObject.transform.position = new Vector3(Random.Range(-2f, 2f), 0.5f, Random.Range(-2f, 2f));
+        proto.ResetAgentPose(new Vector3(Random.Range(-2f, 2f), 0.5f, Random.Range(-2f, 2f)));
     }
     
 }
