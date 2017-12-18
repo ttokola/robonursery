@@ -378,6 +378,7 @@ public abstract class AgentParser : MonoBehaviour {
         }
         ConfigurableJoint joint = component.gameObject.GetComponent<ConfigurableJoint>();
         joint.xMotion = joint.yMotion = joint.zMotion = ConfigurableJointMotion.Locked;
+        joint.angularXMotion = ConfigurableJointMotion.Locked;
         
 
         
@@ -416,7 +417,7 @@ public abstract class AgentParser : MonoBehaviour {
         }
         if (component.gameObject.GetComponent<HingeJoint>() == null)
         {
-            component.gameObject.AddComponent<HingeJoint>();
+            component.gameObject.AddComponent<HingeJoint>();    
         }
         HingeJoint joint = component.gameObject.GetComponent<HingeJoint>();
         
