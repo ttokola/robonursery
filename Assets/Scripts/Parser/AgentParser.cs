@@ -352,6 +352,7 @@ public abstract class AgentParser : MonoBehaviour {
 
     private void LinkWithBallJoints(Component component)
     {
+        /*
         if (component.gameObject.GetComponent<BallJoint>() == null)
         {
             component.gameObject.AddComponent<BallJoint>();
@@ -362,17 +363,29 @@ public abstract class AgentParser : MonoBehaviour {
         joint.maxHorizontalForce = 550;
         joint.angleLimit = 175;
         joint.errorThreshold = 5;
+        */
+        if (component.gameObject.GetComponent<ConfigurableJoint>()== null)
+        {
+            component.gameObject.AddComponent<ConfigurableJoint>();
+        }
+        ConfigurableJoint joint = component.gameObject.GetComponent<ConfigurableJoint>();
+        joint.xMotion = joint.yMotion = joint.zMotion = ConfigurableJointMotion.Locked;
+        
+
+        
         //Add rigidbody and colliders + connects the object to its parent/grandparent
 
         if (((Link_grandparent == true && component.Link_parent == false) || component.Link_to_grandparent == true) && component.gameObject.transform.parent.parent.gameObject != this.gameObject)
         {
             CheckRigidbody(component.gameObject.transform.parent.parent.gameObject, 0);
-            joint.connected = component.gameObject.transform.parent.parent.GetComponent<Rigidbody>();
+            joint.connectedBody = component.gameObject.transform.parent.parent.GetComponent<Rigidbody>();
+           // joint.connected = component.gameObject.transform.parent.parent.GetComponent<Rigidbody>();
         }
         else if ((component.Link_parent == true || Link_grandparent == false)&& component.gameObject.transform.parent.gameObject != this.gameObject)
         {
             CheckRigidbody(component.gameObject.transform.parent.gameObject, 0);
-            joint.connected = component.gameObject.transform.parent.GetComponent<Rigidbody>();
+            joint.connectedBody = component.gameObject.transform.parent.GetComponent<Rigidbody>();
+            //joint.connected = component.gameObject.transform.parent.GetComponent<Rigidbody>();
         }
         else
         {
@@ -398,7 +411,7 @@ public abstract class AgentParser : MonoBehaviour {
             component.gameObject.AddComponent<HingeJoint>();
         }
         HingeJoint joint = component.gameObject.GetComponent<HingeJoint>();
-
+        
         //Add rigidbody to parent if it doesn't have it
 
         if (((Link_grandparent == true && component.Link_parent == false) || component.Link_to_grandparent == true) && component.gameObject.transform.parent.parent.gameObject != this.gameObject)
