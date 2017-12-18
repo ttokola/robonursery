@@ -33,6 +33,8 @@ public abstract class AgentParser : MonoBehaviour {
             Joint,
             Wheel
         }
+        public Vector3 transformsPosition;
+        public Quaternion transformsRotation;
         [Tooltip("Sets the motor type of the object. See documentation for details")]
         public Type_ Type;
         [Tooltip("Add multiplier to X,Y,Z movement.")]
@@ -45,6 +47,7 @@ public abstract class AgentParser : MonoBehaviour {
         public bool Link_to_grandparent;
         [Tooltip("If you have Link_grandparents active but want to link specific objects to their parents instead")]
         public Boolean Link_parent;
+        
     }
 
     [System.Serializable]
@@ -87,6 +90,8 @@ public abstract class AgentParser : MonoBehaviour {
 
     [SerializeField]
     public List<Component> components = new List<Component>();
+
+    
 
 
     void Start()
@@ -165,8 +170,11 @@ public abstract class AgentParser : MonoBehaviour {
                 ///This can be a handly way to speed up the process of deploying new robots. GameObjects name can be obtained from PartName.Contains(string name) see below for example.
                 ///////See below for examples 
                 var component = new Component();
+                
                 component.PartName = child.name;
                 component.gameObject = child.gameObject;
+                component.transformsPosition = child.position;
+                component.transformsRotation = child.rotation;
                 ///
                 //// stuff below are optional. Boolean variables set themselves to false as default- It is preferred to keep 
                 ///
@@ -476,7 +484,18 @@ public abstract class AgentParser : MonoBehaviour {
         }
     } 
 
-
+    public void ResetAgentPose(){
+        Transform[] allChildren = GetComponentsInChildren<Transform>();
+        foreach ( Component component in components) {
+            component.gameObject.transform.position = component.transformsPosition;
+            component.gameObject.transform.rotation = component. transformsRotation;
+            if (component.Movable){
+                component.gameObject.GetComponent<Rigidbody>().velocity = default(Vector3);
+                component.gameObject.GetComponent<Rigidbody>().angularVelocity = default(Vector3);
+            }
+            
+        } 
+    } 
 
 
 }

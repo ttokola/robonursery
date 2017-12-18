@@ -74,6 +74,7 @@ public class MLAagent : Agent {
 	public override void AgentReset()
 	{
       //  gameObject.transform.position = new Vector3(Random.Range(-2f, 2f), 0.5f, Random.Range(-2f, 2f));
+      proto.ResetAgentPose();
     }
 
     public override void AgentOnDone()
