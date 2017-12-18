@@ -63,8 +63,9 @@ public class MLAAgent : Agent
         //https://docs.unity3d.com/ScriptReference/Rigidbody-isKinematic.html otherwise the child rigidbodies will prevent teleportation
         //body.isKinematic = true;
         //gameObject.transform.position = new Vector3(Random.Range(-2f, 2f), 1.0f, Random.Range(-2f, 2f));
-        body.MovePosition(new Vector3(Random.Range(-2f, 2f), 1.0f, Random.Range(-2f, 2f)));
+        //body.MovePosition(new Vector3(Random.Range(-2f, 2f), 1.0f, Random.Range(-2f, 2f)));
         //body.isKinematic = false;
+        proto.ResetAgentPose(new Vector3(Random.Range(-2f, 2f), 1.0f, Random.Range(-2f, 2f)));
     }
 
 }

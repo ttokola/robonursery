@@ -1,4 +1,0 @@
-sceneSetups:
-- path: C:/Users/Otso/Desktop/software_project/robonursery/RollABall/rollaball.unity
-  isLoaded: 1
-  isActive: 1
