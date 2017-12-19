@@ -42,9 +42,9 @@ public abstract class AgentParser : MonoBehaviour {
         [Tooltip("Sets the motor type of the object. See documentation for details")]
         public Type_ Type;
         [Tooltip("Add multiplier to X,Y,Z movement.")]
-        public float[] DimensionMultipliers;
+        public Vector3 DimensionMultipliers;
         [Tooltip("Set what action from the AI corresponds to which above movements")]
-        public int[] ActionIndeces;
+        public Vector3 ActionIndeces;
         [Tooltip("When adding box colliders, instead add a mesh collider")]
         public bool Mesh_collider;
         
@@ -196,17 +196,12 @@ public abstract class AgentParser : MonoBehaviour {
                 {
                     component.Mesh_collider = true;
                 }
-                     
-                component.ActionIndeces = new int[2];
-                //set default values to -1
-                for (int i = 0; i < component.ActionIndeces.Length; i++)
-                {
-                    component.ActionIndeces[i] = -1;
-                }
-
-
-                component.DimensionMultipliers = new float[2];
-                //component.DimensionMultipliers = new float[3];
+                 //Set default values to -1    
+                component.ActionIndeces = new Vector3(-1,-1,-1);
+                
+                //set default values to 0
+                component.DimensionMultipliers = new Vector3(0, 0, 0); 
+               
 
                 //if objects name contains word "Wheel", set default type to wheel
                 if (component.PartName.Contains(motorname1) || component.PartName.Contains("Axle"))
@@ -244,12 +239,13 @@ public abstract class AgentParser : MonoBehaviour {
                         {
                             if (Multipliers == true)
                             {
-                                component.DimensionMultipliers[0] = WheelMultiplier;
+                                WheelMultipliers(component);
+                                
                             }
                             if (Action_Indicies == true)
                             {
-                                component.ActionIndeces[0] = number;
-                                number = number + 1;
+                                number = WheelAction_Indicies(component,number);
+                                
                             }
                             break;
                         }
@@ -258,17 +254,13 @@ public abstract class AgentParser : MonoBehaviour {
                         {
                             if (Multipliers == true)
                             {
-                                for (int i = 0; i < component.DimensionMultipliers.Length; i++) {
-                                    component.DimensionMultipliers[i] = JointMultiplier;
-                                }
+                                JointMultipliers(component);
+                                
                                
                             }
                             if (Action_Indicies == true)
                             {
-                                for (int i = 0; i < component.ActionIndeces.Length; i++) {
-                                    component.ActionIndeces[i] = number;
-                                    number = number + 1;
-                                }
+                                JointAction_Indicies(component, number);
 
                             }
                             break;
@@ -332,9 +324,13 @@ public abstract class AgentParser : MonoBehaviour {
                 {
 
                     case Component.Type_.Wheel: {
-                            if (component.ActionIndeces[0] >= 0)
+                            for (int i = 0; i < 3; i++)
                             {
-                                motor.Wheel(component.gameObject.GetComponent<Rigidbody>(), component.gameObject.GetComponent<Transform>(), act[component.ActionIndeces[0]] * component.DimensionMultipliers[0]);
+                                if (component.DimensionMultipliers[i] != 0 && component.ActionIndeces[i] >= 0)
+                                {
+                                    motor.Wheel(component.gameObject.GetComponent<Rigidbody>(), component.gameObject.GetComponent<Transform>(), act[(int)component.ActionIndeces[i]] * component.DimensionMultipliers[i], i);
+
+                                }
                             }
                             break;
 
@@ -342,11 +338,11 @@ public abstract class AgentParser : MonoBehaviour {
 
                     case Component.Type_.Joint:
                         {
-                            for (int i = 0; i < component.DimensionMultipliers.Length; i++)
+                            for (int i = 0; i < 3; i++)
                             {
                                 if (component.DimensionMultipliers[i] != 0 && component.ActionIndeces[i] >= 0)
                                 {
-                                    motor.Joint(component.gameObject.GetComponent<Rigidbody>(), component.gameObject.GetComponent<Transform>(), act[component.ActionIndeces[i]] * component.DimensionMultipliers[i], i);
+                                    motor.Joint(component.gameObject.GetComponent<Rigidbody>(), component.gameObject.GetComponent<Transform>(), act[(int)component.ActionIndeces[i]] * component.DimensionMultipliers[i], i);
 
                                 }
                             }
@@ -517,6 +513,84 @@ public abstract class AgentParser : MonoBehaviour {
             }
 
         }
+    }
+    public virtual void WheelMultipliers(Component component)
+    {
+        if ((Action_Indicies && Multipliers) == true) {
+            component.DimensionMultipliers.x = WheelMultiplier;
+            }
+        else
+        {
+            for (int i = 0; i < 3; i++)
+            {
+                if(component.ActionIndeces[i] >= 0){
+                    component.DimensionMultipliers[i] = WheelMultiplier; 
+            }
+            }
+        }
+    }
+    public virtual int WheelAction_Indicies(Component component, int number) {
+        if ((Action_Indicies && Multipliers) == true) {
+            component.ActionIndeces.Set(number, -1, -1);
+
+            number = number + 1;
+        }
+        else {
+            for (int i = 0; i < 3; i++)
+            {
+                if (component.DimensionMultipliers[i] >= 0)
+                {
+                    component.ActionIndeces[i] = number;
+                    number = number + 1;
+                }
+
+            }
+            }
+        return number;
+    }
+
+     public virtual void JointMultipliers(Component component)
+    {
+        if ((Action_Indicies && Multipliers) == true)
+        {
+            component.DimensionMultipliers.y = JointMultiplier;
+            component.DimensionMultipliers.z = JointMultiplier;
+        }
+        else
+        {
+            for (int i = 0; i < 3; i++)
+            {
+                if (component.ActionIndeces[i] >= 0)
+                {
+                    component.DimensionMultipliers[i] = JointMultiplier;
+                }
+            }
+        }
+
+    }
+
+    public virtual int JointAction_Indicies(Component component, int number)
+    {
+        if ((Action_Indicies && Multipliers) == true)
+        {
+            component.ActionIndeces.Set(-1, number, number+1);
+
+            number = number + 2;
+        }
+        else
+        {
+            for (int i = 0; i < 3; i++)
+            {
+                if (component.DimensionMultipliers[i] >= 0)
+                {
+                    component.ActionIndeces[i] = number;
+                    number = number + 1;
+                }
+
+            }
+        }
+        return number;
+
     }
 
 }
