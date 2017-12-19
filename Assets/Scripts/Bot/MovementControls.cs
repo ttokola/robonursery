@@ -210,13 +210,13 @@ public class MovementControls : MonoBehaviour
             {
 
 
-                case 2:
+                case 0:
                     rb.AddRelativeTorque(Vector3.right * force);
                     break;
-                case 0:
+                case 1:
                     rb.AddRelativeTorque(Vector3.up * force);
                     break;
-                case 1:
+                case 2:
                     rb.AddRelativeTorque(Vector3.forward * force);
                     break;
 
@@ -225,9 +225,24 @@ public class MovementControls : MonoBehaviour
 
         }
 
-        public void Wheel(Rigidbody rb, Transform tf, float force)
+        public void Wheel(Rigidbody rb, Transform tf, float force,int axel)
         {
-            rb.AddTorque(tf.right * force);
+            switch (axel)
+            {
+
+
+                case 0:
+                    rb.AddTorque(Vector3.right * force);
+                    break;
+                case 1:
+                    rb.AddTorque(Vector3.up * force);
+                    break;
+                case 2:
+                    rb.AddTorque(Vector3.forward * force);
+                    break;
+
+
+            }
         }
 
         
