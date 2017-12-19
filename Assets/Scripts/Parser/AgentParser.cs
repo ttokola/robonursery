@@ -19,8 +19,12 @@ public abstract class AgentParser : MonoBehaviour {
     [System.Serializable]
     public class Component
     {
-        [Tooltip("Link this object to its parent when parser is run with Link flag")]
-        public bool Link;
+        [Tooltip("When this is set with link flag, links the object to its grandparent")]
+        public bool Link_to_grandparent;
+        [Tooltip("If you have Link_grandparents active but want to link specific objects to their parents instead")]
+        public Boolean Link_parent;
+       // [Tooltip("Link this object to its parent when parser is run with Link flag")]
+        //public bool Link;
         [Tooltip("Name of the gameobject")]
         public string PartName;
         [Tooltip("Link to the gameobject")]
@@ -38,15 +42,12 @@ public abstract class AgentParser : MonoBehaviour {
         [Tooltip("Sets the motor type of the object. See documentation for details")]
         public Type_ Type;
         [Tooltip("Add multiplier to X,Y,Z movement.")]
-        public float[] DimensionMultipliers;
+        public Vector3 DimensionMultipliers;
         [Tooltip("Set what action from the AI corresponds to which above movements")]
-        public int[] ActionIndeces;
+        public Vector3 ActionIndeces;
         [Tooltip("When adding box colliders, instead add a mesh collider")]
         public bool Mesh_collider;
-        [Tooltip("When this is set with link flag, links the object to its grandparent")]
-        public bool Link_to_grandparent;
-        [Tooltip("If you have Link_grandparents active but want to link specific objects to their parents instead")]
-        public Boolean Link_parent;
+        
         
     }
 
@@ -79,8 +80,8 @@ public abstract class AgentParser : MonoBehaviour {
     public Boolean Action_Indicies;
     [Tooltip("Automatically assign dimension multiplier to movable objects")]
     public Boolean Multipliers;
-    [Tooltip("Instead of linking the components with link attribute true to their parents, instead link them to their grand parent")]
-    public Boolean Link_grandparent;
+    //[Tooltip("Instead of linking the components with link attribute true to their parents, instead link them to their grand parent")]
+   // public Boolean Link_grandparent;
 
 
     public AgentParameters agentParameters;
@@ -195,17 +196,12 @@ public abstract class AgentParser : MonoBehaviour {
                 {
                     component.Mesh_collider = true;
                 }
-                     
-                component.ActionIndeces = new int[2];
-                //set default values to -1
-                for (int i = 0; i < component.ActionIndeces.Length; i++)
-                {
-                    component.ActionIndeces[i] = -1;
-                }
-
-
-                component.DimensionMultipliers = new float[2];
-                //component.DimensionMultipliers = new float[3];
+                 //Set default values to -1    
+                component.ActionIndeces = new Vector3(-1,-1,-1);
+                
+                //set default values to 0
+                component.DimensionMultipliers = new Vector3(0, 0, 0); 
+               
 
                 //if objects name contains word "Wheel", set default type to wheel
                 if (component.PartName.Contains(motorname1) || component.PartName.Contains("Axle"))
@@ -243,12 +239,13 @@ public abstract class AgentParser : MonoBehaviour {
                         {
                             if (Multipliers == true)
                             {
-                                component.DimensionMultipliers[0] = WheelMultiplier;
+                                WheelMultipliers(component);
+                                
                             }
                             if (Action_Indicies == true)
                             {
-                                component.ActionIndeces[0] = number;
-                                number = number + 1;
+                                number = WheelAction_Indicies(component,number);
+                                
                             }
                             break;
                         }
@@ -257,19 +254,13 @@ public abstract class AgentParser : MonoBehaviour {
                         {
                             if (Multipliers == true)
                             {
-                                for (int i = 0; i < component.DimensionMultipliers.Length; i++) {
-                                    component.DimensionMultipliers[i] = JointMultiplier;
-                                }
-                                //component.DimensionMultipliers[0] = JointMultiplier;
-                                //component.DimensionMultipliers[1] = JointMultiplier;
-                                //component.DimensionMultipliers[2] = JointMultiplier;
+                                JointMultipliers(component);
+                                
+                               
                             }
                             if (Action_Indicies == true)
                             {
-                                for (int i = 0; i < component.ActionIndeces.Length; i++) {
-                                    component.ActionIndeces[i] = number;
-                                    number = number + 1;
-                                }
+                                JointAction_Indicies(component, number);
 
                             }
                             break;
@@ -278,7 +269,7 @@ public abstract class AgentParser : MonoBehaviour {
                 }
 
             }
-            if (component.Link == true && Link == true)
+            if ((component.Link_parent || component.Link_to_grandparent) == true && Link == true)
             {
                 if (component.Type == Component.Type_.Joint) {
                     LinkWithBallJoints(component);
@@ -333,9 +324,13 @@ public abstract class AgentParser : MonoBehaviour {
                 {
 
                     case Component.Type_.Wheel: {
-                            if (component.ActionIndeces[0] >= 0)
+                            for (int i = 0; i < 3; i++)
                             {
-                                motor.Wheel(component.gameObject.GetComponent<Rigidbody>(), component.gameObject.GetComponent<Transform>(), act[component.ActionIndeces[0]] * component.DimensionMultipliers[0]);
+                                if (component.DimensionMultipliers[i] != 0 && component.ActionIndeces[i] >= 0)
+                                {
+                                    motor.Wheel(component.gameObject.GetComponent<Rigidbody>(), component.gameObject.GetComponent<Transform>(), act[(int)component.ActionIndeces[i]] * component.DimensionMultipliers[i], i);
+
+                                }
                             }
                             break;
 
@@ -343,11 +338,11 @@ public abstract class AgentParser : MonoBehaviour {
 
                     case Component.Type_.Joint:
                         {
-                            for (int i = 0; i < component.DimensionMultipliers.Length; i++)
+                            for (int i = 0; i < 3; i++)
                             {
                                 if (component.DimensionMultipliers[i] != 0 && component.ActionIndeces[i] >= 0)
                                 {
-                                    motor.Joint(component.gameObject.GetComponent<Rigidbody>(), component.gameObject.GetComponent<Transform>(), act[component.ActionIndeces[i]] * component.DimensionMultipliers[i], i);
+                                    motor.Joint(component.gameObject.GetComponent<Rigidbody>(), component.gameObject.GetComponent<Transform>(), act[(int)component.ActionIndeces[i]] * component.DimensionMultipliers[i], i);
 
                                 }
                             }
@@ -388,13 +383,13 @@ public abstract class AgentParser : MonoBehaviour {
         
         //Add rigidbody and colliders + connects the object to its parent/grandparent
 
-        if (((Link_grandparent == true && component.Link_parent == false) || component.Link_to_grandparent == true) && component.gameObject.transform.parent.parent.gameObject != this.gameObject)
+        if (((component.Link_to_grandparent == true && component.Link_parent == false) || component.Link_to_grandparent == true) && component.gameObject.transform.parent.parent.gameObject != this.gameObject)
         {
             CheckRigidbody(component.gameObject.transform.parent.parent.gameObject, 0);
             joint.connectedBody = component.gameObject.transform.parent.parent.GetComponent<Rigidbody>();
            // joint.connected = component.gameObject.transform.parent.parent.GetComponent<Rigidbody>();
         }
-        else if ((component.Link_parent == true || Link_grandparent == false)&& component.gameObject.transform.parent.gameObject != this.gameObject)
+        else if ((component.Link_parent == true && component.Link_to_grandparent == false)&& component.gameObject.transform.parent.gameObject != this.gameObject)
         {
             CheckRigidbody(component.gameObject.transform.parent.gameObject, 0);
             joint.connectedBody = component.gameObject.transform.parent.GetComponent<Rigidbody>();
@@ -427,14 +422,14 @@ public abstract class AgentParser : MonoBehaviour {
         
         //Add rigidbody to parent if it doesn't have it
 
-        if (((Link_grandparent == true && component.Link_parent == false) || component.Link_to_grandparent == true) && component.gameObject.transform.parent.parent.gameObject != this.gameObject)
+        if (((component.Link_to_grandparent == true && component.Link_parent == false) || component.Link_to_grandparent == true) && component.gameObject.transform.parent.parent.gameObject != this.gameObject)
         {
 
             CheckRigidbody(component.gameObject.transform.parent.parent.gameObject, 0);
             joint.connectedBody = component.gameObject.transform.parent.parent.GetComponent<Rigidbody>();
             joint.connectedAnchor = component.gameObject.transform.position;
         }
-        else if ((component.Link_parent == true || Link_grandparent == false)&& component.gameObject.transform.parent.gameObject != this.gameObject)
+        else if ((component.Link_parent == true && component.Link_to_grandparent == false)&& component.gameObject.transform.parent.gameObject != this.gameObject)
         {
             CheckRigidbody(component.gameObject.transform.parent.gameObject, 0);
             joint.connectedBody = component.gameObject.transform.parent.GetComponent<Rigidbody>();
@@ -444,11 +439,10 @@ public abstract class AgentParser : MonoBehaviour {
         else
         {
             Debug.Log("There seems to be a issue with linking in object " + component.PartName + " Check if you have both link_parent and link_to_grandparent active");
-            //Debug.Log("Linking with parents as a default");
-           // CheckRigidbody(component.gameObject.transform.parent.gameObject, 0);
-            //joint.connectedBody = component.gameObject.transform.parent.GetComponent<Rigidbody>();
-            //joint.connectedAnchor = component.gameObject.transform.position;
+            
         }
+        //force anchor to be 0 0 0. This makes the wheels connect properly
+        joint.anchor = new Vector3(0f,0f,0f);
         }
 
     private void CheckRigidbody(GameObject component, int collider)
@@ -519,6 +513,84 @@ public abstract class AgentParser : MonoBehaviour {
             }
 
         }
+    }
+    public virtual void WheelMultipliers(Component component)
+    {
+        if ((Action_Indicies && Multipliers) == true) {
+            component.DimensionMultipliers.x = WheelMultiplier;
+            }
+        else
+        {
+            for (int i = 0; i < 3; i++)
+            {
+                if(component.ActionIndeces[i] >= 0){
+                    component.DimensionMultipliers[i] = WheelMultiplier; 
+            }
+            }
+        }
+    }
+    public virtual int WheelAction_Indicies(Component component, int number) {
+        if ((Action_Indicies && Multipliers) == true) {
+            component.ActionIndeces.Set(number, -1, -1);
+
+            number = number + 1;
+        }
+        else {
+            for (int i = 0; i < 3; i++)
+            {
+                if (component.DimensionMultipliers[i] >= 0)
+                {
+                    component.ActionIndeces[i] = number;
+                    number = number + 1;
+                }
+
+            }
+            }
+        return number;
+    }
+
+     public virtual void JointMultipliers(Component component)
+    {
+        if ((Action_Indicies && Multipliers) == true)
+        {
+            component.DimensionMultipliers.y = JointMultiplier;
+            component.DimensionMultipliers.z = JointMultiplier;
+        }
+        else
+        {
+            for (int i = 0; i < 3; i++)
+            {
+                if (component.ActionIndeces[i] >= 0)
+                {
+                    component.DimensionMultipliers[i] = JointMultiplier;
+                }
+            }
+        }
+
+    }
+
+    public virtual int JointAction_Indicies(Component component, int number)
+    {
+        if ((Action_Indicies && Multipliers) == true)
+        {
+            component.ActionIndeces.Set(-1, number, number+1);
+
+            number = number + 2;
+        }
+        else
+        {
+            for (int i = 0; i < 3; i++)
+            {
+                if (component.DimensionMultipliers[i] >= 0)
+                {
+                    component.ActionIndeces[i] = number;
+                    number = number + 1;
+                }
+
+            }
+        }
+        return number;
+
     }
 
 }
