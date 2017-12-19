@@ -11,10 +11,9 @@ using UnityEditor;
 
 using System.IO;
 
-
 public abstract class AgentParser : MonoBehaviour {
 
-
+    
 
     [System.Serializable]
     public class Component
@@ -181,7 +180,7 @@ public abstract class AgentParser : MonoBehaviour {
                 component.transformsPosition = child.position;
                 component.transformsRotation = child.rotation;
                 ///
-                //// stuff below are optional. Boolean variables set themselves to false as default- It is preferred to keep 
+                //// Set default values for variables here. 
                 ///
                 //if components name contains string "_movable" set objects movable variable to true
                 if (component.PartName.Contains("_movable"))
@@ -203,13 +202,21 @@ public abstract class AgentParser : MonoBehaviour {
                 component.DimensionMultipliers = new Vector3(0, 0, 0); 
                
 
-                //if objects name contains word "Wheel", set default type to wheel
+                //Sets variables to certain values depending on their name
                 if (component.PartName.Contains(motorname1) || component.PartName.Contains("Axle"))
                 {
                     component.Type = Component.Type_.Wheel;
                 }
 
-                //// optinal stuff ends
+                if(component.PartName.Contains("Axle") || component.PartName.Contains("Neck") || component.PartName.Contains("Head") || component.PartName.Contains("Tooth") || component.PartName.Contains("Eye") )
+                {
+                    component.Link_parent = true;
+                }
+
+                if (component.PartName.Contains("Arm") || component.PartName.Contains("Wheel_movable"))
+                {
+                    component.Link_to_grandparent = true;
+                }
                 components.Add(component);
             }
         }
@@ -347,7 +354,6 @@ public abstract class AgentParser : MonoBehaviour {
                                 }
                             }
 
-                            //   motor.Joint(component.gameObject.GetComponent<Rigidbody>(), component.gameObject.GetComponent<Transform>(),);
                             break;
                         }
 
@@ -359,18 +365,7 @@ public abstract class AgentParser : MonoBehaviour {
 
     private void LinkWithBallJoints(Component component)
     {
-        /*
-        if (component.gameObject.GetComponent<BallJoint>() == null)
-        {
-            component.gameObject.AddComponent<BallJoint>();
-        }
-        BallJoint joint = component.gameObject.GetComponent<BallJoint>();
-        //give balljoint script some default values
-        joint.maxVerticalForce = 550;
-        joint.maxHorizontalForce = 550;
-        joint.angleLimit = 175;
-        joint.errorThreshold = 5;
-        */
+        
         if (component.gameObject.GetComponent<ConfigurableJoint>()== null)
         {
             component.gameObject.AddComponent<ConfigurableJoint>();
@@ -398,10 +393,11 @@ public abstract class AgentParser : MonoBehaviour {
         else
         {
             Debug.Log("There seems to be a issue with linking in object " + component.PartName + " Check if you have both link_parent and link_to_grandparent active");
-            Debug.Log("Linking with parents as a default");
+           
             //CheckRigidbody(component.gameObject.transform.parent.gameObject, 0);
             //joint.connected = component.gameObject.transform.parent.GetComponent<Rigidbody>();
         }
+        joint.anchor = new Vector3(0f, 0f, 0f);
     }
 
     private void LinkWithHingeJoints(Component component)
@@ -531,6 +527,7 @@ public abstract class AgentParser : MonoBehaviour {
     }
     public virtual int WheelAction_Indicies(Component component, int number) {
         if ((Action_Indicies && Multipliers) == true) {
+
             component.ActionIndeces.Set(number, -1, -1);
 
             number = number + 1;
