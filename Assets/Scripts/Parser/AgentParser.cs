@@ -19,8 +19,12 @@ public abstract class AgentParser : MonoBehaviour {
     [System.Serializable]
     public class Component
     {
-        [Tooltip("Link this object to its parent when parser is run with Link flag")]
-        public bool Link;
+        [Tooltip("When this is set with link flag, links the object to its grandparent")]
+        public bool Link_to_grandparent;
+        [Tooltip("If you have Link_grandparents active but want to link specific objects to their parents instead")]
+        public Boolean Link_parent;
+       // [Tooltip("Link this object to its parent when parser is run with Link flag")]
+        //public bool Link;
         [Tooltip("Name of the gameobject")]
         public string PartName;
         [Tooltip("Link to the gameobject")]
@@ -43,10 +47,7 @@ public abstract class AgentParser : MonoBehaviour {
         public int[] ActionIndeces;
         [Tooltip("When adding box colliders, instead add a mesh collider")]
         public bool Mesh_collider;
-        [Tooltip("When this is set with link flag, links the object to its grandparent")]
-        public bool Link_to_grandparent;
-        [Tooltip("If you have Link_grandparents active but want to link specific objects to their parents instead")]
-        public Boolean Link_parent;
+        
         
     }
 
@@ -79,8 +80,8 @@ public abstract class AgentParser : MonoBehaviour {
     public Boolean Action_Indicies;
     [Tooltip("Automatically assign dimension multiplier to movable objects")]
     public Boolean Multipliers;
-    [Tooltip("Instead of linking the components with link attribute true to their parents, instead link them to their grand parent")]
-    public Boolean Link_grandparent;
+    //[Tooltip("Instead of linking the components with link attribute true to their parents, instead link them to their grand parent")]
+   // public Boolean Link_grandparent;
 
 
     public AgentParameters agentParameters;
@@ -260,9 +261,7 @@ public abstract class AgentParser : MonoBehaviour {
                                 for (int i = 0; i < component.DimensionMultipliers.Length; i++) {
                                     component.DimensionMultipliers[i] = JointMultiplier;
                                 }
-                                //component.DimensionMultipliers[0] = JointMultiplier;
-                                //component.DimensionMultipliers[1] = JointMultiplier;
-                                //component.DimensionMultipliers[2] = JointMultiplier;
+                               
                             }
                             if (Action_Indicies == true)
                             {
@@ -278,7 +277,7 @@ public abstract class AgentParser : MonoBehaviour {
                 }
 
             }
-            if (component.Link == true && Link == true)
+            if ((component.Link_parent || component.Link_to_grandparent) == true && Link == true)
             {
                 if (component.Type == Component.Type_.Joint) {
                     LinkWithBallJoints(component);
@@ -388,13 +387,13 @@ public abstract class AgentParser : MonoBehaviour {
         
         //Add rigidbody and colliders + connects the object to its parent/grandparent
 
-        if (((Link_grandparent == true && component.Link_parent == false) || component.Link_to_grandparent == true) && component.gameObject.transform.parent.parent.gameObject != this.gameObject)
+        if (((component.Link_to_grandparent == true && component.Link_parent == false) || component.Link_to_grandparent == true) && component.gameObject.transform.parent.parent.gameObject != this.gameObject)
         {
             CheckRigidbody(component.gameObject.transform.parent.parent.gameObject, 0);
             joint.connectedBody = component.gameObject.transform.parent.parent.GetComponent<Rigidbody>();
            // joint.connected = component.gameObject.transform.parent.parent.GetComponent<Rigidbody>();
         }
-        else if ((component.Link_parent == true || Link_grandparent == false)&& component.gameObject.transform.parent.gameObject != this.gameObject)
+        else if ((component.Link_parent == true && component.Link_to_grandparent == false)&& component.gameObject.transform.parent.gameObject != this.gameObject)
         {
             CheckRigidbody(component.gameObject.transform.parent.gameObject, 0);
             joint.connectedBody = component.gameObject.transform.parent.GetComponent<Rigidbody>();
@@ -427,14 +426,14 @@ public abstract class AgentParser : MonoBehaviour {
         
         //Add rigidbody to parent if it doesn't have it
 
-        if (((Link_grandparent == true && component.Link_parent == false) || component.Link_to_grandparent == true) && component.gameObject.transform.parent.parent.gameObject != this.gameObject)
+        if (((component.Link_to_grandparent == true && component.Link_parent == false) || component.Link_to_grandparent == true) && component.gameObject.transform.parent.parent.gameObject != this.gameObject)
         {
 
             CheckRigidbody(component.gameObject.transform.parent.parent.gameObject, 0);
             joint.connectedBody = component.gameObject.transform.parent.parent.GetComponent<Rigidbody>();
             joint.connectedAnchor = component.gameObject.transform.position;
         }
-        else if ((component.Link_parent == true || Link_grandparent == false)&& component.gameObject.transform.parent.gameObject != this.gameObject)
+        else if ((component.Link_parent == true && component.Link_to_grandparent == false)&& component.gameObject.transform.parent.gameObject != this.gameObject)
         {
             CheckRigidbody(component.gameObject.transform.parent.gameObject, 0);
             joint.connectedBody = component.gameObject.transform.parent.GetComponent<Rigidbody>();
@@ -444,11 +443,10 @@ public abstract class AgentParser : MonoBehaviour {
         else
         {
             Debug.Log("There seems to be a issue with linking in object " + component.PartName + " Check if you have both link_parent and link_to_grandparent active");
-            //Debug.Log("Linking with parents as a default");
-           // CheckRigidbody(component.gameObject.transform.parent.gameObject, 0);
-            //joint.connectedBody = component.gameObject.transform.parent.GetComponent<Rigidbody>();
-            //joint.connectedAnchor = component.gameObject.transform.position;
+            
         }
+        //force anchor to be 0 0 0. This makes the wheels connect properly
+        joint.anchor = new Vector3(0f,0f,0f);
         }
 
     private void CheckRigidbody(GameObject component, int collider)
