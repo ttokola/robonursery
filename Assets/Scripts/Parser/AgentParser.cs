@@ -260,7 +260,7 @@ public abstract class AgentParser : MonoBehaviour {
                             }
                             if (Action_Indicies == true)
                             {
-                                JointAction_Indicies(component, number);
+                               number = JointAction_Indicies(component, number);
 
                             }
                             break;
