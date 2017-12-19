@@ -51,12 +51,7 @@ public abstract class AgentParser : MonoBehaviour {
         
     }
 
-    [System.Serializable]
-    public struct AgentParameters
-    {
-        //public GameObject[] InUse;
-
-    }
+    
 
     // Use this for initialization
     private MovementControls motor;
@@ -83,8 +78,7 @@ public abstract class AgentParser : MonoBehaviour {
     //[Tooltip("Instead of linking the components with link attribute true to their parents, instead link them to their grand parent")]
    // public Boolean Link_grandparent;
 
-
-    public AgentParameters agentParameters;
+   
 
     public Dictionary<int, Agent> agents = new Dictionary<int, Agent>();
     /**< \brief Keeps track of the agents which subscribe to this proto. NOT IN USE*/
@@ -92,8 +86,13 @@ public abstract class AgentParser : MonoBehaviour {
     [SerializeField]
     public List<Component> components = new List<Component>();
 
+    public int actsize;
+    //[HideInInspector]
+    protected Vector3 defaultJointAxes = new Vector3(0, 1, 1);
     
 
+    //[HideInInspector]
+    protected Vector3 defaultWheelAxes = new Vector3(0, 1, 1);
 
     void Start()
     {
@@ -104,7 +103,7 @@ public abstract class AgentParser : MonoBehaviour {
                 component.transformsPosition = component.gameObject.transform.position;
                 component.transformsRotation = component.gameObject.transform.rotation;
             }
-            AddIndicies();
+            AddIndeces();
         }
 
     }
@@ -216,7 +215,7 @@ public abstract class AgentParser : MonoBehaviour {
     }
 
     [ContextMenu("Run the flagged operations")]
-    void AddIndicies()
+    void AddIndeces()
     {
 
         motor = this.gameObject.GetComponent<MovementControls>();
@@ -591,6 +590,68 @@ public abstract class AgentParser : MonoBehaviour {
         }
         return number;
 
+    }
+    /*Add default axis multipliers based on the axes that have action_indeces set*/
+    public virtual int AddMultipliers(Component component)
+    {
+        if ((Action_Indicies && Multipliers) == true)
+        {
+            if (component.Type == Component.Type_.Joint)
+            {
+                //component.DimensionMultipliers.y = JointMultiplier;
+                //component.DimensionMultipliers.z = JointMultiplier;
+                component.DimensionMultipliers = WheelMultiplier * defaultJointAxes;
+            }
+            if (component.Type == Component.Type_.Wheel)
+            {
+                //component.DimensionMultipliers.x = WheelMultiplier;
+                component.DimensionMultipliers = WheelMultiplier * defaultWheelAxes;
+            }
+        }
+        else
+        {
+            for (int i = 0; i < 3; i++)
+            {
+                if (component.ActionIndeces[i] >= 0)
+                {
+                    if (component.Type == Component.Type_.Joint)
+                    {
+                        component.DimensionMultipliers[i] = JointMultiplier;
+                    }
+                    if (component.Type == Component.Type_.Wheel)
+                    {
+                        component.DimensionMultipliers[i] = WheelMultiplier;
+                    }
+                    
+                }
+            }
+        }
+
+        return -1;
+    }
+
+    public virtual int AddActionIndeces(Component component)
+    {
+        if (component.Type == Component.Type_.Joint)
+        {
+            if ((Action_Indicies && Multipliers) == true)
+            {
+                
+                Vector3 a_i = Vector3.Scale(defaultJointAxes, new Vector3(1f, 1f, 1f));
+                component.ActionIndeces.Set(actsize, -1, -1);
+
+                actsize += 1;
+            }
+        }
+        for (int i=0; 0<3; i++)
+        {
+            if (component.DimensionMultipliers[i] >= 0)
+            {
+                component.ActionIndeces[i] = actsize;
+                actsize += 1;
+            }
+        }
+        return -1;
     }
 
 }
