@@ -13,39 +13,66 @@ using System.IO;
 
 public abstract class AgentParser : MonoBehaviour {
 
-    
+
 
     [System.Serializable]
     public class Component
     {
-        [Tooltip("When this is set with link flag, links the object to its grandparent")]
-        public bool Link_to_grandparent;
-        [Tooltip("If you have Link_grandparents active but want to link specific objects to their parents instead")]
-        public Boolean Link_parent;
-       // [Tooltip("Link this object to its parent when parser is run with Link flag")]
-        //public bool Link;
+        [HideInInspector]
+        public Vector3 transformsPosition;
+        [HideInInspector]
+        public Quaternion transformsRotation;
+        public enum Type_
+        {
+            AddRelativeTorque,
+            AddTorque
+        }
+        public enum Connection_
+        {
+
+            ConfigurableJoints,
+            HingeJoints
+        }
+        public enum Link_
+        {
+
+            None,
+            ConnectToParent,
+            ConnectToGrandparent
+
+        }
+        public enum Collider_
+        {
+
+            None,
+            BoxCollider,
+            MeshCollider,
+            SphereCollider,
+            CapsuleCollider
+
+        }
+
+        [Tooltip("Set this to be a movable part. ")]
+        public bool Movable;
+        [Tooltip("Sets the motor type of the object. See documentation for details")]
+        public Type_ Motor;
         [Tooltip("Name of the gameobject")]
         public string PartName;
         [Tooltip("Link to the gameobject")]
         public GameObject gameObject;
-        [Tooltip("Set this to be a movable part. ")]
-        public bool Movable;
-
-        public enum Type_
-        {
-            Joint,
-            Wheel
-        }
-        public Vector3 transformsPosition;
-        public Quaternion transformsRotation;
-        [Tooltip("Sets the motor type of the object. See documentation for details")]
-        public Type_ Type;
+        [Tooltip("")]
+        public Link_ ConnectJointTo;
+       
+        [Tooltip("")]
+        public Connection_ JointType;
+        [Tooltip("")]
+        public Collider_ Collider;
+        
         [Tooltip("Add multiplier to X,Y,Z movement.")]
         public Vector3 DimensionMultipliers;
         [Tooltip("Set what action from the AI corresponds to which above movements")]
         public Vector3 ActionIndeces;
-        [Tooltip("When adding box colliders, instead add a mesh collider")]
-        public bool Mesh_collider;
+        
         
         
     }
@@ -186,6 +213,8 @@ public abstract class AgentParser : MonoBehaviour {
                 if (component.PartName.Contains("_movable"))
                 {
                     component.Movable = true;
+                    component.Collider = Component.Collider_.BoxCollider;
+
                 }
                 else {
                     component.Movable = false;
@@ -193,7 +222,7 @@ public abstract class AgentParser : MonoBehaviour {
                 //sets components with name containing wheel and movable variable true to have mesh_colliders value true. 
                 if (component.PartName.Contains("Wheel") && component.Movable == true)
                 {
-                    component.Mesh_collider = true;
+                    component.Collider = Component.Collider_.MeshCollider;
                 }
                  //Set default values to -1    
                 component.ActionIndeces = new Vector3(-1,-1,-1);
@@ -205,17 +234,17 @@ public abstract class AgentParser : MonoBehaviour {
                 //Sets variables to certain values depending on their name
                 if (component.PartName.Contains(motorname1) || component.PartName.Contains("Axle"))
                 {
-                    component.Type = Component.Type_.Wheel;
+                    component.Motor = Component.Type_.AddTorque;
                 }
 
                 if(component.PartName.Contains("Axle") || component.PartName.Contains("Neck") || component.PartName.Contains("Head") || component.PartName.Contains("Tooth") || component.PartName.Contains("Eye") )
                 {
-                    component.Link_parent = true;
+                    component.ConnectJointTo = Component.Link_.ConnectToParent;
                 }
 
                 if (component.PartName.Contains("Arm") || component.PartName.Contains("Wheel_movable"))
                 {
-                    component.Link_to_grandparent = true;
+                    component.ConnectJointTo = Component.Link_.ConnectToGrandparent;
                 }
                 components.Add(component);
             }
@@ -232,17 +261,17 @@ public abstract class AgentParser : MonoBehaviour {
         {
             if (component.Movable == true)
             {
-                if (component.Mesh_collider == true) {
-                    CheckRigidbody(component.gameObject, 1);
+                if (component.Collider != Component.Collider_.None) {
+                    CheckRigidbody(component.gameObject, component.Collider);
                 }
                 else {
-                    CheckRigidbody(component.gameObject, 0);
+                    CheckRigidbody(component.gameObject, component.Collider);
                 }
 
-                switch (component.Type)
+                switch (component.Motor)
                 {
 
-                    case Component.Type_.Wheel:
+                    case Component.Type_.AddTorque:
                         {
                             if (Multipliers == true)
                             {
@@ -257,7 +286,7 @@ public abstract class AgentParser : MonoBehaviour {
                             break;
                         }
 
-                    case Component.Type_.Joint:
+                    case Component.Type_.AddRelativeTorque:
                         {
                             if (Multipliers == true)
                             {
@@ -276,12 +305,12 @@ public abstract class AgentParser : MonoBehaviour {
                 }
 
             }
-            if ((component.Link_parent || component.Link_to_grandparent) == true && Link == true)
+            if ((component.ConnectJointTo != Component.Link_.None) && Link == true)
             {
-                if (component.Type == Component.Type_.Joint) {
+                if (component.JointType == Component.Connection_.ConfigurableJoints) {
                     LinkWithBallJoints(component);
                 }
-                else if (component.Type == Component.Type_.Wheel)
+                else if (component.JointType == Component.Connection_.HingeJoints)
                 {
                     LinkWithHingeJoints(component);
                 }
@@ -303,7 +332,7 @@ public abstract class AgentParser : MonoBehaviour {
             file.WriteLine(JointMultiplier);
 
             foreach (Component component in components) {
-                data = component.PartName + ";" + component.Movable + ";" + component.Type + ";" + component.DimensionMultipliers[0] + ";" + component.DimensionMultipliers[1] + ";" + component.DimensionMultipliers[2] + ";" + component.ActionIndeces[0] + ";" + component.ActionIndeces[1] + ";" + component.ActionIndeces[2] + ";";
+                data = component.PartName + ";" + component.Movable + ";" + component.Motor + ";" + component.DimensionMultipliers[0] + ";" + component.DimensionMultipliers[1] + ";" + component.DimensionMultipliers[2] + ";" + component.ActionIndeces[0] + ";" + component.ActionIndeces[1] + ";" + component.ActionIndeces[2] + ";";
                 file.WriteLine(data);
             }
             file.Flush();
@@ -327,10 +356,10 @@ public abstract class AgentParser : MonoBehaviour {
             if (component.Movable == true)
             {
 
-                switch (component.Type)
+                switch (component.Motor)
                 {
 
-                    case Component.Type_.Wheel: {
+                    case Component.Type_.AddTorque: {
                             for (int i = 0; i < 3; i++)
                             {
                                 if (component.DimensionMultipliers[i] != 0 && component.ActionIndeces[i] >= 0)
@@ -343,7 +372,7 @@ public abstract class AgentParser : MonoBehaviour {
 
                         }
 
-                    case Component.Type_.Joint:
+                    case Component.Type_.AddRelativeTorque:
                         {
                             for (int i = 0; i < 3; i++)
                             {
@@ -378,15 +407,15 @@ public abstract class AgentParser : MonoBehaviour {
         
         //Add rigidbody and colliders + connects the object to its parent/grandparent
 
-        if (((component.Link_to_grandparent == true && component.Link_parent == false) || component.Link_to_grandparent == true) && component.gameObject.transform.parent.parent.gameObject != this.gameObject)
+        if ((component.ConnectJointTo == Component.Link_.ConnectToGrandparent) && component.gameObject.transform.parent.parent.gameObject != this.gameObject)
         {
-            CheckRigidbody(component.gameObject.transform.parent.parent.gameObject, 0);
+            CheckRigidbody(component.gameObject.transform.parent.parent.gameObject, component.Collider);
             joint.connectedBody = component.gameObject.transform.parent.parent.GetComponent<Rigidbody>();
            // joint.connected = component.gameObject.transform.parent.parent.GetComponent<Rigidbody>();
         }
-        else if ((component.Link_parent == true && component.Link_to_grandparent == false)&& component.gameObject.transform.parent.gameObject != this.gameObject)
+        else if ((component.ConnectJointTo == Component.Link_.ConnectToParent) && component.gameObject.transform.parent.gameObject != this.gameObject)
         {
-            CheckRigidbody(component.gameObject.transform.parent.gameObject, 0);
+            CheckRigidbody(component.gameObject.transform.parent.gameObject, component.Collider);
             joint.connectedBody = component.gameObject.transform.parent.GetComponent<Rigidbody>();
             //joint.connected = component.gameObject.transform.parent.GetComponent<Rigidbody>();
         }
@@ -402,14 +431,8 @@ public abstract class AgentParser : MonoBehaviour {
 
     private void LinkWithHingeJoints(Component component)
     {
-        if (component.Mesh_collider == true) {
-
-            CheckRigidbody(component.gameObject, 1);
-        }
-        else
-        {
-            CheckRigidbody(component.gameObject, 0);
-        }
+        CheckRigidbody(component.gameObject, component.Collider);
+        
         if (component.gameObject.GetComponent<HingeJoint>() == null)
         {
             component.gameObject.AddComponent<HingeJoint>();    
@@ -418,16 +441,16 @@ public abstract class AgentParser : MonoBehaviour {
         
         //Add rigidbody to parent if it doesn't have it
 
-        if (((component.Link_to_grandparent == true && component.Link_parent == false) || component.Link_to_grandparent == true) && component.gameObject.transform.parent.parent.gameObject != this.gameObject)
+        if ((component.ConnectJointTo == Component.Link_.ConnectToGrandparent) && component.gameObject.transform.parent.parent.gameObject != this.gameObject)
         {
 
-            CheckRigidbody(component.gameObject.transform.parent.parent.gameObject, 0);
+            CheckRigidbody(component.gameObject.transform.parent.parent.gameObject, component.Collider);
             joint.connectedBody = component.gameObject.transform.parent.parent.GetComponent<Rigidbody>();
             joint.connectedAnchor = component.gameObject.transform.position;
         }
-        else if ((component.Link_parent == true && component.Link_to_grandparent == false)&& component.gameObject.transform.parent.gameObject != this.gameObject)
+        else if ((component.ConnectJointTo == Component.Link_.ConnectToParent) && component.gameObject.transform.parent.gameObject != this.gameObject)
         {
-            CheckRigidbody(component.gameObject.transform.parent.gameObject, 0);
+            CheckRigidbody(component.gameObject.transform.parent.gameObject, component.Collider);
             joint.connectedBody = component.gameObject.transform.parent.GetComponent<Rigidbody>();
             joint.connectedAnchor = component.gameObject.transform.position;
 
@@ -441,41 +464,61 @@ public abstract class AgentParser : MonoBehaviour {
         joint.anchor = new Vector3(0f,0f,0f);
         }
 
-    private void CheckRigidbody(GameObject component, int collider)
+    private void CheckRigidbody(GameObject gameobject, Component.Collider_ collider)
     {
-        if (component.GetComponent<Rigidbody>() == null)
+        if (gameobject.GetComponent<Rigidbody>() == null)
         {
-            component.AddComponent<Rigidbody>();
+            gameobject.AddComponent<Rigidbody>();
         }
         
        
-        if (AddColliders == true && component.GetComponent<BoxCollider>() == null && component.GetComponent<SphereCollider>() == null && component.GetComponent<MeshCollider>() == null)
+        if (AddColliders == true && gameobject.GetComponent<BoxCollider>() == null && gameobject.GetComponent<SphereCollider>() == null && gameobject.GetComponent<MeshCollider>() == null)
         {
-            Debug.Log("AddingCollider to" + component.name);
+            Debug.Log("AddingCollider to" + gameobject.name);
 
-            if (collider == 1)
+            switch (collider)
             {
-                MeshCollider mesh = component.AddComponent<MeshCollider>();
-                mesh.convex = true;
-                //Mesh colliders sometimes don't appear without this. Remove/add when needed 
-                mesh.inflateMesh = true;
-                
-            }
-            else {
-                component.AddComponent<BoxCollider>();
-                //get colliders size from Renderer
-                if (component.GetComponent<Renderer>() != null) {
-                    //component.GetComponent<BoxCollider>().size = component.GetComponent<Renderer>().bounds.size;
+                case Component.Collider_.BoxCollider:
+                    {
+                        gameobject.AddComponent<BoxCollider>();
+                        //get colliders size from Renderer
+                        if (gameobject.GetComponent<Renderer>() != null)
+                        {
+                            //component.GetComponent<BoxCollider>().size = component.GetComponent<Renderer>().bounds.size;
 
-                    Debug.Log(component.name + component.GetComponent<Renderer>().bounds.size);
-                }
-                //set default small values if renderer does not exist. For example in case of bones
-                else
-                {
-                    Vector3 vector = new Vector3(0.5f, 0.5f, 0.5f);
-                    component.GetComponent<BoxCollider>().size = vector;
-                }
+                            Debug.Log(gameobject.name + gameobject.GetComponent<Renderer>().bounds.size);
+                        }
+                        //set default small values if renderer does not exist. For example in case of bones
+                        else
+                        {
+                            Vector3 vector = new Vector3(0.5f, 0.5f, 0.5f);
+                            gameobject.GetComponent<BoxCollider>().size = vector;
+                        }
+                        break;
+                    }
+                case Component.Collider_.MeshCollider:
+                    {
+                        MeshCollider mesh = gameobject.AddComponent<MeshCollider>();
+                        mesh.convex = true;
+                        //Mesh colliders sometimes don't appear without this. Remove/add when needed 
+                        mesh.inflateMesh = true;
+                        break;
+                    }
+                case Component.Collider_.CapsuleCollider:
+                    {
+                         gameobject.AddComponent<CapsuleCollider>();
+                        break;
+                    }
+                case Component.Collider_.SphereCollider:
+                    {
+                        gameobject.AddComponent<SphereCollider>();
+                        break;
+                    }
+
+
             }
+
+           
         }
     } 
 
