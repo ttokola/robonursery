@@ -636,13 +636,13 @@ public abstract class AgentParser : MonoBehaviour {
     {
         if ((Action_Indicies && Multipliers) == true)
         {
-            if (component.Type == Component.Type_.Joint)
+            if (component.Motor == Component.Type_.AddRelativeTorque)
             {
                 //component.DimensionMultipliers.y = JointMultiplier;
                 //component.DimensionMultipliers.z = JointMultiplier;
                 component.DimensionMultipliers = WheelMultiplier * defaultJointAxes;
             }
-            if (component.Type == Component.Type_.Wheel)
+            if (component.Motor == Component.Type_.AddTorque)
             {
                 //component.DimensionMultipliers.x = WheelMultiplier;
                 component.DimensionMultipliers = WheelMultiplier * defaultWheelAxes;
@@ -654,11 +654,11 @@ public abstract class AgentParser : MonoBehaviour {
             {
                 if (component.ActionIndeces[i] >= 0)
                 {
-                    if (component.Type == Component.Type_.Joint)
+                    if (component.Motor == Component.Type_.AddRelativeTorque)
                     {
                         component.DimensionMultipliers[i] = JointMultiplier;
                     }
-                    if (component.Type == Component.Type_.Wheel)
+                    if (component.Motor == Component.Type_.AddTorque)
                     {
                         component.DimensionMultipliers[i] = WheelMultiplier;
                     }
@@ -672,7 +672,7 @@ public abstract class AgentParser : MonoBehaviour {
 
     public virtual int AddActionIndeces(Component component)
     {
-        if (component.Type == Component.Type_.Joint)
+        if (component.Motor == Component.Type_.AddRelativeTorque)
         {
             if ((Action_Indicies && Multipliers) == true)
             {
