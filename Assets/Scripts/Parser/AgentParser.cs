@@ -12,6 +12,18 @@ using UnityEditor;
 using System.IO;
 
 public abstract class AgentParser : MonoBehaviour {
+    //Set default values for the Components variables.Change these if you want the initialize parser function to give different default values
+    //If you want to set certain values to different components based on their name or some other factor see function AutomateConfig() at the bottom 
+    private bool DefaultMovable=false;
+    private Component.Type_ DefaultMotor = Component.Type_.AddRelativeTorque;
+    private Component.Link_ DefaultConnectJointTo= Component.Link_.ConnectToGrandparent;
+    private Component.Connection_ DefaultJointType= Component.Connection_.ConfigurableJoints;
+    private Component.Collider_ DefaultCollider= Component.Collider_.BoxCollider;
+    private Vector3 DefaultDimensionMultiplers = new Vector3(0, 0, 0);
+    //Note that if you set this vectors default values to be >=0 it might cause unintended interactions with the agent.
+    private Vector3 DefaultActionIndicies = new Vector3(-1, -1, -1);
+
+        
 
 
 
@@ -175,7 +187,7 @@ public abstract class AgentParser : MonoBehaviour {
         //id = gameObject.GetInstanceID();
 
     }
-    //This is called by the Academy at the start of the environment
+   
     [ContextMenu("Initialize AgentProto")]
     void InitializeParser()
     {
@@ -194,57 +206,26 @@ public abstract class AgentParser : MonoBehaviour {
         {
             if (child != allChildren[0])
             {
-                //Here we set the default values for all the components variables.
-                ////////
-                ///If you want to set default values to certain variables based on their name make if statements here which sets the value.
-                ///This can be a handly way to speed up the process of deploying new robots. GameObjects name can be obtained from PartName.Contains(string name) see below for example.
-                ///////See below for examples 
+                
                 var component = new Component();
                 
                 component.PartName = child.name;
                 component.gameObject = child.gameObject;
                 component.transformsPosition = child.position;
                 component.transformsRotation = child.rotation;
-                ///
-                //// Set default values for variables here. 
-                ///
-                //if components name contains string "_movable" set objects movable variable to true
-                if (component.PartName.Contains("_movable"))
-                {
-                    component.Movable = true;
-                    component.Collider = Component.Collider_.BoxCollider;
+                //set default values set them at the beginning   
+                component.Movable= DefaultMovable;
+                component.Motor = DefaultMotor;
+                component.ConnectJointTo = DefaultConnectJointTo;
+                component.JointType = DefaultJointType;
+                component.Collider = DefaultCollider;
+                component.DimensionMultipliers = DefaultDimensionMultiplers;
+                component.ActionIndeces = DefaultActionIndicies;
 
-                }
-                else {
-                    component.Movable = false;
-                }
-                //sets components with name containing wheel and movable variable true to have mesh_colliders value true. 
-                if (component.PartName.Contains("Wheel") && component.Movable == true)
-                {
-                    component.Collider = Component.Collider_.MeshCollider;
-                }
-                 //Set default values to -1    
-                component.ActionIndeces = new Vector3(-1,-1,-1);
-                
-                //set default values to 0
-                component.DimensionMultipliers = new Vector3(0, 0, 0); 
-               
 
-                //Sets variables to certain values depending on their name
-                if (component.PartName.Contains(motorname1) || component.PartName.Contains("Axle"))
-                {
-                    component.Motor = Component.Type_.AddTorque;
-                }
+                component =AutomateConfig(component);
 
-                if(component.PartName.Contains("Axle") || component.PartName.Contains("Neck") || component.PartName.Contains("Head") || component.PartName.Contains("Tooth") || component.PartName.Contains("Eye") )
-                {
-                    component.ConnectJointTo = Component.Link_.ConnectToParent;
-                }
 
-                if (component.PartName.Contains("Arm") || component.PartName.Contains("Wheel_movable"))
-                {
-                    component.ConnectJointTo = Component.Link_.ConnectToGrandparent;
-                }
                 components.Add(component);
             }
         }
@@ -417,10 +398,8 @@ public abstract class AgentParser : MonoBehaviour {
         }
         else
         {
-            Debug.Log("There seems to be a issue with linking in object " + component.PartName + " Check if you have both link_parent and link_to_grandparent active");
+            Debug.Log("There seems to be a issue with linking in object " + component.PartName);
            
-            //CheckRigidbody(component.gameObject.transform.parent.gameObject, 0);
-            //joint.connected = component.gameObject.transform.parent.GetComponent<Rigidbody>();
         }
         joint.anchor = new Vector3(0f, 0f, 0f);
     }
@@ -439,7 +418,7 @@ public abstract class AgentParser : MonoBehaviour {
 
         if ((component.ConnectJointTo == Component.Link_.ConnectToGrandparent) && component.gameObject.transform.parent.parent.gameObject != this.gameObject)
         {
-
+                
             CheckRigidbody(component.gameObject.transform.parent.parent.gameObject, GetComponentByName(component.gameObject.transform.parent.parent.gameObject.name).Collider);
             joint.connectedBody = component.gameObject.transform.parent.parent.GetComponent<Rigidbody>();
             joint.connectedAnchor = component.gameObject.transform.position;
@@ -628,6 +607,57 @@ public abstract class AgentParser : MonoBehaviour {
         return number;
 
     }
+
+    public virtual Component AutomateConfig(Component component)
+    {
+        /*
+        //Here we set the default values for all the components variables.
+                ////////
+                ///If you want to set default values to certain variables based on their name make if statements here which sets the value.
+                ///This can be a handly way to speed up the process of deploying new robots. GameObjects name can be obtained from PartName.Contains(string name) see below for example.
+                ///////See below for examples 
+        if (component.PartName.Contains("_movable"))
+        {
+            component.Movable = true;
+            component.Collider = Component.Collider_.BoxCollider;
+
+        }
+
+        //sets components with name containing wheel and movable variable true to have mesh_colliders value true. 
+        if (component.PartName.Contains("Wheel") && component.Movable == true)
+        {
+            component.Collider = Component.Collider_.MeshCollider;
+        }
+
+
+        //set default values to 0
+        component.DimensionMultipliers = new Vector3(0, 0, 0);
+
+
+        //Sets variables to certain values depending on their name
+        if (component.PartName.Contains(motorname1) || component.PartName.Contains("Axle"))
+        {
+            component.Motor = Component.Type_.AddTorque;
+        }
+
+        if (component.PartName.Contains("Axle") || component.PartName.Contains("Neck") || component.PartName.Contains("Head") || component.PartName.Contains("Tooth") || component.PartName.Contains("Eye"))
+        {
+            component.ConnectJointTo = Component.Link_.ConnectToParent;
+        }
+
+        if (component.PartName.Contains("Arm") || component.PartName.Contains("Wheel_movable"))
+        {
+            component.ConnectJointTo = Component.Link_.ConnectToGrandparent;
+        }*/
+         
+    //Set default values to components variables
+  
+
+        return component;
+    }
+
+
+    
     /*Add default axis multipliers based on the axes that have action_indeces set*/
     /*
     public virtual int AddMultipliers(Component component)
