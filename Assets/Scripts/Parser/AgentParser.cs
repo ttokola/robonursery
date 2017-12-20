@@ -100,10 +100,11 @@ public abstract class AgentParser : MonoBehaviour {
     public Boolean AutoSetActionIndicies;
     [Tooltip("Automatically assign dimension multiplier to movable objects")]
     public Boolean AutoSetDimensionMultipliers;
+    public int actsize;
     //[Tooltip("Instead of linking the components with link attribute true to their parents, instead link them to their grand parent")]
-   // public Boolean Link_grandparent;
+    // public Boolean Link_grandparent;
 
-   
+
 
     public Dictionary<int, Agent> agents = new Dictionary<int, Agent>();
     /**< \brief Keeps track of the agents which subscribe to this proto. NOT IN USE*/
@@ -111,7 +112,7 @@ public abstract class AgentParser : MonoBehaviour {
     [SerializeField]
     public List<Component> components = new List<Component>();
 
-    public int actsize;
+    
     [HideInInspector]
     protected Vector3 defaultJointAxes = new Vector3(0, 1, 1);
     
@@ -310,6 +311,7 @@ public abstract class AgentParser : MonoBehaviour {
                 }
             }
         }
+        actsize = number;
     }
     [ContextMenu("Export config file")]
     public void ExportConfig()
