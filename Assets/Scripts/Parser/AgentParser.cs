@@ -112,11 +112,11 @@ public abstract class AgentParser : MonoBehaviour {
     public List<Component> components = new List<Component>();
 
     public int actsize;
-    //[HideInInspector]
+    [HideInInspector]
     protected Vector3 defaultJointAxes = new Vector3(0, 1, 1);
     
 
-    //[HideInInspector]
+    [HideInInspector]
     protected Vector3 defaultWheelAxes = new Vector3(0, 1, 1);
 
     void Start()
@@ -627,6 +627,7 @@ public abstract class AgentParser : MonoBehaviour {
 
     }
     /*Add default axis multipliers based on the axes that have action_indeces set*/
+    /*
     public virtual int AddMultipliers(Component component)
     {
         if ((Action_Indicies && Multipliers) == true)
@@ -688,5 +689,5 @@ public abstract class AgentParser : MonoBehaviour {
         }
         return -1;
     }
-
+    */
 }
