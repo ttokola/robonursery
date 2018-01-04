@@ -447,7 +447,7 @@ public abstract class AgentParser : MonoBehaviour {
         }
         
        
-        if (AddColliders == true && gameobject.GetComponent<BoxCollider>() == null && gameobject.GetComponent<SphereCollider>() == null && gameobject.GetComponent<MeshCollider>() == null)
+        if (AddColliders == true && gameobject.GetComponent<BoxCollider>() == null && gameobject.GetComponent<SphereCollider>() == null && gameobject.GetComponent<MeshCollider>() == null && gameobject.GetComponent<CapsuleCollider>() == null)
         {
             Debug.Log("AddingCollider to" + gameobject.name);
 
