@@ -14,6 +14,12 @@ public class AgentProto : AgentParser {
         //See below for examples 
 
         component.ConnectJointTo = Component.Link_.None;
+        if (component.PartName.Contains("Body"))
+        {
+            component.gameObject.AddComponent<Rigidbody>();
+            component.gameObject.GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezeRotationZ;
+
+        }
 
         if (component.PartName.Contains("_movable"))
         {
