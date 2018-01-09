@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class config : AgentParser {
 
-	public override Component AutomateConfig(Component component)
+	public override Component InitializationSettings(Component component)
     {
         component.ConnectJointTo = Component.Link_.None;
         if (component.PartName.Contains("Body"))
