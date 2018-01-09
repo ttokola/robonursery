@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class AgentProto : AgentParser {
 
+
     override public Component InitializationSettings(Component component)
     {
 
@@ -101,4 +102,5 @@ public class AgentProto : AgentParser {
         //Mesh colliders sometimes don't appear without this. Remove/add when needed 
         mesh.inflateMesh = true;
     }
+
 }
