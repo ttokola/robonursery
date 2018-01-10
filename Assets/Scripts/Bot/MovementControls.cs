@@ -225,7 +225,7 @@ public class MovementControls : MonoBehaviour
 
         }
 
-        public void Wheel(Rigidbody rb, Transform tf, float force,int axel)
+        public void AddTorque(Rigidbody rb, Transform tf, float force,int axel)
         {
             switch (axel)
             {
@@ -244,6 +244,7 @@ public class MovementControls : MonoBehaviour
 
             }
         }
+       
 
         
 

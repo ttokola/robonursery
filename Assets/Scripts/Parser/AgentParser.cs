@@ -128,7 +128,7 @@ public abstract class AgentParser : MonoBehaviour {
     
 
     [HideInInspector]
-    protected Vector3 defaultWheelAxes = new Vector3(1, 0, 0);
+    protected Vector3 defaultAddTorqueAxes = new Vector3(1, 0, 0);
 
     void Start()
     {
@@ -249,12 +249,12 @@ public abstract class AgentParser : MonoBehaviour {
                         {
                             if (AutoSetDimensionMultipliers == true)
                             {
-                                WheelMultipliers(component);
+                                AddTorqueMultipliers(component);
                                 
                             }
                             if (AutoSetActionIndices == true)
                             {
-                                number = WheelAction_Indices(component,number);
+                                number = AddTorqueAction_Indices(component,number);
                                 
                             }
                             break;
@@ -341,7 +341,7 @@ public abstract class AgentParser : MonoBehaviour {
                             {
                                 if (component.DimensionMultipliers[i] != 0 && component.ActionIndeces[i] >= 0)
                                 {
-                                    motor.Wheel(component.gameObject.GetComponent<Rigidbody>(), component.gameObject.GetComponent<Transform>(), act[(int)component.ActionIndeces[i]] * component.DimensionMultipliers[i], i);
+                                    motor.AddTorque(component.gameObject.GetComponent<Rigidbody>(), component.gameObject.GetComponent<Transform>(), act[(int)component.ActionIndeces[i]] * component.DimensionMultipliers[i], i);
 
                                 }
                             }
@@ -457,7 +457,7 @@ public abstract class AgentParser : MonoBehaviour {
             
         }
         HingeJointSettings(component, joint);
-        //force anchor to be 0 0 0. This makes the wheels connect properly
+        //force anchor to be 0 0 0. This makes the AddTorques connect properly
         
         }
 
@@ -558,28 +558,125 @@ public abstract class AgentParser : MonoBehaviour {
     }
 
     //Virtual functions
-    public virtual void WheelMultipliers(Component component)
+    //Modify these in here or in AgentProto.
+ 
+// With this function you can set specific values to your components during initialization.
+//If you want to modify the default values given to all variables see the top of AgentParser class for default variables
+    public virtual Component InitializationSettings(Component component)
     {
-        if ((AutoSetActionIndices && AutoSetDimensionMultipliers) == true) {
+        /*
+        if (component.PartName.Contains("_movable"))
+        {
+            component.Movable = true;
+            component.Collider = Component.Collider_.BoxCollider;
+
+        }
+
+        //sets components with name containing AddTorque and movable variable true to have mesh_colliders value true. 
+        if (component.PartName.Contains("AddTorque") && component.Movable == true)
+        {
+            component.Collider = Component.Collider_.MeshCollider;
+        }
+
+
+        //set default values to 0
+        component.DimensionMultipliers = new Vector3(0, 0, 0);
+
+
+        //Sets variables to certain values depending on their name
+        if (component.PartName.Contains(motorname1) || component.PartName.Contains("Axle"))
+        {
+            component.Motor = Component.Type_.AddTorque;
+        }
+
+        if (component.PartName.Contains("Axle") || component.PartName.Contains("Neck") || component.PartName.Contains("Head") || component.PartName.Contains("Tooth") || component.PartName.Contains("Eye"))
+        {
+            component.ConnectJointTo = Component.Link_.ConnectToParent;
+        }
+
+        if (component.PartName.Contains("Arm") || component.PartName.Contains("AddTorque_movable"))
+        {
+            component.ConnectJointTo = Component.Link_.ConnectToGrandparent;
+        }*/
+         
+    //Set default values to components variables
+  
+
+        return component;
+    }
+
+    
+    //With this you can modify the parameters given to all Configurablejoints in your system
+    public virtual void ConfigurableJointSettings(Component component, ConfigurableJoint joint)
+    {
+        //joint.xMotion = joint.yMotion = joint.zMotion = ConfigurableJointMotion.Locked;
+        //joint.angularXMotion = ConfigurableJointMotion.Locked;
+        //joint.anchor = new Vector3(0f, 0f, 0f);
+    }
+    //With this you can modify the parameters given to all Hingejoints in your system
+    public virtual void HingeJointSettings(Component component, HingeJoint joint)
+    {
+        //joint.anchor = new Vector3(0f, 0f, 0f);
+    }
+
+    //modify RigidBody settings
+    public virtual void RigidbodySettings(GameObject gameobject)
+    {
+        //if (gameObject.name == "Body")
+        //{
+          //  gameObject.GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezeRotationZ;
+       // }
+    }
+    //Below settings for all of the colliders
+
+    public virtual void BoxColliderSettings(GameObject gameobject)
+    {
+
+    }
+    public virtual void MeshColliderSettings(GameObject gameobject)
+    {
+        //mesh = gameobject.GetComponent<MeshCollider>();
+        //mesh.convex = true;
+        //Mesh colliders sometimes don't appear without this. Remove/add when needed 
+        //mesh.inflateMesh = true;
+    }
+    public virtual void SphereColliderSettings(GameObject gameobject)
+    {
+        
+    }
+    public virtual void CapsuleColliderSettings(GameObject gameobject)
+    {
+
+    }
+
+    //Multipliers
+
+    public virtual void AddTorqueMultipliers(Component component)
+    {
+        if ((AutoSetActionIndices && AutoSetDimensionMultipliers) == true)
+        {
             // component.DimensionMultipliers.x = AddTorqueMultiplier;
-            component.DimensionMultipliers = defaultWheelAxes*AddTorqueMultiplier;
-            }
+            component.DimensionMultipliers = defaultAddTorqueAxes * AddTorqueMultiplier;
+        }
         else
         {
             for (int i = 0; i < 3; i++)
             {
-                if(component.ActionIndeces[i] >= 0){
-                    component.DimensionMultipliers[i] = AddTorqueMultiplier; 
-            }
+                if (component.ActionIndeces[i] >= 0)
+                {
+                    component.DimensionMultipliers[i] = AddTorqueMultiplier;
+                }
             }
         }
     }
-    public virtual int WheelAction_Indices(Component component, int number) {
-        if ((AutoSetActionIndices && AutoSetDimensionMultipliers) == true) {
+    public virtual int AddTorqueAction_Indices(Component component, int number)
+    {
+        if ((AutoSetActionIndices && AutoSetDimensionMultipliers) == true)
+        {
 
-            for(int i = 0; i < 3; i++)
+            for (int i = 0; i < 3; i++)
             {
-                if (defaultWheelAxes[i] != 0)
+                if (defaultAddTorqueAxes[i] != 0)
                 {
                     component.ActionIndeces[i] = number;
                     number = number + 1;
@@ -589,7 +686,8 @@ public abstract class AgentParser : MonoBehaviour {
 
             //number = number + 1;
         }
-        else {
+        else
+        {
             for (int i = 0; i < 3; i++)
             {
                 if (component.DimensionMultipliers[i] > 0)
@@ -599,11 +697,11 @@ public abstract class AgentParser : MonoBehaviour {
                 }
 
             }
-            }
+        }
         return number;
     }
 
-     public virtual void JointMultipliers(Component component)
+    public virtual void JointMultipliers(Component component)
     {
         if ((AutoSetActionIndices && AutoSetDimensionMultipliers) == true)
         {
@@ -654,95 +752,6 @@ public abstract class AgentParser : MonoBehaviour {
             }
         }
         return number;
-
-    }
-
-    public virtual Component InitializationSettings(Component component)
-    {
-        /*
-        //Here we set the default values for all the components variables.
-                ////////
-                ///If you want to set default values to certain variables based on their name make if statements here which sets the value.
-                ///This can be a handly way to speed up the process of deploying new robots. GameObjects name can be obtained from PartName.Contains(string name) see below for example.
-                ///////See below for examples 
-        if (component.PartName.Contains("_movable"))
-        {
-            component.Movable = true;
-            component.Collider = Component.Collider_.BoxCollider;
-
-        }
-
-        //sets components with name containing wheel and movable variable true to have mesh_colliders value true. 
-        if (component.PartName.Contains("Wheel") && component.Movable == true)
-        {
-            component.Collider = Component.Collider_.MeshCollider;
-        }
-
-
-        //set default values to 0
-        component.DimensionMultipliers = new Vector3(0, 0, 0);
-
-
-        //Sets variables to certain values depending on their name
-        if (component.PartName.Contains(motorname1) || component.PartName.Contains("Axle"))
-        {
-            component.Motor = Component.Type_.AddTorque;
-        }
-
-        if (component.PartName.Contains("Axle") || component.PartName.Contains("Neck") || component.PartName.Contains("Head") || component.PartName.Contains("Tooth") || component.PartName.Contains("Eye"))
-        {
-            component.ConnectJointTo = Component.Link_.ConnectToParent;
-        }
-
-        if (component.PartName.Contains("Arm") || component.PartName.Contains("Wheel_movable"))
-        {
-            component.ConnectJointTo = Component.Link_.ConnectToGrandparent;
-        }*/
-         
-    //Set default values to components variables
-  
-
-        return component;
-    }
-
-    
-
-    public virtual void ConfigurableJointSettings(Component component, ConfigurableJoint joint)
-    {
-        //joint.xMotion = joint.yMotion = joint.zMotion = ConfigurableJointMotion.Locked;
-        //joint.angularXMotion = ConfigurableJointMotion.Locked;
-        //joint.anchor = new Vector3(0f, 0f, 0f);
-    }
-
-    public virtual void HingeJointSettings(Component component, HingeJoint joint)
-    {
-        //joint.anchor = new Vector3(0f, 0f, 0f);
-    }
-
-    public virtual void RigidbodySettings(GameObject gameobject)
-    {
-        //if (gameObject.name == "Body")
-        //{
-          //  gameObject.GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezeRotationZ;
-       // }
-    }
-    public virtual void BoxColliderSettings(GameObject gameobject)
-    {
-
-    }
-    public virtual void MeshColliderSettings(GameObject gameobject)
-    {
-        //mesh = gameobject.GetComponent<MeshCollider>();
-        //mesh.convex = true;
-        //Mesh colliders sometimes don't appear without this. Remove/add when needed 
-        //mesh.inflateMesh = true;
-    }
-    public virtual void SphereColliderSettings(GameObject gameobject)
-    {
-        
-    }
-    public virtual void CapsuleColliderSettings(GameObject gameobject)
-    {
 
     }
 }

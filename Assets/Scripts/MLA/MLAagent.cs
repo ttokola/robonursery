@@ -13,15 +13,18 @@ public class MLAagent : Agent
     private void Start()
     {
         proto = this.gameObject.GetComponent<AgentProto>();
-        b = proto.GetComponentByName("Body").gameObject;
-        body = b.GetComponent<Rigidbody>();
         //head = proto.GetComponentByName("Head").gameObject;
         //rb = GetComponent<Rigidbody>();
+        //get the first component in the components list.
+        b = proto.GetComponents()[0].gameObject;
 
 
     }
     public override List<float> CollectState()
     {
+       
+      //  b = proto.GetComponentByName("Body").gameObject;
+        body = b.GetComponent<Rigidbody>();
         List<float> state = new List<float>();
         state.Add(b.transform.position.x);
         state.Add(b.transform.position.z);

@@ -3,16 +3,11 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class AgentProto : AgentParser {
-
+    //Write your override functions here.
+    //With them you can automate building you robot. See below for an examples
 
     override public Component InitializationSettings(Component component)
     {
-
-        //Here we set the default values for all the components variables.
-        ////////
-        ///If you want to set default values to certain variables based on their name make if statements here which sets the value.
-        ///This can be a handly way to speed up the process of deploying new robots. GameObjects name can be obtained from PartName.Contains(string name) see below for example.
-        ///////See below for examples 
         //Movable
         if (component.PartName == "LWheel" || component.PartName.Contains("Arm") || component.PartName == "RWheel" || component.PartName == "Head")
         {
@@ -33,12 +28,7 @@ public class AgentProto : AgentParser {
             component.Collider = Component.Collider_.BoxCollider;
         }
 
-        //AddTorqueMotor
-        if (component.PartName.Contains("Wheel"))
-        {
-            component.Motor = Component.Type_.AddTorque;
-
-        }
+        
         //Connect to parent
         if (component.PartName.Contains("Axle") || component.PartName.Contains("Head") || component.PartName == "Neck")
         {
@@ -87,6 +77,7 @@ public class AgentProto : AgentParser {
 
         if (gameobject.name == "Body")
         {    
+            //This locks the robot in to a standing position. Remove these and the robot behaves more naturally 
             gameobject.GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezeRotationZ; 
         }
     }
