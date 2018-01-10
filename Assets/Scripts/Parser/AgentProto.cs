@@ -32,19 +32,19 @@ public class AgentProto : AgentParser {
         //Connect to parent
         if (component.PartName.Contains("Axle") || component.PartName.Contains("Head") || component.PartName == "Neck")
         {
-            component.ConnectJointTo = Component.Link_.ConnectToParent;
+            component.ConnectJointTo = Component.ConnectJointTo_.ConnectToParent;
 
         }
         //Connect to grandParent
         if (component.PartName.Contains("Arm") || component.PartName == "RWheel" || component.PartName == "LWheel")
         {
-            component.ConnectJointTo = Component.Link_.ConnectToGrandparent;
+            component.ConnectJointTo = Component.ConnectJointTo_.ConnectToGrandparent;
         }
 
         //hingeJoints
         if (component.PartName.Contains("Axle") || component.PartName == "LWheel" || component.PartName == "RWheel")
         {
-            component.JointType = Component.Connection_.HingeJoints;
+            component.JointType = Component.JointType_.HingeJoints;
         }
 
 

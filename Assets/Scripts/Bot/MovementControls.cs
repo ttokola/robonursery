@@ -201,8 +201,8 @@ public class MovementControls : MonoBehaviour
 	{
 		return DriveTo(target, false);
 	}
-        //api2017 
-        //Motor controls
+        
+        //Motor controls used by AgentParsers MoveMovableParts() function.
        
     public void Joint(Rigidbody rb, Transform tf, float force, int axel)
         {

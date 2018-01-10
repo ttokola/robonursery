@@ -13,15 +13,15 @@ using System.IO;
 
 public abstract class AgentParser : MonoBehaviour {
     //Set default values for the Components variables.Change these if you want the initialize parser function to give different default values
-    //If you want to set certain values to different components based on their name or some other factor see function InitializationSettings() at the bottom 
-    private bool DefaultMovable=false;
-    private Component.Type_ DefaultMotor = Component.Type_.AddRelativeTorque;
-    private Component.Link_ DefaultConnectJointTo= Component.Link_.None;
-    private Component.Connection_ DefaultJointType= Component.Connection_.ConfigurableJoints;
-    private Component.Collider_ DefaultCollider= Component.Collider_.None;
-    private Vector3 DefaultDimensionMultiplers = new Vector3(0, 0, 0);
+    //If you want to set certain values to different components based on their name or some other factor ovveride InitializationSettings() function at the AgentProto.cs 
+    private bool defaultMovable=false;
+    private Component.Type_ defaultMotor = Component.Type_.AddRelativeTorque;
+    private Component.ConnectJointTo_ defaultConnectJointTo= Component.ConnectJointTo_.None;
+    private Component.JointType_ defaultJointType= Component.JointType_.ConfigurableJoints;
+    private Component.Collider_ defaultCollider= Component.Collider_.None;
+    private Vector3 defaultDimensionMultiplers = new Vector3(0, 0, 0);
     //Note that if you set this vectors default values to be >=0 it might cause unintended interactions with the agent.
-    private Vector3 DefaultActionIndices = new Vector3(-1, -1, -1);
+    private Vector3 defaultActionIndices = new Vector3(-1, -1, -1);
 
         
 
@@ -41,13 +41,13 @@ public abstract class AgentParser : MonoBehaviour {
             AddRelativeTorque,
             AddTorque
         }
-        public enum Connection_
+        public enum JointType_
         {
 
             ConfigurableJoints,
             HingeJoints
         }
-        public enum Link_
+        public enum ConnectJointTo_
         {
 
             None,
@@ -65,7 +65,8 @@ public abstract class AgentParser : MonoBehaviour {
             CapsuleCollider
 
         }
-        //Variables visible at the inspector UI
+
+        //Component variables visible at the inspector UI
         [Tooltip("Name of the gameobject")]
         public string PartName;
         [Tooltip("Link to the gameobject")]
@@ -75,10 +76,10 @@ public abstract class AgentParser : MonoBehaviour {
         [Tooltip("If the part is movable it uses this type of motor to move")]
         public Type_ Motor;
         [Tooltip("Set where you want to connect this object. This only matters if you run the script with Link flag")]
-        public Link_ ConnectJointTo;
+        public ConnectJointTo_ ConnectJointTo;
         [Tooltip("If you connect this object to something it is done with this type of joint")]
-        public Connection_ JointType;
-        [Tooltip("Set what type of collider you want to add to the object. Only matter when you run the script with AddColliders flag")]
+        public JointType_ JointType;
+        [Tooltip("Set what type of collider you want to add to the object.")]
         public Collider_ Collider;
         [Tooltip("Add multiplier to X,Y,Z movement.")]
         public Vector3 DimensionMultipliers;
@@ -89,10 +90,8 @@ public abstract class AgentParser : MonoBehaviour {
         
     }
 
-    
-
-    // Use this for initialization
     private MovementControls motor;
+    //Parser variables
     [Tooltip("When script export config is run from context menu it creates a text file with this name")]
     public string ConfigName = "Config";
     [Tooltip("When dimension multiplier flag active, add this value to object with AddTorque motor ")]
@@ -105,9 +104,9 @@ public abstract class AgentParser : MonoBehaviour {
     public Boolean Run;
     [Tooltip("Adds colliders to checked objects")]
     public Boolean AddColliders;
-    [Tooltip("Links compponents which link attribute is true to their parent")]
+    [Tooltip("Links components to their desired target")]
     public Boolean Link;
-    [Tooltip("Automatically assigns autoIndices to movable objects")]
+    [Tooltip("Automatically assigns action indices to movable objects")]
     public Boolean AutoSetActionIndices;
     [Tooltip("Automatically assign dimension multiplier to movable objects")]
     public Boolean AutoSetDimensionMultipliers;
@@ -130,6 +129,7 @@ public abstract class AgentParser : MonoBehaviour {
     [HideInInspector]
     protected Vector3 defaultAddTorqueAxes = new Vector3(1, 0, 0);
 
+    //This is executed when Unity is in play mode
     void Start()
     {
 
@@ -182,14 +182,14 @@ public abstract class AgentParser : MonoBehaviour {
     }
     void OnEnable()
     {
-        //id = gameObject.GetInstanceID();
 
     }
    
+    //Initialization. Parses through all the children of the gameobject and sets default values to their corresponding component 
     [ContextMenu("Initialize AgentProto")]
     void InitializeParser()
     {
-        //
+        //Add MovementControls script to this gameobject if it does not exist
         if (this.gameObject.GetComponent<MovementControls>() == null)
         {
             this.gameObject.AddComponent<MovementControls>();
@@ -211,16 +211,17 @@ public abstract class AgentParser : MonoBehaviour {
                 component.gameObject = child.gameObject;
                 component.transformsPosition = child.position;
                 component.transformsRotation = child.rotation;
-                //set default values set them at the beginning   
-                component.Movable= DefaultMovable;
-                component.Motor = DefaultMotor;
-                component.ConnectJointTo = DefaultConnectJointTo;
-                component.JointType = DefaultJointType;
-                component.Collider = DefaultCollider;
-                component.DimensionMultipliers = DefaultDimensionMultiplers;
-                component.ActionIndeces = DefaultActionIndices;
+                //set default values. Assign them at the beginning   
+                component.Movable= defaultMovable;
+                component.Motor = defaultMotor;
+                component.ConnectJointTo = defaultConnectJointTo;
+                component.JointType = defaultJointType;
+                component.Collider = defaultCollider;
+                component.DimensionMultipliers = defaultDimensionMultiplers;
+                component.ActionIndeces = defaultActionIndices;
 
-
+                //Calls virtual function InitializationSettings. 
+                //Modify this function in AgentProto if you want to Initialize certain components with different values
                 component =InitializationSettings(component);
 
 
@@ -228,18 +229,16 @@ public abstract class AgentParser : MonoBehaviour {
             }
         }
     }
-
+ //Parses through all the components and does the flagged operations.
     [ContextMenu("Run the flagged operations")]
     void AddIndeces()
     {
-
         motor = this.gameObject.GetComponent<MovementControls>();
         int number = 0;
         foreach (Component component in GetComponents())
         {
             if (component.Movable == true)
             {
-                
                     CheckRigidbody(component.gameObject, component.Collider);
 
                 switch (component.Motor)
@@ -279,12 +278,12 @@ public abstract class AgentParser : MonoBehaviour {
                 }
 
             }
-            if ((component.ConnectJointTo != Component.Link_.None) && Link == true)
+            if ((component.ConnectJointTo != Component.ConnectJointTo_.None) && Link == true)
             {
-                if (component.JointType == Component.Connection_.ConfigurableJoints) {
+                if (component.JointType == Component.JointType_.ConfigurableJoints) {
                     LinkWithBallJoints(component);
                 }
-                else if (component.JointType == Component.Connection_.HingeJoints)
+                else if (component.JointType == Component.JointType_.HingeJoints)
                 {
                     LinkWithHingeJoints(component);
                 }
@@ -319,8 +318,7 @@ public abstract class AgentParser : MonoBehaviour {
 
     }
 
-
-    //Moves all movable parts
+    //Parses through all the components and moves the ones that are marked movable
     public void MoveMovableParts(float[] act)
     {
         if (this.gameObject.GetComponent<MovementControls>() == null)
@@ -370,31 +368,24 @@ public abstract class AgentParser : MonoBehaviour {
     }
 
     private void LinkWithBallJoints(Component component)
-    {
-        
+    {        
         if (component.gameObject.GetComponent<ConfigurableJoint>()== null)
         {
             component.gameObject.AddComponent<ConfigurableJoint>();
         }
-        ConfigurableJoint joint = component.gameObject.GetComponent<ConfigurableJoint>();
-        
-        
-
-        
+        ConfigurableJoint joint = component.gameObject.GetComponent<ConfigurableJoint>();        
         //Add rigidbody and colliders + connects the object to its parent/grandparent
-
-        if ((component.ConnectJointTo == Component.Link_.ConnectToGrandparent) && component.gameObject.transform.parent.parent.gameObject != this.gameObject)
+        if ((component.ConnectJointTo == Component.ConnectJointTo_.ConnectToGrandparent) && component.gameObject.transform.parent.parent.gameObject != this.gameObject)
         {
-            //Connected object need to have a collider. It has to be forced if its none
+            //Connected object needs to have a collider. It has to be forced if its none
             if(GetComponentByName(component.gameObject.transform.parent.parent.gameObject.name).Collider == Component.Collider_.None)
             {
                 GetComponentByName(component.gameObject.transform.parent.parent.gameObject.name).Collider = Component.Collider_.BoxCollider;
             }
             CheckRigidbody(component.gameObject.transform.parent.parent.gameObject, GetComponentByName(component.gameObject.transform.parent.parent.gameObject.name).Collider);
             joint.connectedBody = component.gameObject.transform.parent.parent.GetComponent<Rigidbody>();
-           // joint.connected = component.gameObject.transform.parent.parent.GetComponent<Rigidbody>();
         }
-        else if ((component.ConnectJointTo == Component.Link_.ConnectToParent) && component.gameObject.transform.parent.gameObject != this.gameObject)
+        else if ((component.ConnectJointTo == Component.ConnectJointTo_.ConnectToParent) && component.gameObject.transform.parent.gameObject != this.gameObject)
         {
             //Connected object need to have a collider. It has to be forced if its none
             if (GetComponentByName(component.gameObject.transform.parent.gameObject.name).Collider == Component.Collider_.None)
@@ -403,7 +394,6 @@ public abstract class AgentParser : MonoBehaviour {
             }
             CheckRigidbody(component.gameObject.transform.parent.gameObject, GetComponentByName(component.gameObject.transform.parent.gameObject.name).Collider);
             joint.connectedBody = component.gameObject.transform.parent.GetComponent<Rigidbody>();
-            //joint.connected = component.gameObject.transform.parent.GetComponent<Rigidbody>();
         }
         else
         {
@@ -426,7 +416,7 @@ public abstract class AgentParser : MonoBehaviour {
         
         //Add rigidbody to parent if it doesn't have it
 
-        if ((component.ConnectJointTo == Component.Link_.ConnectToGrandparent) && component.gameObject.transform.parent.parent.gameObject != this.gameObject)
+        if ((component.ConnectJointTo == Component.ConnectJointTo_.ConnectToGrandparent) && component.gameObject.transform.parent.parent.gameObject != this.gameObject)
         {
             //Connected object need to have a collider. It has to be forced if its none
             if (GetComponentByName(component.gameObject.transform.parent.parent.gameObject.name).Collider == Component.Collider_.None)
@@ -438,7 +428,7 @@ public abstract class AgentParser : MonoBehaviour {
             joint.connectedBody = component.gameObject.transform.parent.parent.GetComponent<Rigidbody>();
             joint.connectedAnchor = component.gameObject.transform.position;
         }
-        else if ((component.ConnectJointTo == Component.Link_.ConnectToParent) && component.gameObject.transform.parent.gameObject != this.gameObject)
+        else if ((component.ConnectJointTo == Component.ConnectJointTo_.ConnectToParent) && component.gameObject.transform.parent.gameObject != this.gameObject)
         {
             //Connected object need to have a collider. It has to be forced if its none
             if (GetComponentByName(component.gameObject.transform.parent.gameObject.name).Collider == Component.Collider_.None)
@@ -453,12 +443,10 @@ public abstract class AgentParser : MonoBehaviour {
         }
         else
         {
-            Debug.Log("There seems to be a issue with linking in object " + component.PartName + " Check if you have both link_parent and link_to_grandparent active");
+            Debug.Log("There seems to be a issue with linking in object " + component.PartName + " Check if you have both ConnectJointTo_parent and ConnectJointTo_to_grandparent active");
             
         }
         HingeJointSettings(component, joint);
-        //force anchor to be 0 0 0. This makes the AddTorques connect properly
-        
         }
 
     private void CheckRigidbody(GameObject gameobject, Component.Collider_ collider)
@@ -480,21 +468,6 @@ public abstract class AgentParser : MonoBehaviour {
                 case Component.Collider_.BoxCollider:
                     {
                         gameobject.AddComponent<BoxCollider>();
-                        /*
-                        //get colliders size from Renderer
-                         if (gameobject.GetComponent<Renderer>() != null)
-                         {
-                             //component.GetComponent<BoxCollider>().size = component.GetComponent<Renderer>().bounds.size;
-
-                             Debug.Log(gameobject.name + gameobject.GetComponent<Renderer>().bounds.size);
-                         }
-                         //set default small values if renderer does not exist. For example in case of bones
-                         else
-                         {
-                             Vector3 vector = new Vector3(0.5f, 0.5f, 0.5f);
-                             gameobject.GetComponent<BoxCollider>().size = vector;
-                         }
-                         */
                         BoxColliderSettings(gameobject);
                         break;
                     }
@@ -562,6 +535,8 @@ public abstract class AgentParser : MonoBehaviour {
  
 // With this function you can set specific values to your components during initialization.
 //If you want to modify the default values given to all variables see the top of AgentParser class for default variables
+
+        //Modify components initialization values
     public virtual Component InitializationSettings(Component component)
     {
         /*
@@ -591,12 +566,12 @@ public abstract class AgentParser : MonoBehaviour {
 
         if (component.PartName.Contains("Axle") || component.PartName.Contains("Neck") || component.PartName.Contains("Head") || component.PartName.Contains("Tooth") || component.PartName.Contains("Eye"))
         {
-            component.ConnectJointTo = Component.Link_.ConnectToParent;
+            component.ConnectJointTo = Component.ConnectJointTo_.ConnectToParent;
         }
 
         if (component.PartName.Contains("Arm") || component.PartName.Contains("AddTorque_movable"))
         {
-            component.ConnectJointTo = Component.Link_.ConnectToGrandparent;
+            component.ConnectJointTo = Component.ConnectJointTo_.ConnectToGrandparent;
         }*/
          
     //Set default values to components variables
@@ -649,13 +624,11 @@ public abstract class AgentParser : MonoBehaviour {
 
     }
 
-    //Multipliers
-
+    //These functions define how "Auto set action indices" and "Auto set dimension multipliers" flags work.
     public virtual void AddTorqueMultipliers(Component component)
     {
         if ((AutoSetActionIndices && AutoSetDimensionMultipliers) == true)
         {
-            // component.DimensionMultipliers.x = AddTorqueMultiplier;
             component.DimensionMultipliers = defaultAddTorqueAxes * AddTorqueMultiplier;
         }
         else
@@ -682,9 +655,6 @@ public abstract class AgentParser : MonoBehaviour {
                     number = number + 1;
                 }
             }
-            //component.ActionIndeces.Set(number, -1, -1);
-
-            //number = number + 1;
         }
         else
         {
@@ -706,8 +676,7 @@ public abstract class AgentParser : MonoBehaviour {
         if ((AutoSetActionIndices && AutoSetDimensionMultipliers) == true)
         {
             component.DimensionMultipliers = defaultJointAxes * AddRelativeTorqueMultiplier;
-            //component.DimensionMultipliers.y = AddRelativeTorqueMultiplier;
-            //component.DimensionMultipliers.z = AddRelativeTorqueMultiplier;
+
         }
         else
         {
@@ -735,9 +704,6 @@ public abstract class AgentParser : MonoBehaviour {
                     number = number + 1;
                 }
             }
-            //component.ActionIndeces.Set(-1, number, number+1);
-
-            // number = number + 2;
         }
         else
         {
