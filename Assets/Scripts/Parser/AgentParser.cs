@@ -318,7 +318,8 @@ public abstract class AgentParser : MonoBehaviour {
 
     }
 
-    //Parses through all the components and moves the ones that are marked movable
+    //Parses through all the components and moves the ones that are marked movable by
+    //feeding values from float act[] to motors, intended to be used in Agent.AgentStep()
     public void MoveMovableParts(float[] act)
     {
         if (this.gameObject.GetComponent<MovementControls>() == null)
@@ -496,7 +497,8 @@ public abstract class AgentParser : MonoBehaviour {
 
            
         }
-    } 
+    }
+    //Resets the position and velocity of each GameObject in the agent to default values at Vector3 position location. Intended to be used in Agent.reset() when resetting the agent or environment for next step in training.
 
     public void ResetAgentPose(Vector3 position)
     {
@@ -513,7 +515,7 @@ public abstract class AgentParser : MonoBehaviour {
 
         }
     }
-
+    //Resets components and velocities to the starting values.
     public void ResetAgentPose()
     {
         Transform[] allChildren = GetComponentsInChildren<Transform>();
@@ -532,9 +534,10 @@ public abstract class AgentParser : MonoBehaviour {
 
     //Virtual functions
     //Modify these in here or in AgentProto.
- 
-// With this function you can set specific values to your components during initialization.
-//If you want to modify the default values given to all variables see the top of AgentParser class for default variables
+
+    // With this function you can set specific values to your components during initialization.
+    //If you want to modify the default values given to all variables see the top of AgentParser class for default variables
+
 
         //Modify components initialization values
     public virtual Component InitializationSettings(Component component)

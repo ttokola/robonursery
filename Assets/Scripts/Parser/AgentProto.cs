@@ -1,10 +1,11 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+//Example of a class that inherits AgentParser. Utilize classes like this to automate your robot building.
 public class AgentProto : AgentParser {
+    
     //Write your override functions here.
-    //With them you can automate building you robot. See below for an examples
+    //See below for an examples
 
     override public Component InitializationSettings(Component component)
     {
