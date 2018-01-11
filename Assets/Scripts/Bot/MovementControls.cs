@@ -41,7 +41,7 @@ public class MovementControls : MonoBehaviour
                                   // because first target might be 0,0,0 which
                                   // will mess up the pathfinding
 	
-	void RotateWheel(string wheel, float torque)
+	private void RotateWheel(string wheel, float torque)
     // Rotate the given wheel and deplete battery
 	{
 		if (battery.normLevel <= 0)
@@ -201,6 +201,54 @@ public class MovementControls : MonoBehaviour
 	{
 		return DriveTo(target, false);
 	}
-}
+        
+        //Motor controls used by AgentParsers MoveMovableParts() function.
+       
+    public void Joint(Rigidbody rb, Transform tf, float force, int axel)
+        {
+            switch (axel)
+            {
+
+
+                case 0:
+                    rb.AddRelativeTorque(Vector3.right * force);
+                    break;
+                case 1:
+                    rb.AddRelativeTorque(Vector3.up * force);
+                    break;
+                case 2:
+                    rb.AddRelativeTorque(Vector3.forward * force);
+                    break;
+
+
+            }
+
+        }
+
+        public void AddTorque(Rigidbody rb, Transform tf, float force,int axel)
+        {
+            switch (axel)
+            {
+
+
+                case 0:
+                    rb.AddTorque(Vector3.right * force);
+                    break;
+                case 1:
+                    rb.AddTorque(Vector3.up * force);
+                    break;
+                case 2:
+                    rb.AddTorque(Vector3.forward * force);
+                    break;
+
+
+            }
+        }
+       
+
+        
+
+        //
+    }
 
 } // End namespace
