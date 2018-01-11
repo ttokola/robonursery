@@ -13,8 +13,10 @@ public class MLAagent : Agent
     private void Start()
     {
         proto = this.gameObject.GetComponent<AgentProto>();
-        //get the first component in the components list. 
+        //get the first component in the components list.
         b = proto.GetComponents()[0].gameObject;
+        // or fetch by name
+        //b = proto.GetComponentByName("Body").gameObject;
 
 
     }
