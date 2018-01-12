@@ -113,11 +113,6 @@ public abstract class AgentParser : MonoBehaviour {
     public int actsize;
     
 
-
-
-    public Dictionary<int, Agent> agents = new Dictionary<int, Agent>();
-    /**< \brief Keeps track of the agents which subscribe to this proto. NOT IN USE*/
-
     [SerializeField]
     public List<Component> components = new List<Component>();
 
