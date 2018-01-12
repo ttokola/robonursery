@@ -13,15 +13,17 @@ public class MLAagent : Agent
     private void Start()
     {
         proto = this.gameObject.GetComponent<AgentProto>();
-        //get the first component in the components list. 
+        //get the first component in the components list.
         b = proto.GetComponents()[0].gameObject;
+        // or fetch by name
+        //b = proto.GetComponentByName("Body").gameObject;
 
 
     }
     public override List<float> CollectState()
     {
        
-      //Variables returned to the external AI 
+      //Variables fed to external AI as inputs in state (refer to ML-Agents Python-API documentation) 
         body = b.GetComponent<Rigidbody>();
         List<float> state = new List<float>();
         state.Add(b.transform.position.x);
@@ -33,7 +35,9 @@ public class MLAagent : Agent
         state.Add(point.transform.position.z);
         return state;
     }
-    //this function is constantly being executed
+    /*this function is constantly being executed. Contains a simple reward function that aims to reward standing up-right
+    and moving. In tests the robot never learnt to stand up,
+    instead pushing arms below its body to stay at an angle avoiding the reset condition*/
     public override void AgentStep(float[] act)
     {
         if (brain.brainParameters.actionSpaceType == StateType.continuous)
@@ -61,6 +65,7 @@ public class MLAagent : Agent
     //When environment is reset this is executed
     public override void AgentReset()
     {
+        /*Resets the Agent's GameObject's relative positions and velocities to starting values at a new random offset location*/
         proto.ResetAgentPose(new Vector3(Random.Range(-2f, 2f), 0.01f, Random.Range(-2f, 2f)));
     }
 
