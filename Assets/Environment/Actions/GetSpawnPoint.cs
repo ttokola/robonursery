@@ -1,4 +1,11 @@
-﻿using System.Collections;
+﻿/*
+Script to get clear spawn point
+
+This script is attached to transform object and then it can be called to get valid spawn point inside defined radius
+Example call: Vector3 p = GameObject.Find("Spawn_Livingroom").GetComponent<GetSpawnPoint>().getSpawnPoint();
+ */
+
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -18,6 +25,13 @@ public class GetSpawnPoint : MonoBehaviour {
 	}
 
     public Vector3 getSpawnPoint()
+    /*
+     Get valid spawnpoint for this transformation
+     
+         
+     On success returns Vector3 of valid non-collision spawnpoint 
+     On failure returns Vector3.negativeInfinity
+     */
     {
         float rand1 = 0;
         float rand2 = 0;
@@ -38,20 +52,15 @@ public class GetSpawnPoint : MonoBehaviour {
 
             if (hitColliders.Length == 0)
             {
-                Debug.Log("onnistui");
-                //Debug.Log(pos.ToString());
+                // Success
                 return pos;
-            }
-            else
-            {
-                //Debug.Log("kierrosepäonnistui");
             }
             i++;
 
             if (i > 5)
             {
-                //Debug.Log("kokonaanepäonnistui");
-                return transform.position;
+                // Failure
+                return Vector3.negativeInfinity;
             }
         }
     }
