@@ -1,0 +1,144 @@
+digraph scenarios {
+	//splines="line";
+	rankdir="LR";
+	graph [ordering="out"];
+
+//arrows with different colors just for clarity
+
+	subgraph cluster_0 {
+		rankdir="LR";
+		title0 [label="LEVEL 1", fontname=Arial, fontcolor=lightseagreen, shape=plaintext];
+		title0;
+		node [color=lightseagreen]
+		
+		"raising hand";
+		"making noises";
+		"turning head";
+		"targeting the gaze";
+		"raising foot";
+		"moving forward";
+		"moving backward";
+		"realizing need of charging";
+		
+		{rank=same;"raising hand";"making noises";"turning head";"targeting the gaze";"raising foot";"moving forward";"moving backward";"realizing need of charging";}
+	}
+
+	subgraph cluster_1 {
+		rankdir="LR";
+		title1 [label="LEVEL 2", fontname=Arial, fontcolor=darkolivegreen, shape=plaintext];
+		title1;
+		info1 [label="Some object where to\n target the gaze" shape=box, color=red, fontcolor=red, fontname=Arial];
+		info1;
+		node [color=darkolivegreen]
+		
+		{"raising hand"} -> "waving hand" [color=red, penwidth=3.0]; //lightseagreen];
+		{"turning head"} -> "targeting to (moving) object" [color=lightseagreen];
+		{"targeting the gaze"} -> "targeting to (moving) object" [color=lightseagreen];
+		{"moving forward" , "moving backward"} -> "turning around" , "moving faster" , "moving slower" [color=lightseagreen];
+		{"raising hand"} -> "spreading hands" , "putting hands together" [color=lightseagreen];
+		
+		{rank=same;"waving hand";"targeting to (moving) object";"turning around";"moving faster";"moving slower";"spreading hands";"putting hands together";}
+	}
+	
+	subgraph cluster_2 {
+		rankdir="LR";
+		title2 [label="LEVEL 3", fontname=Arial, fontcolor=cornflowerblue, shape=plaintext];
+		title2;
+		info2 [label="Other actors,\n some object\n like a ball,\n some obstacle that\n robot can dodge" shape=box, color=red, fontcolor=red, fontname=Arial];
+		info2;
+		node [color=cornflowerblue]		
+		
+		{"waving hand" , "targeting to (moving) object"} -> "greeting someone" [color=darkolivegreen];
+		{"making noises"} -> "greeting someone" [color=lightseagreen];		
+		{"spreading hands" , "putting hands together"} -> "clapping hands" [color=darkolivegreen];
+		{"raising hand"} -> "pointing object" [color=lightseagreen];
+		{"targeting to (moving) object"} -> "pointing object" [color=darkolivegreen];
+		{"making noises"} -> "asking for help" [color=red, penwidth=3.0]; //lightseagreen];
+		{"waving hand"} -> "asking for help" [color=red, penwidth=3.0]; //darkolivegreen];
+		{"raising foot" , "moving forward"} -> "kicking" [color=lightseagreen];
+		{"targeting to (moving) object"} -> "kicking" [color=darkolivegreen];
+		{"turning around" , "moving faster" , "moving slower" , "targeting to (moving) object"} -> "dodging object" [color=darkolivegreen];
+		
+		{rank=same;"greeting someone";"clapping hands";"pointing object";"asking for help";"kicking";"dodging object";}
+	}
+	subgraph cluster_3 {
+		rankdir="LR";
+		title3 [label="LEVEL 4", fontname=Arial, fontcolor=dodgerblue4, shape=plaintext];
+		title3;
+		info3 [label="Other actors,\n ball, TV with a button, an obstacle,\n charging station" shape=box, color=red, fontcolor=red, fontname=Arial];
+		info3;
+		node [color=dodgerblue4]
+		
+		{"pointing object"} -> "picking up object", "pressing button" [color=cornflowerblue];
+		{"greeting someone"} -> "communicating" [color=cornflowerblue];
+		{"dodging object", "asking for help"} -> "going to charging station" [color=cornflowerblue, style=dashed];
+		{"realizing need of charging"} -> "going to charging station" [color=lightseagreen];
+		
+		{rank=same;"picking up object";"communicating";"going to charging station";"pressing button";}
+	}
+	
+	subgraph cluster_4 {
+		rankdir="LR";
+		title4 [label="LEVEL 5", fontname=Arial, fontcolor=cyan, shape=plaintext];
+		title4;
+		info4 [label="Other actors,\n ball, obstacle and\n charging station" shape=box, color=red, fontcolor=red, fontname=Arial];
+		info4;
+		node [color=cyan]
+		
+		{"picking up object"} -> "holding object"  [color=dodgerblue4];
+		{"going to charging station"} -> "docking to charging station" [color=dodgerblue4];
+		{"pressing button"} -> "watching TV" [color=dodgerblue4];
+		
+		{rank=same;"holding object";"docking to charging station";"watching TV";}
+	}
+	
+	subgraph cluster_5 {
+		rankdir="LR";
+		title5 [label="LEVEL 6", fontname=Arial, fontcolor=aquamarine4, shape=plaintext];
+		title5;
+		info5 [label="Other actors,\n ball, obstacle" shape=box, color=red, fontcolor=red, fontname=Arial];
+		info5;			
+		node [color=aquamarine4]
+		
+		{"holding object"}  -> "throwing object", "moving with object" [color=cyan];
+		{"moving forward" , "moving backward"} -> "moving with object" [color=lightseagreen];
+		{"holding object"} -> "giving object to someone" [color=cyan];
+		{"communicating"} -> "giving object to someone" [color=dodgerblue4];
+		
+		{rank=same;"moving with object";"throwing object";"giving object to someone";}	
+	}
+	
+	subgraph cluster_6 {
+		rankdir="LR";
+		title6 [label="LEVEL 7", fontname=Arial, fontcolor=olivedrab, shape=plaintext];
+		title6;		
+		info6 [label="Other actors,\n ball and goal,\n a box and an obstacle" shape=box, color=red, fontcolor=red, fontname=Arial];
+		info6;
+		node [color=olivedrab]
+		
+		{"throwing object"} -> "throwing object into box" [style=dashed, color=aquamarine4];
+		{"moving with object"} -> "throwing object into box" [style=dashed, color=aquamarine4];
+		{"moving with object"} -> "pushing object to somewhere" [color=aquamarine4];
+		{"kicking"} -> "kicking ball towards goal" [color=cornflowerblue];
+		{"moving with object"} -> "kicking ball towards goal" [color=aquamarine4];
+		
+		{rank=same;"throwing object into box";"pushing object to somewhere";"kicking ball towards goal";}
+	}
+	
+	subgraph cluster_7 {
+		rankdir="LR";
+		title7 [label="LEVEL 8", fontname=Arial, fontcolor=palegreen3, shape=plaintext];
+		title7;
+		info7 [label="Other actors,\n ball and goal\n" shape=box, color=red, fontcolor=red, fontname=Arial];
+		info7;
+		node [color=palegreen3]	
+		
+		{"kicking"} -> "playing football" [color=cornflowerblue];
+		{"kicking ball towards goal"} -> "playing football" [color=olivedrab];
+		{"communicating"} -> "playing football" [color=dodgerblue4];
+		{"dodging object"} -> "playing football" [color=cornflowerblue];
+		{"giving object to someone"} -> "playing football" [color=aquamarine4];
+		
+		{rank=same;"playing football";}
+	}
+}
