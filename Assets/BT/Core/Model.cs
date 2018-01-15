@@ -1,35 +1,32 @@
-﻿using RobotNursery.BT;
-using System;
+﻿using System;
 using System.Collections.Generic;
 
-namespace RobotNursery.Environment
+namespace RobotNursery.BT
 {
-    public class Supervisor
+    public class Model
     {
-        private readonly Node model;
+        private readonly Node root;
         private List<Layer> layers = new List<Layer>();
 
-        public Supervisor(Node model)
+        public Model(Node root)
         {
-            if (model == null)
+            if (root == null)
             {
-                throw new NullReferenceException("model == null");
+                throw new NullReferenceException("root == null");
             }
 
-            this.model = model;
+            this.root = root;
         }
 
         public void Reset()
         {
-            model.Terminate();
-
+            root.Terminate();
             layers.ForEach(layer => layer.Reset());
         }
 
         public void Step()
         {
-            model.Tick();
-
+            root.Tick();
             layers.ForEach(layer => layer.Step());
         }
 
