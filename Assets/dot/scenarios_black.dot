@@ -1,0 +1,134 @@
+digraph scenarios {
+	//splines="line";
+	rankdir="LR";
+	graph [ordering="out"];
+
+//arrows with black color
+	
+	subgraph cluster_0 {
+		rankdir="LR";
+		title0 [label="LEVEL 1", fontname=Arial, fontcolor=lightseagreen, shape=plaintext];
+		title0;
+		node [color=lightseagreen]
+		
+		"raising hand";
+		"making noises";
+		"turning head";
+		"targeting the gaze";
+		"raising foot";
+		"moving forward";
+		"moving backward";
+		"realizing need of charging";
+		
+		{rank=same;"raising hand";"making noises";"turning head";"targeting the gaze";"raising foot";"moving forward";"moving backward";"realizing need of charging";}
+	}
+
+	subgraph cluster_1 {
+		rankdir="LR";
+		title1 [label="LEVEL 2", fontname=Arial, fontcolor=darkseagreen3, shape=plaintext];
+		title1;
+		info1 [label="Some object where to\n target the gaze" shape=box, color=red, fontcolor=red, fontname=Arial];
+		info1;		
+		node [color=darkseagreen3]
+		
+		{"raising hand"} -> "waving hand";
+		{"turning head"} -> "targeting to (moving) object";
+		{"targeting the gaze"} -> "targeting to (moving) object";
+		{"moving forward" , "moving backward"} -> "turning around" , "moving faster" , "moving slower";
+		{"raising hand"} -> "spreading hands" , "putting hands together";
+		
+		{rank=same;"waving hand";"targeting to (moving) object";"turning around";"moving faster";"moving slower";"spreading hands";"putting hands together";}
+	}
+	
+	subgraph cluster_2 {
+		rankdir="LR";
+		title2 [label="LEVEL 3", fontname=Arial, fontcolor=aquamarine3, shape=plaintext];
+		title2;
+		info2 [label="Other actors,\n some object\n like a ball,\n some obstacle that\n robot can dodge" shape=box, color=red, fontcolor=red, fontname=Arial];
+		info2;
+		node [color=aquamarine3]		
+		
+		{"waving hand" , "making noises" , "targeting to (moving) object"} -> "greeting someone";
+		{"spreading hands" , "putting hands together"} -> "clapping hands";
+		{"raising hand" , "targeting to (moving) object"} -> "pointing object";
+		{"making noises" , "waving hand"} -> "asking for help";
+		{"raising foot" , "moving forward" , "targeting to (moving) object"} -> "kicking";
+		{"turning around" , "moving faster" , "moving slower" , "targeting to (moving) object"} -> "dodging object";
+		
+		{rank=same;"greeting someone";"clapping hands";"pointing object";"asking for help";"kicking";"dodging object";}
+	}
+	subgraph cluster_3 {
+		rankdir="LR";
+		title3 [label="LEVEL 4", fontname=Arial, fontcolor=cyan4, shape=plaintext];
+		title3;
+		info3 [label="Other actors,\n ball, TV with a button, an obstacle,\n charging station " shape=box, color=red, fontcolor=red, fontname=Arial];
+		info3;
+		node [color=cyan4]
+		
+		{"pointing object"} -> "picking up object", "pressing button";
+		{"greeting someone"} -> "communicating";
+		{"dodging object", "asking for help"} -> "going to charging station" [style=dashed];
+		{"realizing need of charging"} -> "going to charging station";
+		
+		{rank=same;"picking up object";"communicating";"going to charging station";"pressing button";}
+	}
+	
+	subgraph cluster_4 {
+		rankdir="LR";
+		title4 [label="LEVEL 5", fontname=Arial, fontcolor=aquamarine4, shape=plaintext];
+		title4;
+		info4 [label="Other actors,\n ball, obstacle and\n charging station" shape=box, color=red, fontcolor=red, fontname=Arial];
+		info4;
+		node [color=aquamarine4]
+		
+		{"picking up object"} -> "holding object";
+		{"going to charging station"} -> "docking to charging station";
+		{"pressing button"} -> "watching TV";
+		
+		{rank=same;"holding object";"docking to charging station";"watching TV";}
+	}
+	
+	subgraph cluster_5 {
+		rankdir="LR";
+		title5 [label="LEVEL 6", fontname=Arial, fontcolor=cyan, shape=plaintext];
+		title5;
+		info5 [label="Other actors,\n ball, obstacle" shape=box, color=red, fontcolor=red, fontname=Arial];
+		info5;			
+		node [color=cyan]
+		
+		{"holding object"}  -> "throwing object", "moving with object";
+		{"moving forward" , "moving backward"} -> "moving with object";
+		{"holding object" , "communicating"} -> "giving object to someone";
+		
+		{rank=same;"moving with object";"throwing object";"giving object to someone";}	
+	}
+	
+	subgraph cluster_6 {
+		rankdir="LR";
+		title6 [label="LEVEL 7", fontname=Arial, fontcolor=seagreen, shape=plaintext];
+		title6;		
+		info6 [label="Other actors,\n ball and goal,\n a box and an obstacle" shape=box, color=red, fontcolor=red, fontname=Arial];
+		info6;
+		node [color=seagreen]
+
+		{"throwing object"} -> "throwing object into box" [style=dashed];
+		{"moving with object"} -> "throwing object into box" [style=dashed];
+		{"moving with object"} -> "pushing object to somewhere";
+		{"kicking" , "moving with object"} -> "kicking ball towards goal";
+		
+		{rank=same;"throwing object into box";"pushing object to somewhere";"kicking ball towards goal";}
+	}
+	
+	subgraph cluster_7 {
+		rankdir="LR";
+		title7 [label="LEVEL 8", fontname=Arial, fontcolor=paleturquoise4, shape=plaintext];
+		title7;
+		info7 [label="Other actors,\n ball and goal\n" shape=box, color=red, fontcolor=red, fontname=Arial];
+		info7;
+		node [color=paleturquoise4]	
+		
+		{"kicking" , "kicking ball towards goal" , "communicating" , "dodging object" , "giving object to someone"} -> "playing football";
+		
+		{rank=same;"playing football";}
+	}
+}
