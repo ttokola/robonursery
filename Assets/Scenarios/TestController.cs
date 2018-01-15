@@ -16,6 +16,7 @@ public class TestController : MonoBehaviour
 
         Initialize();
 
+        /*
         var scenarios = transform.Find("Scenarios").GetComponents<Scenario>();
 
         foreach (var scenario in scenarios)
@@ -25,6 +26,7 @@ public class TestController : MonoBehaviour
             schedule.Add(node);
             schedule.Add(new DebugAction(scenario.GetType().Name + " end"));
         }
+        */
     }
 
     void Initialize()

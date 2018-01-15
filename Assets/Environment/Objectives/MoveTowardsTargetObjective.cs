@@ -4,21 +4,21 @@ namespace RobotNursery.Environment
 {
     public class MoveTowardsTargetObjective : Objective
     {
-        private GameObject gameObject;
+        private Supervisee supervisee;
         private GameObject targetObject;
         private string targetTag;
         private bool done = false;
 
-        public MoveTowardsTargetObjective(GameObject gameObject, string targetTag)
+        public MoveTowardsTargetObjective(Supervisee supervisee, string targetTag)
         {
-            this.gameObject = gameObject;
+            this.supervisee = supervisee;
             this.targetTag = targetTag;
         }
 
         protected override void OnEnter()
         {
             base.OnEnter();
-            targetObject = GameObject.FindGameObjectWithTag(targetTag);
+            targetObject = GameObject.FindGameObjectWithTag(targetTag); 
         }
 
         protected override void OnLeave()
@@ -32,7 +32,7 @@ namespace RobotNursery.Environment
             if (targetObject != null)
             {
                 double distance = Vector3.Distance(
-                    gameObject.transform.position,
+                    supervisee.transform.position,
                     targetObject.transform.position);
 
                 /*Debug.LogFormat("[{0}] Check distance={1}",

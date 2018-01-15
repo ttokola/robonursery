@@ -3,6 +3,7 @@ using UnityEngine;
 
 namespace RobotNursery.Environment
 {
+    /*
     public class HeadNoticingScenario : Scenario
     {
         public GameObject head;
@@ -31,4 +32,5 @@ namespace RobotNursery.Environment
             return sequence;
         }
     }
+    */
 }

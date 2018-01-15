@@ -4,20 +4,20 @@ namespace RobotNursery.Environment
 {
     public class NoticeTargetObjective : Objective
     {
-        private GameObject gameObject;
+        private Supervisee supervisee;
         private string targetTag;
-        private bool done = false;
 
-        public NoticeTargetObjective(GameObject gameObject, string targetTag)
+        public NoticeTargetObjective(Supervisee supervisee, string targetTag)
         {
-            this.gameObject = gameObject;
+            this.supervisee = supervisee;
             this.targetTag = targetTag;
         }
 
         override protected Progress Check()
         {
-            var position = gameObject.transform.position;
-            var forward = gameObject.transform.forward;
+            var head = supervisee.transform.Find("Head");
+            var position = head.transform.position;
+            var forward = head.transform.forward;
             var ray = new Ray(position, forward);
             RaycastHit hit;
 
