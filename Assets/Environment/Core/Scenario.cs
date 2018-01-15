@@ -1,10 +1,10 @@
-﻿using BT;
+﻿using RobotNursery.BT;
 using UnityEngine;
 
-namespace Env
+namespace RobotNursery.Environment
 {
     public abstract class Scenario : MonoBehaviour
     {
         public abstract Node Create();
     }
-}
+}

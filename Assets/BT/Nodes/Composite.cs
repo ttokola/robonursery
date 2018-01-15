@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace BT
+namespace RobotNursery.BT
 {
     public abstract class Composite : Node
     {

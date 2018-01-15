@@ -1,7 +1,4 @@
-﻿//#define LOG_VERBOSE
-#define LOG_INFO
-
-namespace BT
+﻿namespace RobotNursery.BT
 {
     public abstract class Node : INode
     {

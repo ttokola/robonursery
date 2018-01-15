@@ -1,4 +1,4 @@
-﻿namespace BT
+﻿namespace RobotNursery.BT
 {
     public class Parallel : Composite
     {

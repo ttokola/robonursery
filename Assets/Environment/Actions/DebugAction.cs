@@ -1,18 +1,21 @@
-﻿using BT;
+﻿using RobotNursery.BT;
 using UnityEngine;
 
-public class DebugAction : Action
+namespace RobotNursery.Environment
 {
-    private string message;
-
-    public DebugAction(string message)
+    public class DebugAction : Action
     {
-        this.message = message;
-    }
+        private string message;
 
-    public override Status Execute()
-    {
-        Debug.LogFormat(message);
-        return Status.Success;
+        public DebugAction(string message)
+        {
+            this.message = message;
+        }
+
+        public override BT.Status Execute()
+        {
+            Debug.LogFormat(message);
+            return BT.Status.Success;
+        }
     }
 }

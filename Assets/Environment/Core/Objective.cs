@@ -1,6 +1,6 @@
-﻿using BT;
+﻿using RobotNursery.BT;
 
-namespace Env
+namespace RobotNursery.Environment
 {
     public abstract class Objective : Node
     {

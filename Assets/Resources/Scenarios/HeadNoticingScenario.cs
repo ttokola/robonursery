@@ -1,7 +1,7 @@
-﻿using BT;
+﻿using RobotNursery.BT;
 using UnityEngine;
 
-namespace Env
+namespace RobotNursery.Environment
 {
     public class HeadNoticingScenario : Scenario
     {

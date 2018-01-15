@@ -1,8 +1,8 @@
-﻿using BT;
+﻿using RobotNursery.BT;
 using System;
 using System.Collections.Generic;
 
-namespace RobotNursery
+namespace RobotNursery.Environment
 {
     public class Layer
     {
