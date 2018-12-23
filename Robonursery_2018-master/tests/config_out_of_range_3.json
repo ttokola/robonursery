@@ -1,0 +1,31 @@
+{
+    "ai": ".\\AI\\dummy.py",
+    "directory_for_genes": ".\\Genes",
+    "population_size":2,
+    "number_of_population_generations":1,
+    "no_graphics_during_simulation":2,
+    "ai_base_port": 6005,
+    "number_of_genes_per_individual": 20,
+    "gene_type": "uint8",
+    "seed_number_for_random_generator":1,
+    "DEAP_parameters":
+    {
+        "fittest_percentage_for_breeding": 100,
+        "gene_mutation_propability_in_breeding": 1.0,
+        "individual_mutation_propability_in_breeding": 1.0,
+        "cross_mutation_propability_in_breeding": 1.0,
+        "eta_Crowding_degree_of_the_mutation": 100
+    },
+    "use_existing_population_in_simulation": 0,
+    "existing_population_path": "Generation_2.csv",
+    "scenes":
+    [
+        {
+            "id" : "scene1",
+            "file_name_of_Unity_builds":"ML_RollerBall",
+            "scene_location_path":".\\TestBuild\\",
+            "number_of_steps":100,
+            "base_communication_port":5005
+        }
+    ]
+}

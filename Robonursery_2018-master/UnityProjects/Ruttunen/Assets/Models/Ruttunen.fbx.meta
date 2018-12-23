@@ -1,0 +1,237 @@
+fileFormatVersion: 2
+guid: 5e65a1b0dfc878a46b0523283e635f65
+ModelImporter:
+  serializedVersion: 23
+  fileIDToRecycleName:
+    100000: Axle
+    100002: Body
+    100004: Head
+    100006: LEye
+    100008: LForeArm
+    100010: LHand
+    100012: LMiddleJoint
+    100014: LUpperArm
+    100016: LUpperJoint
+    100018: LWheel
+    100020: LWheelMesh
+    100022: Neck
+    100024: REye
+    100026: RForeArm
+    100028: RHand
+    100030: RMiddleJoint
+    100032: RUpperArm
+    100034: RUpperJoint
+    100036: //RootNode
+    100038: RWheel
+    100040: RWheelMesh
+    100042: Tooth1
+    100044: Tooth2
+    100046: Tooth3
+    100048: Tooth4
+    100050: Tooth5
+    100052: Wheels
+    400000: Axle
+    400002: Body
+    400004: Head
+    400006: LEye
+    400008: LForeArm
+    400010: LHand
+    400012: LMiddleJoint
+    400014: LUpperArm
+    400016: LUpperJoint
+    400018: LWheel
+    400020: LWheelMesh
+    400022: Neck
+    400024: REye
+    400026: RForeArm
+    400028: RHand
+    400030: RMiddleJoint
+    400032: RUpperArm
+    400034: RUpperJoint
+    400036: //RootNode
+    400038: RWheel
+    400040: RWheelMesh
+    400042: Tooth1
+    400044: Tooth2
+    400046: Tooth3
+    400048: Tooth4
+    400050: Tooth5
+    400052: Wheels
+    2100000: Material.007
+    2100002: Material.014
+    2100004: Material.008
+    2100006: Material.015
+    2100008: Material.009
+    2100010: Material.016
+    2100012: No Name
+    2100014: Material.012
+    2100016: Material.013
+    2100018: Material.018
+    2100020: Material.010
+    2100022: Material.017
+    2100024: Material.011
+    2100026: Material.019
+    2100028: Material.006
+    2100030: Material.002
+    2100032: Material.003
+    2100034: Material.004
+    2100036: Material.001
+    2300000: Axle
+    2300002: Body
+    2300004: Head
+    2300006: LEye
+    2300008: LForeArm
+    2300010: LHand
+    2300012: LMiddleJoint
+    2300014: LUpperArm
+    2300016: LUpperJoint
+    2300018: LWheel
+    2300020: LWheelMesh
+    2300022: Neck
+    2300024: REye
+    2300026: RForeArm
+    2300028: RHand
+    2300030: RMiddleJoint
+    2300032: RUpperArm
+    2300034: RUpperJoint
+    2300036: RWheel
+    2300038: RWheelMesh
+    2300040: Tooth1
+    2300042: Tooth2
+    2300044: Tooth3
+    2300046: Tooth4
+    2300048: Tooth5
+    3300000: Axle
+    3300002: Body
+    3300004: Head
+    3300006: LEye
+    3300008: LForeArm
+    3300010: LHand
+    3300012: LMiddleJoint
+    3300014: LUpperArm
+    3300016: LUpperJoint
+    3300018: LWheel
+    3300020: LWheelMesh
+    3300022: Neck
+    3300024: REye
+    3300026: RForeArm
+    3300028: RHand
+    3300030: RMiddleJoint
+    3300032: RUpperArm
+    3300034: RUpperJoint
+    3300036: RWheel
+    3300038: RWheelMesh
+    3300040: Tooth1
+    3300042: Tooth2
+    3300044: Tooth3
+    3300046: Tooth4
+    3300048: Tooth5
+    4300000: Body
+    4300002: LUpperJoint
+    4300004: LUpperArm
+    4300006: LMiddleJoint
+    4300008: LForeArm
+    4300010: LHand
+    4300012: Axle
+    4300014: LWheel
+    4300016: LWheelMesh
+    4300018: RWheel
+    4300020: RWheelMesh
+    4300022: RUpperJoint
+    4300024: RUpperArm
+    4300026: RMiddleJoint
+    4300028: RForeArm
+    4300030: RHand
+    4300032: Neck
+    4300034: Head
+    4300036: LEye
+    4300038: REye
+    4300040: Tooth3
+    4300042: Tooth2
+    4300044: Tooth1
+    4300046: Tooth4
+    4300048: Tooth5
+    9500000: //RootNode
+  externalObjects: {}
+  materials:
+    importMaterials: 1
+    materialName: 0
+    materialSearch: 1
+    materialLocation: 1
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    resampleCurves: 1
+    optimizeGameObjects: 0
+    motionNodeName: 
+    rigImportErrors: 
+    rigImportWarnings: 
+    animationImportErrors: 
+    animationImportWarnings: 
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
+    importAnimatedCustomProperties: 0
+    importConstraints: 0
+    animationCompression: 3
+    animationRotationError: 0.5
+    animationPositionError: 0.5
+    animationScaleError: 0.5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    extraUserProperties: []
+    clipAnimations: []
+    isReadable: 1
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 1
+    meshCompression: 0
+    addColliders: 0
+    importVisibility: 1
+    importBlendShapes: 1
+    importCameras: 1
+    importLights: 1
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    optimizeMeshForGPU: 1
+    keepQuads: 0
+    weldVertices: 1
+    preserveHierarchy: 0
+    indexFormat: 0
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVPackMargin: 4
+    useFileScale: 0
+    previousCalculatedGlobalScale: 0.01
+    hasPreviousCalculatedGlobalScale: 1
+  tangentSpace:
+    normalSmoothAngle: 60
+    normalImportMode: 0
+    tangentImportMode: 3
+    normalCalculationMode: 4
+  importAnimation: 1
+  copyAvatar: 0
+  humanDescription:
+    serializedVersion: 2
+    human: []
+    skeleton: []
+    armTwist: 0.5
+    foreArmTwist: 0.5
+    upperLegTwist: 0.5
+    legTwist: 0.5
+    armStretch: 0.05
+    legStretch: 0.05
+    feetSpacing: 0
+    rootMotionBoneName: 
+    rootMotionBoneRotation: {x: 0, y: 0, z: 0, w: 1}
+    hasTranslationDoF: 0
+    hasExtraRoot: 0
+    skeletonHasParents: 1
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  animationType: 2
+  humanoidOversampling: 1
+  additionalBone: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

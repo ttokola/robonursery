@@ -1,0 +1,40 @@
+syntax = "proto3";
+
+package robo_messages;
+
+message RoboMessage{
+
+    message Header {
+	int32 status = 1;
+	string message = 2;
+    }
+
+    Header header = 1;
+
+    message AgentInfo {
+    repeated float stacked_vector_observation = 1;
+    repeated bytes visual_observations = 2;
+    string text_observation = 3;
+    repeated float stored_vector_actions = 4;
+    string stored_text_actions = 5;
+    repeated float memories = 6;
+    float reward = 7;
+    bool done = 8;
+    bool max_step_reached = 9;
+    int32 id = 10;
+    repeated bool action_mask = 11;
+    int32 vector_actions_size = 12;
+    }
+
+    AgentInfo agent_info = 2;
+
+    
+    message AgentAction {
+        repeated float vector_actions = 1;
+        string text_actions = 2;
+        repeated float memories = 3;
+        float value = 4;
+    }
+
+    AgentAction agent_action = 3;
+}
